@@ -3,15 +3,14 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@components/*": ["./components/*"],
+      "@services/*": ["./core/services/*"],
+      "@helper/*": ["./core/helper/*"],
+      "@api/*": ["./core/api/*"],
+      "@type/*": ["./type/*"],
+      "@images/*": ["./assets/images/*"],
+      "@/*": ["./*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
