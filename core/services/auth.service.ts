@@ -1,4 +1,4 @@
-import type { SignIn, Token } from '@type/auth.type';
+import type { RefreshToken, SignIn, Token } from '@type/auth.type';
 import type { ReturnWithErrPromise } from '@type/common.type';
 import type { CreateUser } from '@type/user.type';
 
@@ -13,11 +13,7 @@ export class AuthService {
     try {
       if (!data.lastName) delete data.lastName;
 
-      const response = await apiClient.post<Token>(`${this.endpoint}/sign-up`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await apiClient.post<Token>(`${this.endpoint}/sign-up`, data);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
@@ -28,11 +24,7 @@ export class AuthService {
 
   async signIn(data: SignIn): ReturnWithErrPromise<Token> {
     try {
-      const response = await apiClient.post<Token>(`${this.endpoint}/sign-in`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await apiClient.post<Token>(`${this.endpoint}/sign-in`, data);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
@@ -41,17 +33,9 @@ export class AuthService {
     }
   }
 
-  async refreshToken(refreshToken: string): ReturnWithErrPromise<Token> {
+  async refreshToken(data: RefreshToken): ReturnWithErrPromise<Token> {
     try {
-      const response = await apiClient.post<Token>(
-        `${this.endpoint}/refresh-token`,
-        { refreshToken },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const response = await apiClient.post<Token>(`${this.endpoint}/refresh-token`, data);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];

@@ -1,18 +1,18 @@
 import type { ReturnWithErrPromise } from '@type/common.type';
-import type { Service, ServicesByCategory } from '@type/service.type';
+import type { CreateService, Service, ServicesByCategory, UpdateService } from '@type/service.type';
 
+import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 
 export class ServiceService {
   private readonly endpoint = '/service';
 
-  async findOne(serviceId: number): ReturnWithErrPromise<Service> {
+  async findOne(id: number): ReturnWithErrPromise<Service> {
     try {
-      const response = await fetch(`${this.endpoint}/${serviceId}`);
-      const service = (await response.json()) as Service;
+      const response = await apiClient.get<Service>(`${this.endpoint}/${id}`);
 
-      if (isHttpException(service)) throw new HttpException(service);
-      return [service, null];
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
     } catch (err) {
       return errorHandler(err);
     }
@@ -20,11 +20,43 @@ export class ServiceService {
 
   async findMany(): ReturnWithErrPromise<Service[]> {
     try {
-      const response = await fetch(this.endpoint);
-      const services = (await response.json()) as Service[];
+      const response = await apiClient.get<Service[]>(this.endpoint);
 
-      if (isHttpException(services)) throw new HttpException(services);
-      return [services, null];
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async create(data: CreateService): ReturnWithErrPromise<Service> {
+    try {
+      const response = await apiClient.post<Service>(this.endpoint, data);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async update(id: number, data: UpdateService): ReturnWithErrPromise<Service> {
+    try {
+      const response = await apiClient.patch<Service>(`${this.endpoint}/${id}`, data);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async delete(id: number): ReturnWithErrPromise<Service> {
+    try {
+      const response = await apiClient.delete<Service>(`${this.endpoint}/${id}`);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
     } catch (err) {
       return errorHandler(err);
     }

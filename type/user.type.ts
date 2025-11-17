@@ -1,3 +1,5 @@
+import type { Dayjs } from 'dayjs';
+
 export type User = {
   id: number;
   username: string;
@@ -5,8 +7,8 @@ export type User = {
   firstName: string;
   verified: boolean;
   archived: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Dayjs;
+  updatedAt: Dayjs;
   role: Role;
 };
 

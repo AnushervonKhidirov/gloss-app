@@ -10,6 +10,16 @@ export type Service = {
   categoryId: number;
 };
 
+export type CreateService = {
+  name: string;
+  price: number;
+  duration: number;
+  categoryId: number;
+  desc?: string;
+};
+
+export type UpdateService = Partial<CreateService>;
+
 export type WorkerService = {
   id: number;
   userId: number;

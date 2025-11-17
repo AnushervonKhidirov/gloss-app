@@ -1,26 +1,38 @@
 import type { ReturnWithErrPromise } from '@type/common.type';
 import type { CreateQueue, Queue } from '@type/queue.type';
 
+import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
+import dayjs from 'dayjs';
 
 export class QueueService {
   private readonly endpoint = '/queue';
 
-  async create(queue: CreateQueue): ReturnWithErrPromise<Queue> {
+  async findOne(id: number): ReturnWithErrPromise<Queue> {
     try {
-      const response = await fetch(this.endpoint, {
-        method: 'POST',
-        body: JSON.stringify(queue),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const service = (await response.json()) as Queue;
+      const response = await apiClient.get<Queue>(`${this.endpoint}/${id}`);
 
-      if (isHttpException(service)) throw new HttpException(service);
-      return [service, null];
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [this.convertData(response.data), null];
     } catch (err) {
       return errorHandler(err);
     }
+  }
+
+  async create(queue: CreateQueue): ReturnWithErrPromise<Queue> {
+    try {
+      const response = await apiClient.post<Queue>(this.endpoint, queue);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [this.convertData(response.data), null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  private convertData(queue: Queue) {
+    queue.startAt = dayjs(queue.startAt);
+    queue.endAt = dayjs(queue.endAt);
+    return queue;
   }
 }
