@@ -1,61 +1,83 @@
-import { Link } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import type { SignIn } from '@type/auth.type';
 
 import { Button, Form, Input } from '@ant-design/react-native';
 import InputPassword from '@components/input/input-password';
-import { AuthService } from '@services/auth.service';
-import { SignIn } from '@type/auth.type';
+import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { AuthService } from '@services/auth.service';
 
 const authService = new AuthService();
 
 const SignInScreen = () => {
   const [form] = Form.useForm();
-
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function onFinish(value: SignIn) {
-    console.log(value);
-
     setLoading(true);
 
     const [token, err] = await authService.signIn(value);
     if (err) {
       console.log('err', err);
     } else {
-      console.log('sign in', token);
       await AuthService.setToken(token);
+      router.replace('/(tabs)');
     }
 
     setLoading(false);
   }
 
   return (
-    <View style={styles.form_wrapper}>
-      <Form form={form} onFinish={onFinish}>
-        <Form.Item name="username" rules={[{ required: true, message: 'Введите логин' }]}>
-          <Input placeholder="Логин"></Input>
-        </Form.Item>
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.form_wrapper}>
+        <Form form={form} onFinish={onFinish}>
+          <Form.Item name="username" rules={[{ required: true, message: 'Введите логин' }]}>
+            <Input placeholder="Логин"></Input>
+          </Form.Item>
 
-        <InputPassword />
+          <Form.Item name="password" rules={[{ required: true, message: 'Введите пароль' }]}>
+            <InputPassword />
+          </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" onPress={form.submit} loading={loading}>
-            Войти
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item>
+            <Button type="primary" onPress={form.submit} loading={loading}>
+              Войти
+            </Button>
+          </Form.Item>
+        </Form>
 
-      <Link href="/sign-up">Sign up</Link>
-    </View>
+        <View style={styles.footer}>
+          <Text>
+            Нет аккаунта?{' '}
+            <Link replace href="/sign-up" style={styles.link}>
+              Зарегистрироваться
+            </Link>
+          </Text>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+
   form_wrapper: {
-    display: 'flex',
-    height: '100%',
+    flex: 1,
     justifyContent: 'center',
+  },
+
+  footer: {
+    padding: 20,
+  },
+
+  link: {
+    color: '#108ee9',
   },
 });
 
