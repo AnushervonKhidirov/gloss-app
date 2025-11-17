@@ -27,7 +27,7 @@ apiClient.interceptors.response.use(async response => {
 
     if (!token) return response;
 
-    const [newToken, refreshErr] = await authService.refreshToken(token?.refreshToken);
+    const [newToken, refreshErr] = await authService.refreshToken(token);
     if (refreshErr) return response;
 
     AuthService.setToken(newToken);
