@@ -15,15 +15,14 @@ const HomeScreen = () => {
   async function getUserData() {
     const token = await AuthService.getToken();
 
-    if (!token) router.navigate('/sign-in');
+    if (!token) router.replace('/sign-in');
 
-    const [user, err] = await userService.findMe();
+    const [_, err] = await userService.findMe();
+
     if (err) {
-      console.log('user err', err);
-      router.navigate('/sign-in');
+      router.replace('/sign-in');
     } else {
-      console.log('user', user);
-      router.navigate('/(tabs)');
+      router.replace('/(tabs)');
     }
   }
 

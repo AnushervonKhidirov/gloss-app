@@ -14,9 +14,9 @@ type ServiceItemProps = {
 const ServiceList: FC<ServiceListProps> = ({ services, children }) => {
   return (
     <View style={style.container}>
-      <View style={{ backgroundColor: 'green',  }}>{children}</View>
+      <View>{children}</View>
 
-      <View style={{ backgroundColor: 'red' }}>
+      <View>
         {services.map(service => (
           <ServiceItem key={service.id} service={service} />
         ))}
