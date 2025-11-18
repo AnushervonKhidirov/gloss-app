@@ -42,6 +42,7 @@ const AutoSelect: FC<AutoSelectProps> = ({
 
   function select(item: AutoSelectItem) {
     setSelected(item);
+    if (onSelect) onSelect(item);
   }
 
   function find(value: string) {
