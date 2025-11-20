@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-import { isHttpException } from '@helper/error-handler';
+import { HttpException, isHttpException } from '@helper/error-handler';
 import { AuthService } from '@services/auth.service';
+
+const authService = new AuthService();
+let isRefreshing = false;
 
 const apiClient = axios.create({
   baseURL: 'http://192.168.0.93:4000/',
@@ -18,24 +21,28 @@ apiClient.interceptors.request.use(async config => {
 });
 
 apiClient.interceptors.response.use(async response => {
-  console.log('response (interceptors)', response.data);
-  const authService = new AuthService();
   const originalRequest = response.config;
 
-  if (isHttpException(response.data) && response.data.statusCode === 401) {
+  if (isHttpException(response.data) && response.data.statusCode === 401 && !isRefreshing) {
+    isRefreshing = true;
+
     const token = await AuthService.getToken();
 
-    if (!token) return response;
+    if (!token) {
+      throw new HttpException({ message: 'Token not found from Client', statusCode: 404 });
+    }
 
     const [newToken, refreshErr] = await authService.refreshToken(token);
-    if (refreshErr) return response;
 
-    AuthService.setToken(newToken);
+    if (refreshErr) throw refreshErr;
+
+    await AuthService.setToken(newToken);
     originalRequest.headers.Authorization = `Bearer ${newToken.accessToken}`;
 
     return apiClient(originalRequest);
   }
 
+  isRefreshing = false;
   return response;
 });
 
