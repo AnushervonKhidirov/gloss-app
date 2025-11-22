@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CategoryService } from '@services/category.service';
@@ -20,7 +20,13 @@ const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ o
     const [category, err] = await categoryService.create(value);
 
     if (err) {
-      console.log(err);
+      if (err.statusCode === 403) {
+        Alert.alert('Запрет', 'Только администранор может создавать категории');
+      } else if (err.statusCode >= 500) {
+        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
+      } else {
+        Alert.alert('Ошибка', 'Причина не известна');
+      }
     } else {
       onSuccess(category);
     }

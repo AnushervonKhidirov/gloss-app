@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import { Button, Form, Input } from '@ant-design/react-native';
 import AutoSelect from '@components/input/autoselect';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ServiceService } from '@services/service.service';
@@ -24,7 +24,13 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
     const [service, err] = await serviceService.create(value);
 
     if (err) {
-      console.log(err);
+      if (err.statusCode === 403) {
+        Alert.alert('Запрет', 'Только администранор может создавать услуги');
+      } else if (err.statusCode >= 500) {
+        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
+      } else {
+        Alert.alert('Ошибка', 'Причина не известна');
+      }
     } else {
       onSuccess(service);
     }
