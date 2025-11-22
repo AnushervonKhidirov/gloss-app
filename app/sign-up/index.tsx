@@ -2,9 +2,10 @@ import type { CreateUser } from '@type/user.type';
 
 import { Button, Form, Input } from '@ant-design/react-native';
 import InputPassword from '@components/input/input-password';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AuthService } from '@services/auth.service';
@@ -13,18 +14,19 @@ const authService = new AuthService();
 
 const SignUpScreen = () => {
   const [form] = Form.useForm();
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function onFinish(value: CreateUser) {
     setLoading(true);
 
-    const [token, err] = await authService.signUp(value);
+    const [_, err] = await authService.signUp(value);
     if (err) {
-      console.log('err', err);
+      if (err.statusCode === 409) Alert.alert('Пользователь уже существует');
+
+      if (err.statusCode >= 500)
+        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
     } else {
-      await AuthService.setToken(token);
-      router.replace('/(tabs)');
+      Alert.alert('Вы успешно зарегистрировались', 'Дождитесь подтверждения');
     }
 
     setLoading(false);
@@ -40,6 +42,33 @@ const SignUpScreen = () => {
 
           <Form.Item name="lastName">
             <Input placeholder="Фамилия"></Input>
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: 'Введите номер телефона',
+              },
+              {
+                validator(_, value) {
+                  if (
+                    typeof value === 'string' &&
+                    value.trim() !== '' &&
+                    !isValidPhoneNumber(value, 'TJ')
+                  ) {
+                    console.log('invalid');
+
+                    return Promise.reject(new Error('Неправильный формат номера'));
+                  }
+
+                  return Promise.resolve();
+                },
+              },
+            ]}
+          >
+            <Input placeholder="Номер телефона"></Input>
           </Form.Item>
 
           <Form.Item name="username" rules={[{ required: true, message: 'Введите логин' }]}>

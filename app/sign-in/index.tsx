@@ -4,7 +4,7 @@ import { Button, Form, Input } from '@ant-design/react-native';
 import InputPassword from '@components/input/input-password';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AuthService } from '@services/auth.service';
@@ -20,8 +20,15 @@ const SignInScreen = () => {
     setLoading(true);
 
     const [token, err] = await authService.signIn(value);
+
     if (err) {
-      console.log('err', err);
+      if (err.statusCode >= 500)
+        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
+
+      if (err.statusCode === 404) Alert.alert('Пользователь не найден');
+
+      if (err.statusCode === 403)
+        Alert.alert('Аккаунт не подтвержден', 'Дождитесь пока вас подтвердят');
     } else {
       await AuthService.setToken(token);
       router.replace('/(tabs)');
