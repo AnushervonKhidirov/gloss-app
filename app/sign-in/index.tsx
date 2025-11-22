@@ -22,13 +22,15 @@ const SignInScreen = () => {
     const [token, err] = await authService.signIn(value);
 
     if (err) {
-      if (err.statusCode >= 500)
-        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
-
-      if (err.statusCode === 404) Alert.alert('Пользователь не найден');
-
-      if (err.statusCode === 403)
+      if (err.statusCode === 404) {
+        Alert.alert('Пользователь не найден');
+      } else if (err.statusCode === 403) {
         Alert.alert('Аккаунт не подтвержден', 'Дождитесь пока вас подтвердят');
+      } else if (err.statusCode >= 500) {
+        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
+      } else {
+        Alert.alert('Ошибка', 'Причина не известна');
+      }
     } else {
       await AuthService.setToken(token);
       router.replace('/(tabs)');

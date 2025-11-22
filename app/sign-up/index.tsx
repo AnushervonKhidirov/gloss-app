@@ -20,11 +20,15 @@ const SignUpScreen = () => {
     setLoading(true);
 
     const [_, err] = await authService.signUp(value);
-    if (err) {
-      if (err.statusCode === 409) Alert.alert('Пользователь уже существует');
 
-      if (err.statusCode >= 500)
+    if (err) {
+      if (err.statusCode === 409) {
+        Alert.alert('Пользователь уже существует');
+      } else if (err.statusCode >= 500) {
         Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
+      } else {
+        Alert.alert('Ошибка', 'Причина не известна');
+      }
     } else {
       Alert.alert('Вы успешно зарегистрировались', 'Дождитесь подтверждения');
     }
