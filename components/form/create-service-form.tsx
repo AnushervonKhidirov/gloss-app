@@ -3,7 +3,7 @@ import type { CreateService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
-import AutoSelect from '@components/input/autoselect';
+import AutoSelect from '@components/input/autocomplete';
 import { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

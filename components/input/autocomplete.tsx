@@ -5,13 +5,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Portal } from 'react-native-paper';
 
-type AutoSelectProps = {
-  items: AutoSelectItem[];
+type AutocompleteProps = {
+  items: AutocompleteItem[];
   placeholder?: string;
   name: string;
   getBy?: 'id' | 'value';
-  defaultSelected?: AutoSelectItem;
-  onSelect?: (item: AutoSelectItem | null) => void;
+  defaultSelected?: AutocompleteItem;
+  onSelect?: (item: AutocompleteItem | null) => void;
 };
 
 type Coordinates = {
@@ -23,9 +23,9 @@ type Coordinates = {
   pageY: number;
 };
 
-type AutoSelectItem = { id: number; value: string };
+type AutocompleteItem = { id: number; value: string };
 
-const AutoSelect: FC<AutoSelectProps> = ({
+const Autocomplete: FC<AutocompleteProps> = ({
   items,
   placeholder,
   name,
@@ -43,15 +43,15 @@ const AutoSelect: FC<AutoSelectProps> = ({
 
   const [inputValue, setInputValue] = useState('');
 
-  const [selected, setSelected] = useState<AutoSelectItem | null>(defaultSelected);
-  const [filteredList, setFilteredList] = useState<AutoSelectItem[]>(items);
+  const [selected, setSelected] = useState<AutocompleteItem | null>(defaultSelected);
+  const [filteredList, setFilteredList] = useState<AutocompleteItem[]>(items);
 
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const [scrollCoordinates, setScrollCoordinates] = useState<Coordinates | null>(null);
 
   const form = Form.useFormInstance();
 
-  function select(item: AutoSelectItem | null) {
+  function select(item: AutocompleteItem | null) {
     setSelected(item);
 
     if (item) {
@@ -175,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AutoSelect;
+export default Autocomplete;

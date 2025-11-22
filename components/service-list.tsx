@@ -7,6 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { minutesToTime } from '@helper/time-converter.helper';
 
 type ServiceListProps = PropsWithChildren<{
+  emptyMessage?: string;
   services: Service[];
 }>;
 
@@ -14,7 +15,9 @@ type ServiceItemProps = {
   service: Service;
 };
 
-const ServiceList: FC<ServiceListProps> = ({ services, children }) => {
+const ServiceList: FC<ServiceListProps> = ({ services, emptyMessage, children }) => {
+  const message = emptyMessage ?? 'Список услуг пуст';
+
   return (
     <View style={style.container}>
       <View>{children}</View>
@@ -23,7 +26,7 @@ const ServiceList: FC<ServiceListProps> = ({ services, children }) => {
         {services.length > 0 ? (
           services.map(service => <ServiceItem key={service.id} service={service} />)
         ) : (
-          <Text>Список предоставляемых услуг пуст</Text>
+          <Text>{message}</Text>
         )}
       </View>
     </View>
@@ -31,8 +34,6 @@ const ServiceList: FC<ServiceListProps> = ({ services, children }) => {
 };
 
 const ServiceItem: FC<ServiceItemProps> = ({ service }) => {
-  console.log(service);
-
   return (
     <Card>
       <Card.Header title={service.name} extra={service.category.value} />
@@ -47,10 +48,7 @@ const ServiceItem: FC<ServiceItemProps> = ({ service }) => {
         <View></View>
       )}
 
-      <Card.Footer
-        content={service.price + ' с'}
-        extra={minutesToTime(service.duration)}
-      ></Card.Footer>
+      <Card.Footer content={service.price + ' с'} extra={minutesToTime(service.duration)} />
     </Card>
   );
 };

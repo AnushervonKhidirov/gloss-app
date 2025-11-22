@@ -1,14 +1,16 @@
 import type { Category } from '@type/category.type';
-import type { Service } from '@type/service.type';
+import type { SelectedService, Service } from '@type/service.type';
 
-import { Tabs } from '@ant-design/react-native';
+import { Button, Tabs } from '@ant-design/react-native';
+import { useEffect, useState } from 'react';
+import { Alert, View } from 'react-native';
+
 import CategoryList from '@components/category-list';
 import CreateCategoryForm from '@components/form/create-category-form';
 import CreateServiceForm from '@components/form/create-service-form';
 import Modal from '@components/modal';
+import SelectableServiceList from '@components/selectable-service-list';
 import ServiceList from '@components/service-list';
-import { useEffect, useState } from 'react';
-import { Alert, Button, Text, View } from 'react-native';
 
 import { CategoryService } from '@services/category.service';
 import { ServiceService } from '@services/service.service';
@@ -20,18 +22,29 @@ const tabs = [{ title: 'Все услуги' }, { title: 'Мои услуги' }
 
 const ServicesScreen = () => {
   const [createServiceModalVisible, setCreateServiceModalVisible] = useState(false);
+  const [selectServicesModalVisible, setSelectServicesModalVisible] = useState(false);
   const [createCategoryModalVisible, setCreateCategoryModalVisible] = useState(false);
 
   const [services, setServices] = useState<Service[]>([]);
+  const [selectedServices, setSelectedServices] = useState<SelectedService[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  function openCreateServiceForm() {
+  function openCreateServiceModal() {
     if (categories.length === 0) {
       Alert.alert('Нет созданных категорий', 'Сначала создайте категории в разделе "Категории"');
       return;
     }
 
     setCreateServiceModalVisible(true);
+  }
+
+  function openSelectServiceModal() {
+    if (services.length === 0) {
+      Alert.alert('Нет созданных услуг', 'Сначала создайте услуги в разделе "Все услуги"');
+      return;
+    }
+
+    setSelectServicesModalVisible(true);
   }
 
   async function fetchServices() {
@@ -41,6 +54,16 @@ const ServicesScreen = () => {
       console.log(err);
     } else {
       setServices(services);
+    }
+  }
+
+  async function fetchSelectedServices() {
+    const [services, err] = await serviceService.findManySelected();
+
+    if (err) {
+      console.log(err);
+    } else {
+      setSelectedServices(services);
     }
   }
 
@@ -56,6 +79,7 @@ const ServicesScreen = () => {
 
   async function fetchData() {
     await fetchServices();
+    await fetchSelectedServices();
     await fetchCategories();
   }
 
@@ -69,6 +93,20 @@ const ServicesScreen = () => {
     setCreateCategoryModalVisible(false);
   }
 
+  function pushWorkerServices(workerService: SelectedService[]) {
+    setSelectedServices(workerService);
+    setSelectServicesModalVisible(false);
+  }
+
+  function convertSelectedService(selectedServices: SelectedService[]): Service[] {
+    return selectedServices.map(workerService => {
+      return {
+        ...workerService.service,
+        price: workerService.price ?? workerService.service.price,
+      };
+    });
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -76,8 +114,10 @@ const ServicesScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <Tabs tabs={tabs}>
-        <ServiceList services={services}>
-          <Button title="Создать услугу" onPress={openCreateServiceForm} />
+        <ServiceList services={services} emptyMessage="Список предоставляемых услуг пуст">
+          <Button type="primary" onPress={openCreateServiceModal}>
+            Создать услугу
+          </Button>
 
           <Modal
             title="Создание услуги"
@@ -88,12 +128,27 @@ const ServicesScreen = () => {
           </Modal>
         </ServiceList>
 
-        <View>
-          <Text>Content of Second Tab</Text>
-        </View>
+        <ServiceList
+          services={convertSelectedService(selectedServices)}
+          emptyMessage="У вас пока нет выбранных услуг"
+        >
+          <Button type="primary" onPress={openSelectServiceModal}>
+            Выбрать услуги
+          </Button>
+
+          <Modal
+            title="Выбор услуг"
+            isOpen={selectServicesModalVisible}
+            close={() => setSelectServicesModalVisible(false)}
+          >
+            <SelectableServiceList services={services} onSuccess={pushWorkerServices} />
+          </Modal>
+        </ServiceList>
 
         <CategoryList categories={categories}>
-          <Button title="Создать категорию" onPress={() => setCreateCategoryModalVisible(true)} />
+          <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
+            Создать категорию
+          </Button>
 
           <Modal
             title="Создание категории"

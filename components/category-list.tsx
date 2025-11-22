@@ -5,6 +5,7 @@ import { Card } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
 type CategoryListProps = PropsWithChildren<{
+  emptyMessage?: string;
   categories: Category[];
 }>;
 
@@ -12,7 +13,9 @@ type CategoryItemProps = {
   category: Category;
 };
 
-const CategoryList: FC<CategoryListProps> = ({ categories, children }) => {
+const CategoryList: FC<CategoryListProps> = ({ categories, emptyMessage, children }) => {
+  const message = emptyMessage ?? 'Нет созданных категорий';
+
   return (
     <View style={style.container}>
       <View>{children}</View>
@@ -21,7 +24,7 @@ const CategoryList: FC<CategoryListProps> = ({ categories, children }) => {
         {categories.length > 0 ? (
           categories.map(category => <CategoryItem key={category.id} category={category} />)
         ) : (
-          <Text>Нет созданных категорий</Text>
+          <Text>{message}</Text>
         )}
       </View>
     </View>
