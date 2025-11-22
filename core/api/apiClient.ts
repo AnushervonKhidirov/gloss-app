@@ -34,7 +34,10 @@ apiClient.interceptors.response.use(async response => {
 
     const [newToken, refreshErr] = await authService.refreshToken(token);
 
-    if (refreshErr) throw refreshErr;
+    if (refreshErr) {
+      await AuthService.removeToken();
+      throw refreshErr;
+    }
 
     await AuthService.setToken(newToken);
     originalRequest.headers.Authorization = `Bearer ${newToken.accessToken}`;
