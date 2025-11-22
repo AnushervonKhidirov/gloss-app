@@ -141,7 +141,11 @@ const ServicesScreen = () => {
             isOpen={selectServicesModalVisible}
             close={() => setSelectServicesModalVisible(false)}
           >
-            <SelectableServiceList services={services} onSuccess={pushWorkerServices} />
+            <SelectableServiceList
+              services={services}
+              selectedList={selectedServices}
+              onSuccess={pushWorkerServices}
+            />
           </Modal>
         </ServiceList>
 

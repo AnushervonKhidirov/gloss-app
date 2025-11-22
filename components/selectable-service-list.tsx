@@ -11,18 +11,26 @@ import { minutesToTime } from '@helper/time-converter.helper';
 
 type SelectableServiceListProps = {
   services: Service[];
+  selectedList: SelectedService[];
   onSuccess: (workerServices: SelectedService[]) => void;
 };
 
 type SelectableServiceItemProps = {
   service: Service;
+  selectedService?: SelectedService;
   onSelect: (service: Service, selected: boolean) => void;
 };
 
 const serviceService = new ServiceService();
 
-const SelectableServiceList: FC<SelectableServiceListProps> = ({ services, onSuccess }) => {
-  const [selectedServices, setSelectedServices] = useState<Service[]>([]);
+const SelectableServiceList: FC<SelectableServiceListProps> = ({
+  services,
+  selectedList,
+  onSuccess,
+}) => {
+  const [selectedServices, setSelectedServices] = useState<Service[]>(
+    selectedList.map(selected => selected.service),
+  );
   const [loading, setLoading] = useState(false);
 
   async function submit() {
@@ -72,7 +80,12 @@ const SelectableServiceList: FC<SelectableServiceListProps> = ({ services, onSuc
       <ScrollView style={styles.scroller}>
         <View style={styles.scrollWrapper}>
           {services.map(service => (
-            <SelectableServiceItem key={service.id} service={service} onSelect={selectHandler} />
+            <SelectableServiceItem
+              key={service.id}
+              service={service}
+              selectedService={selectedList.find(selected => selected.serviceId === service.id)}
+              onSelect={selectHandler}
+            />
           ))}
         </View>
       </ScrollView>
@@ -84,9 +97,15 @@ const SelectableServiceList: FC<SelectableServiceListProps> = ({ services, onSuc
   );
 };
 
-const SelectableServiceItem: FC<SelectableServiceItemProps> = ({ service, onSelect }) => {
-  const [customPrice, setCustomPrice] = useState<number | null>(null);
-  const [selected, setSelected] = useState(false);
+const SelectableServiceItem: FC<SelectableServiceItemProps> = ({
+  service,
+  selectedService,
+  onSelect,
+}) => {
+  const [customPrice, setCustomPrice] = useState<number | null>(
+    selectedService ? selectedService.price : null,
+  );
+  const [selected, setSelected] = useState(!!selectedService);
 
   function inputHandler(value: string) {
     setCustomPrice(Number.parseInt(value));
