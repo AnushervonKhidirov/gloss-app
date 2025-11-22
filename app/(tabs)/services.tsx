@@ -8,7 +8,7 @@ import CreateServiceForm from '@components/form/create-service-form';
 import Modal from '@components/modal';
 import ServiceList from '@components/service-list';
 import { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Alert, Button, Text, View } from 'react-native';
 
 import { CategoryService } from '@services/category.service';
 import { ServiceService } from '@services/service.service';
@@ -24,6 +24,15 @@ const ServicesScreen = () => {
 
   const [services, setServices] = useState<Service[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+
+  function openCreateServiceForm() {
+    if (categories.length === 0) {
+      Alert.alert('Нет созданных категорий', 'Сначала создайте категории в разделе "Категории"');
+      return;
+    }
+
+    setCreateServiceModalVisible(true);
+  }
 
   async function fetchServices() {
     const [services, err] = await serviceService.findMany();
@@ -52,10 +61,12 @@ const ServicesScreen = () => {
 
   function pushService(service: Service) {
     setServices(prevState => [...prevState, service]);
+    setCreateServiceModalVisible(false);
   }
 
   function pushCategory(category: Category) {
     setCategories(prevState => [...prevState, category]);
+    setCreateCategoryModalVisible(false);
   }
 
   useEffect(() => {
@@ -63,37 +74,37 @@ const ServicesScreen = () => {
   }, []);
 
   return (
-      <View style={{ flex: 1 }}>
-        <Tabs tabs={tabs}>
-          <ServiceList services={services}>
-            <Button title="Создать услугу" onPress={() => setCreateServiceModalVisible(true)} />
+    <View style={{ flex: 1 }}>
+      <Tabs tabs={tabs}>
+        <ServiceList services={services}>
+          <Button title="Создать услугу" onPress={openCreateServiceForm} />
 
-            <Modal
-              title="Создание услуги"
-              isOpen={createServiceModalVisible}
-              close={() => setCreateServiceModalVisible(false)}
-            >
-              <CreateServiceForm categories={categories} onSuccess={pushService} />
-            </Modal>
-          </ServiceList>
+          <Modal
+            title="Создание услуги"
+            isOpen={createServiceModalVisible}
+            close={() => setCreateServiceModalVisible(false)}
+          >
+            <CreateServiceForm categories={categories} onSuccess={pushService} />
+          </Modal>
+        </ServiceList>
 
-          <View>
-            <Text>Content of Second Tab</Text>
-          </View>
+        <View>
+          <Text>Content of Second Tab</Text>
+        </View>
 
-          <CategoryList categories={categories}>
-            <Button title="Создать категорию" onPress={() => setCreateCategoryModalVisible(true)} />
+        <CategoryList categories={categories}>
+          <Button title="Создать категорию" onPress={() => setCreateCategoryModalVisible(true)} />
 
-            <Modal
-              title="Создание категории"
-              isOpen={createCategoryModalVisible}
-              close={() => setCreateCategoryModalVisible(false)}
-            >
-              <CreateCategoryForm onSuccess={pushCategory} />
-            </Modal>
-          </CategoryList>
-        </Tabs>
-      </View>
+          <Modal
+            title="Создание категории"
+            isOpen={createCategoryModalVisible}
+            close={() => setCreateCategoryModalVisible(false)}
+          >
+            <CreateCategoryForm onSuccess={pushCategory} />
+          </Modal>
+        </CategoryList>
+      </Tabs>
+    </View>
   );
 };
 
