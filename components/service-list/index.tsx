@@ -1,7 +1,10 @@
 import type { Service } from '@type/service.type';
 import type { FC, PropsWithChildren } from 'react';
 
+import { Card, WingBlank } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
+
+import { minutesToTime } from '@helper/time-converter.helper';
 
 type ServiceListProps = PropsWithChildren<{
   services: Service[];
@@ -16,21 +19,39 @@ const ServiceList: FC<ServiceListProps> = ({ services, children }) => {
     <View style={style.container}>
       <View>{children}</View>
 
-      <View>
-        {services.map(service => (
-          <ServiceItem key={service.id} service={service} />
-        ))}
+      <View style={style.list}>
+        {services.length > 0 ? (
+          services.map(service => <ServiceItem key={service.id} service={service} />)
+        ) : (
+          <Text>Список предоставляемых услуг пуст</Text>
+        )}
       </View>
     </View>
   );
 };
 
 const ServiceItem: FC<ServiceItemProps> = ({ service }) => {
+  console.log(service);
+
   return (
-    <View style={style.service_item}>
-      <Text>{service.name}</Text>
-      <Text>{service.price}</Text>
-    </View>
+    <Card>
+      <Card.Header title={service.name} extra={service.category.value} />
+
+      {service.desc ? (
+        <Card.Body>
+          <WingBlank>
+            <Text>{service.desc}</Text>
+          </WingBlank>
+        </Card.Body>
+      ) : (
+        <View></View>
+      )}
+
+      <Card.Footer
+        content={service.price + ' с'}
+        extra={minutesToTime(service.duration)}
+      ></Card.Footer>
+    </Card>
   );
 };
 
@@ -42,10 +63,9 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     boxSizing: 'border-box',
   },
-  service_item: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
+  list: {
+    gap: 10,
+    flex: 1,
   },
 });
 

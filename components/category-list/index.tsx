@@ -1,6 +1,7 @@
 import type { Category } from '@type/category.type';
 import type { FC, PropsWithChildren } from 'react';
 
+import { Card } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
 type CategoryListProps = PropsWithChildren<{
@@ -16,10 +17,12 @@ const CategoryList: FC<CategoryListProps> = ({ categories, children }) => {
     <View style={style.container}>
       <View>{children}</View>
 
-      <View>
-        {categories.map(category => (
-          <CategoryItem key={category.id} category={category} />
-        ))}
+      <View style={style.list}>
+        {categories.length > 0 ? (
+          categories.map(category => <CategoryItem key={category.id} category={category} />)
+        ) : (
+          <Text>Нет созданных категорий</Text>
+        )}
       </View>
     </View>
   );
@@ -27,9 +30,9 @@ const CategoryList: FC<CategoryListProps> = ({ categories, children }) => {
 
 const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
   return (
-    <View style={style.category_item}>
-      <Text>{category.value}</Text>
-    </View>
+    <Card styles={{ card: style.card }}>
+      <Text style={{ fontSize: 18 }}>{category.value}</Text>
+    </Card>
   );
 };
 
@@ -41,10 +44,15 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     boxSizing: 'border-box',
   },
-  category_item: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
+  card: {
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+  },
+  list: {
+    gap: 10,
+    flex: 1,
   },
 });
 
