@@ -20,12 +20,17 @@ export type CreateService = {
 
 export type UpdateService = Partial<CreateService>;
 
-export type WorkerService = {
+export type SelectedService = {
   id: number;
   userId: number;
   serviceId: number;
-  price: number | null;
   service: Service;
+  price: number | null;
+};
+
+export type CreateUpdateWorkerService = {
+  serviceId: number;
+  price?: number;
 };
 
 export type ServicesByCategory = {

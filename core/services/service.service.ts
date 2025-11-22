@@ -1,5 +1,12 @@
 import type { ReturnWithErrPromise } from '@type/common.type';
-import type { CreateService, Service, ServicesByCategory, UpdateService } from '@type/service.type';
+import type {
+  CreateService,
+  CreateUpdateWorkerService,
+  SelectedService,
+  Service,
+  ServicesByCategory,
+  UpdateService,
+} from '@type/service.type';
 
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
@@ -54,6 +61,30 @@ export class ServiceService {
   async delete(id: number): ReturnWithErrPromise<Service> {
     try {
       const response = await apiClient.delete<Service>(`${this.endpoint}/${id}`);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async findManySelected(): ReturnWithErrPromise<SelectedService[]> {
+    try {
+      const response = await apiClient.get<SelectedService[]>(`${this.endpoint}/worker`);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async selectedHandler(
+    data: CreateUpdateWorkerService[],
+  ): ReturnWithErrPromise<SelectedService[]> {
+    try {
+      const response = await apiClient.post<SelectedService[]>(`${this.endpoint}/worker`, data);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
