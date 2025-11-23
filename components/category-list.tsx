@@ -3,6 +3,7 @@ import type { FC, PropsWithChildren } from 'react';
 
 import { Card } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
+import ActionButtons from './action-buttons';
 
 type CategoryListProps = PropsWithChildren<{
   emptyMessage?: string;
@@ -34,7 +35,8 @@ const CategoryList: FC<CategoryListProps> = ({ categories, emptyMessage, childre
 const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
   return (
     <Card styles={{ card: style.card }}>
-      <Text style={{ fontSize: 18 }}>{category.value}</Text>
+      <Text style={{ fontSize: 18, flex: 1 }}>{category.value}</Text>
+      <ActionButtons />
     </Card>
   );
 };
@@ -44,14 +46,13 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 20,
-    flexDirection: 'column',
-    boxSizing: 'border-box',
   },
   card: {
     paddingTop: 10,
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 10,
+    flexDirection: 'row',
   },
   list: {
     gap: 10,

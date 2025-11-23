@@ -3,19 +3,39 @@ import type { FC, PropsWithChildren } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
+import ActionButtons from './action-buttons';
 
+import { gray } from '@ant-design/colors';
 import { minutesToTime } from '@helper/time-converter.helper';
 
 type ServiceListProps = PropsWithChildren<{
-  emptyMessage?: string;
   services: Service[];
+  emptyMessage?: string;
+  editable?: boolean;
+  onEdit?: (service: Service) => void;
+  onRemove?: (service: Service) => void;
 }>;
 
 type ServiceItemProps = {
   service: Service;
+  editable: boolean;
+  onEdit?: (service: Service) => void;
+  onRemove?: (service: Service) => void;
 };
 
-const ServiceList: FC<ServiceListProps> = ({ services, emptyMessage, children }) => {
+type ServiceItemHeaderTextProps = {
+  title: string;
+  category: string;
+};
+
+const ServiceList: FC<ServiceListProps> = ({
+  services,
+  emptyMessage,
+  editable = false,
+  onEdit,
+  onRemove,
+  children,
+}) => {
   const message = emptyMessage ?? 'Список услуг пуст';
 
   return (
@@ -24,7 +44,15 @@ const ServiceList: FC<ServiceListProps> = ({ services, emptyMessage, children })
 
       <View style={style.list}>
         {services.length > 0 ? (
-          services.map(service => <ServiceItem key={service.id} service={service} />)
+          services.map(service => (
+            <ServiceItem
+              key={service.id}
+              service={service}
+              editable={editable}
+              onEdit={onEdit}
+              onRemove={onRemove}
+            />
+          ))
         ) : (
           <Text>{message}</Text>
         )}
@@ -33,10 +61,25 @@ const ServiceList: FC<ServiceListProps> = ({ services, emptyMessage, children })
   );
 };
 
-const ServiceItem: FC<ServiceItemProps> = ({ service }) => {
+const ServiceItem: FC<ServiceItemProps> = ({ service, editable, onEdit, onRemove }) => {
   return (
     <Card>
-      <Card.Header title={service.name} extra={service.category.value} />
+      <Card.Header
+        title={<ServiceItemHeaderText title={service.name} category={service.category.value} />}
+        extra={
+          editable && (
+            <ActionButtons
+              styles={{ alignSelf: 'flex-end' }}
+              onEdit={() => {
+                if (typeof onEdit === 'function') onEdit(service);
+              }}
+              onRemove={() => {
+                if (typeof onRemove === 'function') onRemove(service);
+              }}
+            />
+          )
+        }
+      />
 
       {service.desc ? (
         <Card.Body>
@@ -50,6 +93,15 @@ const ServiceItem: FC<ServiceItemProps> = ({ service }) => {
 
       <Card.Footer content={service.price + ' с'} extra={minutesToTime(service.duration)} />
     </Card>
+  );
+};
+
+const ServiceItemHeaderText: FC<ServiceItemHeaderTextProps> = ({ title, category }) => {
+  return (
+    <View>
+      <Text style={{ fontSize: 17 }}>{title}</Text>
+      <Text style={{ color: gray[2] }}>{category}</Text>
+    </View>
   );
 };
 
