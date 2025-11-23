@@ -7,6 +7,7 @@
       "@services/*": ["./core/services/*"],
       "@helper/*": ["./core/helper/*"],
       "@api/*": ["./core/api/*"],
+      "@store/*": ["./core/store/*"],
       "@type/*": ["./core/type/*"],
       "@images/*": ["./assets/images/*"],
       "@/*": ["./*"]
