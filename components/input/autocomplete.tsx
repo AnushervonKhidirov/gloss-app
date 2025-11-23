@@ -68,10 +68,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
   }
 
   function find(value: string) {
-    const filtered = items.filter(item =>
-      item.value.toLocaleLowerCase().includes(value.toLocaleLowerCase()),
-    );
-    setFilteredList(filtered);
+    return items.filter(item => item.value.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
   }
 
   function getCoordinates() {
@@ -84,12 +81,24 @@ const Autocomplete: FC<AutocompleteProps> = ({
     });
   }
 
-  function inputValueHandler(e: any) {
-    const value = e.target.value;
+  function inputValueHandler(value: string) {
     setInputValue(value);
-    find(value);
+    const filtered = find(value);
+    setFilteredList(filtered);
 
     if (value === '') setSelected(null);
+  }
+
+  function inputBlurHandler() {
+    const filtered = find(inputValue);
+
+    if (filtered.length === 1 && !selected) {
+      const autoSelected = filtered[0];
+      select(autoSelected);
+      setInputValue(autoSelected.value);
+    }
+
+    setInputFocused(false);
   }
 
   useLayoutEffect(() => {
@@ -122,8 +131,8 @@ const Autocomplete: FC<AutocompleteProps> = ({
         value={inputValue}
         placeholder={placeholder}
         onFocus={() => setInputFocused(true)}
-        onBlur={() => setInputFocused(false)}
-        onChange={inputValueHandler}
+        onBlur={inputBlurHandler}
+        onChangeText={inputValueHandler}
       />
 
       {show && (
