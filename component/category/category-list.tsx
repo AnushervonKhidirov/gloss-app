@@ -3,18 +3,28 @@ import type { FC, PropsWithChildren } from 'react';
 
 import { Card } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
-import ActionButtons from './action-buttons';
+import ActionButtons from '../common/action-buttons';
 
 type CategoryListProps = PropsWithChildren<{
-  emptyMessage?: string;
   categories: Category[];
+  emptyMessage?: string;
+  onEdit?: (category: Category) => void;
+  onRemove?: (category: Category) => void;
 }>;
 
 type CategoryItemProps = {
   category: Category;
+  onEdit?: (category: Category) => void;
+  onRemove?: (category: Category) => void;
 };
 
-const CategoryList: FC<CategoryListProps> = ({ categories, emptyMessage, children }) => {
+const CategoryList: FC<CategoryListProps> = ({
+  categories,
+  onEdit,
+  onRemove,
+  emptyMessage,
+  children,
+}) => {
   const message = emptyMessage ?? 'Нет созданных категорий';
 
   return (
@@ -23,7 +33,14 @@ const CategoryList: FC<CategoryListProps> = ({ categories, emptyMessage, childre
 
       <View style={style.list}>
         {categories.length > 0 ? (
-          categories.map(category => <CategoryItem key={category.id} category={category} />)
+          categories.map(category => (
+            <CategoryItem
+              key={category.id}
+              category={category}
+              onEdit={onEdit}
+              onRemove={onRemove}
+            />
+          ))
         ) : (
           <Text>{message}</Text>
         )}
@@ -32,11 +49,18 @@ const CategoryList: FC<CategoryListProps> = ({ categories, emptyMessage, childre
   );
 };
 
-const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
+const CategoryItem: FC<CategoryItemProps> = ({ category, onEdit, onRemove }) => {
   return (
     <Card styles={{ card: style.card }}>
       <Text style={{ fontSize: 18, flex: 1 }}>{category.value}</Text>
-      <ActionButtons />
+      <ActionButtons
+        onEdit={() => {
+          if (typeof onEdit === 'function') onEdit(category);
+        }}
+        onRemove={() => {
+          if (typeof onRemove === 'function') onRemove(category);
+        }}
+      />
     </Card>
   );
 };

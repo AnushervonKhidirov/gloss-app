@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
-import ActionButtons from './action-buttons';
+import ActionButtons from '../common/action-buttons';
 
 import { gray } from '@ant-design/colors';
 import { minutesToTime } from '@helper/time-converter.helper';

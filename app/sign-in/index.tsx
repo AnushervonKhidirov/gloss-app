@@ -1,7 +1,7 @@
 import type { SignIn } from '@type/auth.type';
 
 import { Button, Form, Input } from '@ant-design/react-native';
-import InputPassword from '@components/input/input-password';
+import InputPassword from '@commonComponent/input/input-password';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';

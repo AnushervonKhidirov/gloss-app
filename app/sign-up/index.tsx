@@ -1,7 +1,7 @@
 import type { CreateUser } from '@type/user.type';
 
 import { Button, Form, Input } from '@ant-design/react-native';
-import InputPassword from '@components/input/input-password';
+import InputPassword from '@commonComponent/input/input-password';
 import { Link } from 'expo-router';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { useState } from 'react';

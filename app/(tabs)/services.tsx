@@ -2,10 +2,10 @@ import useServiceStore from '@store/service.store';
 import { useEffect, useState } from 'react';
 
 import { Tabs } from '@ant-design/react-native';
-import LoadingView from '@components/loading-view';
-import CategorySection from '@components/section/category-section';
-import MyServiceSection from '@components/section/my-service-section';
-import ServiceSection from '@components/section/service-section';
+import LoadingView from '@commonComponent/loading-view';
+import CategorySection from '@component/category/section/category-section';
+import MyServiceSection from '@component/service/section/my-service-section';
+import ServiceSection from '@component/service/section/service-section';
 
 import { CategoryService } from '@services/category.service';
 import { ServiceService } from '@services/service.service';

@@ -7,6 +7,8 @@ type ServiceState = {
   services: Service[];
   setServices: (services: Service[]) => void;
   pushServices: (services: Service[]) => void;
+  editService: (service: Service) => void;
+  deleteService: (service: Service) => void;
 };
 
 type SelectedServiceState = {
@@ -18,6 +20,8 @@ type CategoryState = {
   categories: Category[];
   setCategories: (categories: Category[]) => void;
   pushCategories: (categories: Category[]) => void;
+  editCategory: (category: Category) => void;
+  deleteCategory: (category: Category) => void;
 };
 
 type useServiceStore = ServiceState &
@@ -46,12 +50,38 @@ const useServiceStore = create<useServiceStore>(set => ({
 
   setServices: services => set(() => ({ services })),
   pushServices: newServices => set(state => ({ services: [...state.services, ...newServices] })),
+  editService: editedService =>
+    set(state => {
+      const newServiceList = state.services.map(service => {
+        return service.id === editedService.id ? editedService : service;
+      });
+      return { services: newServiceList };
+    }),
+  deleteService: deletedService =>
+    set(state => {
+      const newServiceList = state.services.filter(service => service.id !== deletedService.id);
+      return { services: newServiceList };
+    }),
 
   setSelectedServices: selectedServices => set(() => ({ selectedServices })),
 
   setCategories: categories => set(() => ({ categories })),
   pushCategories: newCategories =>
     set(state => ({ categories: [...state.categories, ...newCategories] })),
+  editCategory: editedCategory =>
+    set(state => {
+      const newCategoryList = state.categories.map(category => {
+        return category.id === editedCategory.id ? editedCategory : category;
+      });
+      return { categories: newCategoryList };
+    }),
+  deleteCategory: deletedCategory =>
+    set(state => {
+      const newCategoryList = state.categories.filter(
+        category => category.id !== deletedCategory.id,
+      );
+      return { categories: newCategoryList };
+    }),
 
   setMany: ({ services, selectedServices, categories }) =>
     set(state => {

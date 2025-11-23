@@ -11,7 +11,7 @@ type AutocompleteProps = {
   name: string;
   getBy?: 'id' | 'value';
   defaultSelected?: AutocompleteItem;
-  onSelect?: (item: AutocompleteItem | null) => void;
+  onSelect?: (item?: AutocompleteItem) => void;
 };
 
 type Coordinates = {
@@ -30,7 +30,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
   placeholder,
   name,
   getBy = 'id',
-  defaultSelected = null,
+  defaultSelected,
   onSelect,
 }) => {
   const wrapperRef = useRef<View>(null);
@@ -43,7 +43,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
 
   const [inputValue, setInputValue] = useState('');
 
-  const [selected, setSelected] = useState<AutocompleteItem | null>(defaultSelected);
+  const [selected, setSelected] = useState<AutocompleteItem | undefined>(defaultSelected);
   const [filteredList, setFilteredList] = useState<AutocompleteItem[]>(items);
 
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
@@ -51,19 +51,10 @@ const Autocomplete: FC<AutocompleteProps> = ({
 
   const form = Form.useFormInstance();
 
-  function select(item: AutocompleteItem | null) {
+  function select(item?: AutocompleteItem) {
     setSelected(item);
-
-    if (item) {
-      const value = getBy === 'id' ? item.id : item.value;
-      form.setFieldValue(name, value);
-      setInputValue(item.value);
-    } else {
-      form.setFieldValue(name, undefined);
-    }
-
+    if (item) setInputValue(item.value);
     if (onSelect) onSelect(item);
-
     setShow(false);
   }
 
@@ -86,7 +77,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
     const filtered = find(value);
     setFilteredList(filtered);
 
-    if (value === '') setSelected(null);
+    if (value === '') setSelected(undefined);
   }
 
   function inputBlurHandler() {
@@ -124,6 +115,11 @@ const Autocomplete: FC<AutocompleteProps> = ({
 
     if (selected) setInputValue(selected.value);
   }, [inputFocused, listFocused]);
+
+  useEffect(() => {
+    const value = getBy === 'id' ? selected?.id : selected?.value;
+    form.setFieldValue(name, value);
+  }, [selected]);
 
   return (
     <View style={styles.wrapper} ref={wrapperRef}>

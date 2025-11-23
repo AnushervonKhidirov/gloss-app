@@ -4,10 +4,10 @@ import useServiceStore from '@store/service.store';
 import { useState } from 'react';
 
 import { Button } from '@ant-design/react-native';
-import Modal from '@components/modal';
-import SelectableServiceList from '@components/selectable-service-list';
-import ServiceList from '@components/service-list';
+import Modal from '@commonComponent/modal';
 import { Alert } from 'react-native';
+import SelectableServiceList from '../selectable-service-list';
+import ServiceList from '../service-list';
 
 function convertSelectedService(selectedServices: SelectedService[]): Service[] {
   return selectedServices.map(workerService => {

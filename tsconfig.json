@@ -3,7 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@components/*": ["./components/*"],
+      "@commonComponent/*": ["./component/common/*"],
+      "@component/*": ["./component/*"],
       "@services/*": ["./core/services/*"],
       "@helper/*": ["./core/helper/*"],
       "@api/*": ["./core/api/*"],

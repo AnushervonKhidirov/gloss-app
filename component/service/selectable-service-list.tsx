@@ -7,6 +7,7 @@ import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { ServiceService } from '@services/service.service';
 
+import { gray } from '@ant-design/colors';
 import { minutesToTime } from '@helper/time-converter.helper';
 
 type SelectableServiceListProps = {
@@ -19,6 +20,11 @@ type SelectableServiceItemProps = {
   service: Service;
   selectedService?: SelectedService;
   onSelect: (service: Service, selected: boolean) => void;
+};
+
+type ServiceItemHeaderTextProps = {
+  title: string;
+  category: string;
 };
 
 const serviceService = new ServiceService();
@@ -123,7 +129,16 @@ const SelectableServiceItem: FC<SelectableServiceItemProps> = ({
   return (
     <View style={styles.cardWrapper}>
       <Card styles={{ card: { flex: 1 } }}>
-        <Card.Header title={service.name} extra={service.category.value} />
+        <Card.Header
+          title={<ServiceItemHeaderText title={service.name} category={service.category.value} />}
+          extra={
+            <Checkbox
+              styles={{ checkbox_wrapper: { alignSelf: 'flex-end', width: 20 } }}
+              checked={selected}
+              onChange={e => setSelected(e.target.checked)}
+            />
+          }
+        />
 
         {service.desc ? (
           <Card.Body>
@@ -146,8 +161,15 @@ const SelectableServiceItem: FC<SelectableServiceItemProps> = ({
           />
         </WingBlank>
       </Card>
+    </View>
+  );
+};
 
-      <Checkbox checked={selected} onChange={e => setSelected(e.target.checked)} />
+const ServiceItemHeaderText: FC<ServiceItemHeaderTextProps> = ({ title, category }) => {
+  return (
+    <View>
+      <Text style={{ fontSize: 17 }}>{title}</Text>
+      <Text style={{ color: gray[2] }}>{category}</Text>
     </View>
   );
 };
