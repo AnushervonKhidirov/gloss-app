@@ -42,7 +42,7 @@ const MyServiceSection = () => {
       emptyMessage="У вас пока нет выбранных услуг"
     >
       <Button type="primary" onPress={openSelectServiceModal}>
-        Выбрать услуги
+        {selectedServices.length === 0 ? 'Выбрать услуги' : 'Редактировать'}
       </Button>
 
       <Modal
