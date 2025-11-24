@@ -27,14 +27,13 @@ const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, 
 
     if (typeof value.price === 'string') value.price = +value.price;
     if (typeof value.duration === 'string') value.duration = +value.duration;
+    if (value.desc?.trim() === '') delete value.desc;
 
     setLoading(true);
 
     const [service, err] = await serviceService.update(serviceToEdit.id, value);
 
     if (err) {
-      console.log(err);
-
       if (err.statusCode === 403) {
         Alert.alert('Запрет', 'Только администранор может редактировать услуги');
       } else if (err.statusCode >= 500) {

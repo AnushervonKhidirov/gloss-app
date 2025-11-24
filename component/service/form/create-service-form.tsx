@@ -19,6 +19,8 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
   const [loading, setLoading] = useState(false);
 
   async function onFinish(value: CreateService) {
+    if (value.desc?.trim() === '') delete value.desc;
+
     setLoading(true);
 
     const [service, err] = await serviceService.create(value);
