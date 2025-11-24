@@ -62,8 +62,6 @@ const SignUpScreen = () => {
                     value.trim() !== '' &&
                     !isValidPhoneNumber(value, 'TJ')
                   ) {
-                    console.log('invalid');
-
                     return Promise.reject(new Error('Неправильный формат номера'));
                   }
 
