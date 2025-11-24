@@ -2,7 +2,7 @@ import type { Service } from '@type/service.type';
 import type { FC, PropsWithChildren } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ActionButtons from '../common/action-buttons';
 
 import { gray } from '@ant-design/colors';
@@ -42,21 +42,23 @@ const ServiceList: FC<ServiceListProps> = ({
     <View style={style.container}>
       <View>{children}</View>
 
-      <View style={style.list}>
-        {services.length > 0 ? (
-          services.map(service => (
-            <ServiceItem
-              key={service.id}
-              service={service}
-              editable={editable}
-              onEdit={onEdit}
-              onRemove={onRemove}
-            />
-          ))
-        ) : (
-          <Text>{message}</Text>
-        )}
-      </View>
+      <ScrollView style={{ marginBottom: 35 }}>
+        <View style={style.list}>
+          {services.length > 0 ? (
+            services.map(service => (
+              <ServiceItem
+                key={service.id}
+                service={service}
+                editable={editable}
+                onEdit={onEdit}
+                onRemove={onRemove}
+              />
+            ))
+          ) : (
+            <Text>{message}</Text>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };

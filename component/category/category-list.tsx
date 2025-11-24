@@ -2,7 +2,7 @@ import type { Category } from '@type/category.type';
 import type { FC, PropsWithChildren } from 'react';
 
 import { Card } from '@ant-design/react-native';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ActionButtons from '../common/action-buttons';
 
 type CategoryListProps = PropsWithChildren<{
@@ -31,20 +31,22 @@ const CategoryList: FC<CategoryListProps> = ({
     <View style={style.container}>
       <View>{children}</View>
 
-      <View style={style.list}>
-        {categories.length > 0 ? (
-          categories.map(category => (
-            <CategoryItem
-              key={category.id}
-              category={category}
-              onEdit={onEdit}
-              onRemove={onRemove}
-            />
-          ))
-        ) : (
-          <Text>{message}</Text>
-        )}
-      </View>
+      <ScrollView style={{ marginBottom: 35 }}>
+        <View style={style.list}>
+          {categories.length > 0 ? (
+            categories.map(category => (
+              <CategoryItem
+                key={category.id}
+                category={category}
+                onEdit={onEdit}
+                onRemove={onRemove}
+              />
+            ))
+          ) : (
+            <Text>{message}</Text>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
