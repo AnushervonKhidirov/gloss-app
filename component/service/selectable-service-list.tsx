@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Button, Card, Checkbox, Input, WingBlank } from '@ant-design/react-native';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import serviceService from '@services/service.service';
 
@@ -13,7 +13,9 @@ import { minutesToTime } from '@helper/time-converter.helper';
 type SelectableServiceListProps = {
   services: Service[];
   selectedList: SelectedService[];
+  refreshing: boolean;
   onSuccess: (workerServices: SelectedService[]) => void;
+  onRefresh: () => Promise<void>;
 };
 
 type SelectableServiceItemProps = {
@@ -30,7 +32,9 @@ type ServiceItemHeaderTextProps = {
 const SelectableServiceList: FC<SelectableServiceListProps> = ({
   services,
   selectedList,
+  refreshing,
   onSuccess,
+  onRefresh,
 }) => {
   const [selectedServices, setSelectedServices] = useState<Service[]>(
     selectedList.map(selected => selected.service),
@@ -81,7 +85,10 @@ const SelectableServiceList: FC<SelectableServiceListProps> = ({
 
   return (
     <View style={styles.content}>
-      <ScrollView style={styles.scroller}>
+      <ScrollView
+        style={styles.scroller}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         <View style={styles.scrollWrapper}>
           {services.map(service => (
             <SelectableServiceItem

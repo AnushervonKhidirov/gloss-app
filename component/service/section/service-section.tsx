@@ -13,12 +13,12 @@ import ServiceList from '../service-list';
 import serviceService from '@services/service.service';
 
 const ServiceSection = () => {
-  const { services, categories, pushServices, editService, deleteService } = useServiceStore(
-    state => state,
-  );
+  const { services, categories, setServices, pushServices, editService, deleteService } =
+    useServiceStore(state => state);
   const [toEdit, setToEdit] = useState<Service | null>(null);
   const [createServiceModalVisible, setCreateServiceModalVisible] = useState(false);
   const [editServiceModalVisible, setEditServiceModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   function push(service: Service) {
     pushServices([service]);
@@ -60,6 +60,19 @@ const ServiceSection = () => {
     setEditServiceModalVisible(true);
   }
 
+  async function refreshServices() {
+    setRefreshing(true);
+    const [services, err] = await serviceService.findMany();
+
+    if (err) {
+      Alert.alert('Ошибка', 'Что-то пошло не так');
+    } else {
+      setServices(services);
+    }
+
+    setRefreshing(false);
+  }
+
   async function remove(service: Service) {
     const [removedService, err] = await serviceService.delete(service.id);
 
@@ -80,9 +93,11 @@ const ServiceSection = () => {
     <ServiceList
       services={services}
       editable={true}
+      refreshing={refreshing}
       emptyMessage="Список предоставляемых услуг пуст"
       onEdit={openEditServiceModal}
       onRemove={removeConfirm}
+      onRefresh={refreshServices}
     >
       <Button type="primary" onPress={openCreateForm}>
         Создать услугу

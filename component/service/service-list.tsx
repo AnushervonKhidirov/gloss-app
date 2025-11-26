@@ -2,7 +2,7 @@ import type { Service } from '@type/service.type';
 import type { FC, PropsWithChildren } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import ActionButtons from '../common/action-buttons';
 
 import { gray } from '@ant-design/colors';
@@ -12,8 +12,10 @@ type ServiceListProps = PropsWithChildren<{
   services: Service[];
   emptyMessage?: string;
   editable?: boolean;
+  refreshing: boolean;
   onEdit?: (service: Service) => void;
   onRemove?: (service: Service) => void;
+  onRefresh: () => Promise<void>;
 }>;
 
 type ServiceItemProps = {
@@ -32,8 +34,10 @@ const ServiceList: FC<ServiceListProps> = ({
   services,
   emptyMessage,
   editable = false,
+  refreshing = false,
   onEdit,
   onRemove,
+  onRefresh,
   children,
 }) => {
   const message = emptyMessage ?? 'Список услуг пуст';
@@ -42,7 +46,10 @@ const ServiceList: FC<ServiceListProps> = ({
     <View style={style.container}>
       <View>{children}</View>
 
-      <ScrollView style={{ marginBottom: 43 }}>
+      <ScrollView
+        style={{ marginBottom: 43 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         <View style={style.list}>
           {services.length > 0 ? (
             services.map(service => (

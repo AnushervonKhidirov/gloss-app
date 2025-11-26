@@ -9,6 +9,8 @@ import { Alert } from 'react-native';
 import SelectableServiceList from '../selectable-service-list';
 import ServiceList from '../service-list';
 
+import serviceService from '@services/service.service';
+
 function convertSelectedService(selectedServices: SelectedService[]): Service[] {
   return selectedServices.map(workerService => {
     return {
@@ -19,8 +21,11 @@ function convertSelectedService(selectedServices: SelectedService[]): Service[] 
 }
 
 const MyServiceSection = () => {
-  const { services, selectedServices, setSelectedServices } = useServiceStore(state => state);
+  const { services, selectedServices, setServices, setSelectedServices } = useServiceStore(
+    state => state,
+  );
   const [selectServicesModalVisible, setSelectServicesModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   function pushWorkerServices(workerService: SelectedService[]) {
     setSelectedServices(workerService);
@@ -36,9 +41,28 @@ const MyServiceSection = () => {
     setSelectServicesModalVisible(true);
   }
 
+  async function refreshServices() {
+    console.log('refreshServices');
+    
+    setRefreshing(true);
+    const [services, serviceErr] = await serviceService.findMany();
+    const [selectedServices, selectedErr] = await serviceService.findManySelected();
+
+    if (selectedErr || serviceErr) {
+      Alert.alert('Ошибка', 'Что-то пошло не так');
+    } else {
+      setSelectedServices(selectedServices);
+      setServices(services);
+    }
+
+    setRefreshing(false);
+  }
+
   return (
     <ServiceList
       services={convertSelectedService(selectedServices)}
+      refreshing={refreshing}
+      onRefresh={refreshServices}
       emptyMessage="У вас пока нет выбранных услуг"
     >
       <Button type="primary" onPress={openSelectServiceModal}>
@@ -53,7 +77,9 @@ const MyServiceSection = () => {
         <SelectableServiceList
           services={services}
           selectedList={selectedServices}
+          refreshing={refreshing}
           onSuccess={pushWorkerServices}
+          onRefresh={refreshServices}
         />
       </Modal>
     </ServiceList>
