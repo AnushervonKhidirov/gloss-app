@@ -8,11 +8,9 @@ import { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ServiceService } from '@services/service.service';
+import serviceService from '@services/service.service';
 
 type CreateServiceFormProps = { categories: Category[]; onSuccess: (service: Service) => void };
-
-const serviceService = new ServiceService();
 
 const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }) => {
   const [form] = Form.useForm();

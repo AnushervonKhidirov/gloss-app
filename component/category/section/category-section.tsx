@@ -10,9 +10,7 @@ import CategoryList from '../category-list';
 import CreateCategoryForm from '../form/create-category-form';
 import EditCategoryForm from '../form/edit-category-form';
 
-import { CategoryService } from '@services/category.service';
-
-const categoryService = new CategoryService();
+import categoryService from '@services/category.service';
 
 const CategorySection = () => {
   const { categories, pushCategories, editCategory, deleteCategory } = useServiceStore(

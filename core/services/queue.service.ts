@@ -5,7 +5,7 @@ import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 import dayjs from 'dayjs';
 
-export class QueueService {
+class QueueService {
   private readonly endpoint = '/queue';
 
   async findOne(id: number): ReturnWithErrPromise<Queue> {
@@ -36,3 +36,5 @@ export class QueueService {
     return queue;
   }
 }
+
+export default new QueueService();

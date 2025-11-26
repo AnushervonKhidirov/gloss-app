@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 import { HttpException, isHttpException } from '@helper/error-handler';
-import { AuthService } from '@services/auth.service';
+import authService from '@services/auth.service';
 
-const authService = new AuthService();
 let isRefreshing = false;
 
 const apiClient = axios.create({
@@ -15,7 +14,7 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use(async config => {
-  const token = await AuthService.getToken();
+  const token = await authService.getToken();
   if (token) config.headers.Authorization = `Bearer ${token.accessToken}`;
   return config;
 });
@@ -26,7 +25,7 @@ apiClient.interceptors.response.use(async response => {
   if (isHttpException(response.data) && response.data.statusCode === 401 && !isRefreshing) {
     isRefreshing = true;
 
-    const token = await AuthService.getToken();
+    const token = await authService.getToken();
 
     if (!token) {
       throw new HttpException({ message: 'Token not found from Client', statusCode: 404 });
@@ -35,11 +34,11 @@ apiClient.interceptors.response.use(async response => {
     const [newToken, refreshErr] = await authService.refreshToken(token);
 
     if (refreshErr) {
-      await AuthService.removeToken();
+      await authService.removeToken();
       throw refreshErr;
     }
 
-    await AuthService.setToken(newToken);
+    await authService.setToken(newToken);
     originalRequest.headers.Authorization = `Bearer ${newToken.accessToken}`;
 
     return apiClient(originalRequest);

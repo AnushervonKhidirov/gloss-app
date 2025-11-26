@@ -6,7 +6,7 @@ import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
 
-export class AuthService {
+class AuthService {
   private readonly endpoint = '/auth';
 
   async signUp(data: CreateUser): ReturnWithErrPromise<Token> {
@@ -33,6 +33,28 @@ export class AuthService {
     }
   }
 
+  async signOut(data: RefreshToken): ReturnWithErrPromise<null> {
+    try {
+      const response = await apiClient.post<Token>(`${this.endpoint}/sign-out`, data);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [null, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async signOutEverywhere(data: RefreshToken): ReturnWithErrPromise<null> {
+    try {
+      const response = await apiClient.post<Token>(`${this.endpoint}/sign-out-everywhere`, data);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [null, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
   async refreshToken(data: RefreshToken): ReturnWithErrPromise<Token> {
     try {
       const response = await apiClient.post<Token>(`${this.endpoint}/refresh-token`, data);
@@ -44,7 +66,7 @@ export class AuthService {
     }
   }
 
-  static async getToken(): Promise<Token | null> {
+  async getToken(): Promise<Token | null> {
     const accessToken = await getItemAsync('access_token');
     const refreshToken = await getItemAsync('refresh_token');
 
@@ -52,13 +74,15 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  static async setToken({ accessToken, refreshToken }: Token) {
+  async setToken({ accessToken, refreshToken }: Token) {
     await setItemAsync('access_token', accessToken);
     await setItemAsync('refresh_token', refreshToken);
   }
 
-  static async removeToken() {
+  async removeToken() {
     await deleteItemAsync('access_token');
     await deleteItemAsync('refresh_token');
   }
 }
+
+export default new AuthService();

@@ -7,9 +7,7 @@ import { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AuthService } from '@services/auth.service';
-
-const authService = new AuthService();
+import authService from '@services/auth.service';
 
 const SignInScreen = () => {
   const [form] = Form.useForm();
@@ -32,7 +30,7 @@ const SignInScreen = () => {
         Alert.alert('Ошибка', 'Причина не известна');
       }
     } else {
-      await AuthService.setToken(token);
+      await authService.setToken(token);
       router.replace('/(tabs)');
     }
 

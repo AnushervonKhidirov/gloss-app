@@ -5,7 +5,7 @@ import { Button, Card, Checkbox, Input, WingBlank } from '@ant-design/react-nati
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { ServiceService } from '@services/service.service';
+import serviceService from '@services/service.service';
 
 import { gray } from '@ant-design/colors';
 import { minutesToTime } from '@helper/time-converter.helper';
@@ -26,8 +26,6 @@ type ServiceItemHeaderTextProps = {
   title: string;
   category: string;
 };
-
-const serviceService = new ServiceService();
 
 const SelectableServiceList: FC<SelectableServiceListProps> = ({
   services,

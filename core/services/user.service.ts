@@ -5,7 +5,7 @@ import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 import dayjs from 'dayjs';
 
-export class UserService {
+class UserService {
   private readonly endpoint = '/users';
 
   async findMe(): ReturnWithErrPromise<User> {
@@ -48,3 +48,5 @@ export class UserService {
     return user;
   }
 }
+
+export default new UserService();

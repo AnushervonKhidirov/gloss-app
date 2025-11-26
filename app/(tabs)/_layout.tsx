@@ -35,6 +35,16 @@ const TabsLayout = () => {
             ),
           }}
         />
+
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Прифиль',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons size={24} name="account" color={color} />
+            ),
+          }}
+        />
       </Tabs>
     </SafeAreaView>
   );

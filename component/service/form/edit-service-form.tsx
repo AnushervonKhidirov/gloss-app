@@ -8,15 +8,13 @@ import { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ServiceService } from '@services/service.service';
+import serviceService from '@services/service.service';
 
 type EditServiceFormProps = {
   serviceToEdit: Service | null;
   categories: Category[];
   onSuccess: (service: Service) => void;
 };
-
-const serviceService = new ServiceService();
 
 const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, onSuccess }) => {
   const [form] = Form.useForm();

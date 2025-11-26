@@ -8,9 +8,7 @@ import { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AuthService } from '@services/auth.service';
-
-const authService = new AuthService();
+import authService from '@services/auth.service';
 
 const SignUpScreen = () => {
   const [form] = Form.useForm();

@@ -4,7 +4,7 @@ import type { ReturnWithErrPromise } from '@type/common.type';
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 
-export class ClientService {
+class ClientService {
   private readonly endpoint = '/client';
 
   async findOne(phone: string): ReturnWithErrPromise<Client> {
@@ -12,7 +12,8 @@ export class ClientService {
       const response = await apiClient.get<Client[]>(`${this.endpoint}?phone=${phone}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
-      if (!response.data[0]) throw new HttpException({ statusCode: 404, message: 'Client not found' });
+      if (!response.data[0])
+        throw new HttpException({ statusCode: 404, message: 'Client not found' });
       return [response.data[0], null];
     } catch (err) {
       return errorHandler(err);
@@ -30,3 +31,5 @@ export class ClientService {
     }
   }
 }
+
+export default new ClientService();

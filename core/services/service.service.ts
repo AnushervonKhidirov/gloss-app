@@ -11,7 +11,7 @@ import type {
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 
-export class ServiceService {
+class ServiceService {
   private readonly endpoint = '/service';
 
   async findOne(id: number): ReturnWithErrPromise<Service> {
@@ -106,3 +106,5 @@ export class ServiceService {
     return categories;
   }
 }
+
+export default new ServiceService();

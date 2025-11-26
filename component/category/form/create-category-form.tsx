@@ -6,9 +6,7 @@ import { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { CategoryService } from '@services/category.service';
-
-const categoryService = new CategoryService();
+import categoryService from '@services/category.service';
 
 const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ onSuccess }) => {
   const [form] = Form.useForm();
