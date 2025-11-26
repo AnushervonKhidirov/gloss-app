@@ -1,5 +1,3 @@
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import Foundation from '@expo/vector-icons/Foundation';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Tabs } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,7 +20,9 @@ const TabsLayout = () => {
           name="workers"
           options={{
             title: 'Сотрудники',
-            tabBarIcon: ({ color }) => <Foundation size={28} name="torsos-all" color={color} />,
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons size={24} name="account-multiple" color={color} />
+            ),
           }}
         />
 
@@ -31,7 +31,7 @@ const TabsLayout = () => {
           options={{
             title: 'Услуги',
             tabBarIcon: ({ color }) => (
-              <FontAwesome6 size={24} name="hands-holding-circle" color={color} />
+              <MaterialCommunityIcons size={24} name="hand-coin" color={color} />
             ),
           }}
         />
