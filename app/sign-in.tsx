@@ -8,6 +8,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import authService from '@services/auth.service';
+import TokenService from '@services/token.service';
 
 const SignInScreen = () => {
   const [form] = Form.useForm();
@@ -30,7 +31,7 @@ const SignInScreen = () => {
         Alert.alert('Ошибка', 'Причина не известна');
       }
     } else {
-      await authService.setToken(token);
+      await TokenService.setToken(token);
       router.replace('/private');
     }
 

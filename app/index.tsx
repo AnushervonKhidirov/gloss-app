@@ -4,7 +4,7 @@ import { Animated, Image } from 'react-native';
 
 import useUserStore from '@store/user.store';
 
-import authService from '@services/auth.service';
+import TokenService from '@services/token.service';
 import userService from '@services/user.service';
 
 const HomeScreen = () => {
@@ -14,7 +14,7 @@ const HomeScreen = () => {
   const loadingAnim = useRef(new Animated.Value(1)).current;
 
   async function getUserData() {
-    const token = await authService.getToken();
+    const token = await TokenService.getToken();
     if (!token) router.replace('/sign-in');
 
     const [user, err] = await userService.findMe();

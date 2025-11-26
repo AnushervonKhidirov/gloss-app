@@ -1,9 +1,10 @@
 import { Button } from '@ant-design/react-native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import authService from '@services/auth.service';
-import { useState } from 'react';
+import TokenService from '@services/token.service';
 
 const ProfileScreen = () => {
   const router = useRouter();
@@ -12,9 +13,9 @@ const ProfileScreen = () => {
   async function signOut() {
     setLoading(true);
 
-    const token = await authService.getToken();
+    const token = await TokenService.getToken();
     if (token) await authService.signOut(token);
-    authService.removeToken();
+    TokenService.removeToken();
 
     setLoading(false);
 
