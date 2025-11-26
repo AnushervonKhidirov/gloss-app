@@ -31,7 +31,7 @@ const SignInScreen = () => {
       }
     } else {
       await authService.setToken(token);
-      router.replace('/(tabs)');
+      router.replace('/private');
     }
 
     setLoading(false);

@@ -31,7 +31,7 @@ const CategoryList: FC<CategoryListProps> = ({
     <View style={style.container}>
       <View>{children}</View>
 
-      <ScrollView style={{ marginBottom: 35 }}>
+      <ScrollView style={{ marginBottom: 43 }}>
         <View style={style.list}>
           {categories.length > 0 ? (
             categories.map(category => (

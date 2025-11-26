@@ -42,7 +42,7 @@ const ServiceList: FC<ServiceListProps> = ({
     <View style={style.container}>
       <View>{children}</View>
 
-      <ScrollView style={{ marginBottom: 35 }}>
+      <ScrollView style={{ marginBottom: 43 }}>
         <View style={style.list}>
           {services.length > 0 ? (
             services.map(service => (

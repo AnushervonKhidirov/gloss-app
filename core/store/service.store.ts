@@ -24,7 +24,7 @@ type CategoryState = {
   deleteCategory: (category: Category) => void;
 };
 
-type useServiceStore = ServiceState &
+type UseServiceStore = ServiceState &
   SelectedServiceState &
   CategoryState & {
     setMany: ({
@@ -38,7 +38,7 @@ type useServiceStore = ServiceState &
     }) => void;
   };
 
-const useServiceStore = create<useServiceStore>(set => ({
+const useServiceStore = create<UseServiceStore>(set => ({
   services: [],
   createServiceModalVisible: false,
 

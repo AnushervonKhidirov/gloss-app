@@ -2,11 +2,9 @@ import type { Category, UpdateCategory } from '@type/category.type';
 import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
-import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 import categoryService from '@services/category.service';
+import { useState } from 'react';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
 type EditCategoryFormProps = {
   categoryToEdit: Category | null;
@@ -41,7 +39,10 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
 
   return (
     categoryToEdit && (
-      <SafeAreaView>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <View style={styles.form_wrapper}>
           <Form form={form} onFinish={onFinish}>
             <Form.Item
@@ -59,7 +60,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
             </Form.Item>
           </Form>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   );
 };

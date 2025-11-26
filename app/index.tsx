@@ -2,24 +2,29 @@ import { useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Animated, Image } from 'react-native';
 
+import useUserStore from '@store/user.store';
+
 import authService from '@services/auth.service';
 import userService from '@services/user.service';
 
 const HomeScreen = () => {
   const router = useRouter();
+  const { setUser, removeUser } = useUserStore(state => state);
+
   const loadingAnim = useRef(new Animated.Value(1)).current;
 
   async function getUserData() {
     const token = await authService.getToken();
-
     if (!token) router.replace('/sign-in');
 
-    const [_, err] = await userService.findMe();
+    const [user, err] = await userService.findMe();
 
     if (err) {
+      removeUser();
       router.replace('/sign-in');
     } else {
-      router.replace('/(tabs)');
+      setUser(user);
+      router.replace('/private');
     }
   }
 

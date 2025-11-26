@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const TabsLayout = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       <Tabs screenOptions={{ headerShown: false, animation: 'fade' }}>
         <Tabs.Screen
           name="index"

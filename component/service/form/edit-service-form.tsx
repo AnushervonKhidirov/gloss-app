@@ -5,8 +5,7 @@ import type { FC } from 'react';
 import { Button, Form, Input } from '@ant-design/react-native';
 import AutoSelect from '@commonComponent/input/autocomplete';
 import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
 import serviceService from '@services/service.service';
 
@@ -48,7 +47,10 @@ const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, 
 
   return (
     serviceToEdit && (
-      <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <View style={styles.form_wrapper}>
           <Form form={form} onFinish={onFinish}>
             <Form.Item
@@ -100,7 +102,7 @@ const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, 
             </Form.Item>
           </Form>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   );
 };
