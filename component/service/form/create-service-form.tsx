@@ -51,7 +51,7 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
           <Form.Item
             name="price"
             getValueFromEvent={e => Number.parseInt(e.nativeEvent.text)}
-            rules={[{ required: true, message: 'Введите Цена' }]}
+            rules={[{ required: true, message: 'Введите цену' }]}
           >
             <Input type="number" placeholder="Цена"></Input>
           </Form.Item>

@@ -65,7 +65,7 @@ const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, 
               name="price"
               initialValue={serviceToEdit.price.toString()}
               getValueFromEvent={e => Number.parseInt(e.nativeEvent.text)}
-              rules={[{ required: true, message: 'Введите Цена' }]}
+              rules={[{ required: true, message: 'Введите цену' }]}
             >
               <Input type="number" placeholder="Цена"></Input>
             </Form.Item>
