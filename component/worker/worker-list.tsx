@@ -13,7 +13,7 @@ type WorkerListProps = PropsWithChildren<{
   workers: User[];
   emptyMessage?: string;
   refreshing: boolean;
-  onRefresh: () => Promise<void>;
+  onRefresh: (refreshing: boolean) => Promise<void>;
   approve: (user: User) => Promise<void>;
   archive: (user: User) => Promise<void>;
   unarchive: (user: User) => Promise<void>;
@@ -56,7 +56,9 @@ const WorkerList: FC<WorkerListProps> = ({
 
       <ScrollView
         style={{ marginBottom: 43 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh(true)} />
+        }
       >
         <View style={styles.list}>
           {workers.length > 0 ? (
