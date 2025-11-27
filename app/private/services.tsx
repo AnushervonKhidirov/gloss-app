@@ -10,7 +10,7 @@ import ServiceSection from '@component/service/section/service-section';
 import categoryService from '@services/category.service';
 import serviceService from '@services/service.service';
 
-const tabs = [{ title: 'Все услуги' }, { title: 'Мои услуги' }, { title: 'Категории' }];
+const tabs = [{ title: 'Мои услуги' }, { title: 'Все услуги' }, { title: 'Категории' }];
 
 const ServicesScreen = () => {
   const { setMany } = useServiceStore(state => state);
@@ -45,8 +45,8 @@ const ServicesScreen = () => {
       errorMessage="Невозможно получить данные, пожалуйста повторите позже"
     >
       <Tabs tabs={tabs}>
-        <ServiceSection />
         <MyServiceSection />
+        <ServiceSection />
         <CategorySection />
       </Tabs>
     </LoadingView>

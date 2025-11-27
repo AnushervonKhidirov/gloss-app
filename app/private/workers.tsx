@@ -2,14 +2,14 @@ import type { User } from '@type/user.type';
 
 import LoadingView from '@commonComponent/loading-view';
 import WorkerList from '@component/worker/worker-list';
-import useUserStore from '@store/users.store';
+import useUsersStore from '@store/users.store';
 import { useEffect, useState } from 'react';
 import { Alert, Text } from 'react-native';
 
 import userService from '@services/user.service';
 
 const WorkersScreen = () => {
-  const { users, setUsers, updateUser } = useUserStore(state => state);
+  const { users, setUsers, updateUser } = useUsersStore(state => state);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 

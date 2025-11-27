@@ -9,7 +9,7 @@ type UsersState = {
   removeUser: (user: User) => void;
 };
 
-const useUserStore = create<UsersState>(set => ({
+const useUsersStore = create<UsersState>(set => ({
   users: [],
   setUsers: users => set(() => ({ users })),
   updateUser: updatedUser =>
@@ -27,4 +27,4 @@ const useUserStore = create<UsersState>(set => ({
     }),
 }));
 
-export default useUserStore;
+export default useUsersStore;

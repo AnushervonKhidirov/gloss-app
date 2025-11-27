@@ -1,5 +1,5 @@
 import type { ReturnWithErrPromise } from '@type/common.type';
-import type { CreateQueue, Queue } from '@type/queue.type';
+import type { CreateQueue, QueryQueue, Queue } from '@type/queue.type';
 
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
@@ -14,6 +14,31 @@ class QueueService {
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [this.convertData(response.data), null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async findMany(query: QueryQueue = {}): ReturnWithErrPromise<Queue[]> {
+    try {
+      const queryString = new URLSearchParams(query);
+      const response = await apiClient.get<Queue[]>(`${this.endpoint}?${queryString.toString()}`);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      const queueList = response.data.map(queue => this.convertData(queue));
+      return [queueList, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async findMy(): ReturnWithErrPromise<Queue[]> {
+    try {
+      const response = await apiClient.get<Queue[]>(`${this.endpoint}/my`);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      const queueList = response.data.map(queue => this.convertData(queue));
+      return [queueList, null];
     } catch (err) {
       return errorHandler(err);
     }

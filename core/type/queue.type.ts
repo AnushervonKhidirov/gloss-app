@@ -9,8 +9,8 @@ export type Queue = {
   endAt: Dayjs;
   userId: number;
   user: User;
-  clientId?: number;
-  client?: Client;
+  clientId: number;
+  client: Client;
   serviceId: number;
   service: Service;
 };
@@ -18,4 +18,11 @@ export type Queue = {
 export type CreateQueue = Pick<Queue, 'userId' | 'serviceId' | 'clientId'> & {
   clientId: number;
   startAt: string;
+};
+
+export type QueryQueue = {
+  userId?: string;
+  exceptUserId?: string;
+  clientId?: string;
+  serviceId?: string;
 };

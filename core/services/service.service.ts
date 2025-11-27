@@ -70,7 +70,7 @@ class ServiceService {
     }
   }
 
-  async findManySelected(query: QueryService): ReturnWithErrPromise<SelectedService[]> {
+  async findManySelected(query: QueryService = {}): ReturnWithErrPromise<SelectedService[]> {
     try {
       const queryString = new URLSearchParams(query);
       const response = await apiClient.get<SelectedService[]>(

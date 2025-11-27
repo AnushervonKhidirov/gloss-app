@@ -16,3 +16,12 @@ export function getTimeString(date: Dayjs) {
   const m = getNumberWithZero(date.minute());
   return `${h}:${m}`;
 }
+
+export function getDateString(date: Dayjs): string {
+  const today = dayjs().startOf('day');
+  const dayText = ['Сегодня', 'Завтра'];
+  const diff = date.startOf('day').diff(today, 'day');
+
+  if (dayText[diff]) return `${dayText[diff]} в ${date.format('hh:mm')}`;
+  return date.format('DD MMMM h:mm (dddd)');
+}
