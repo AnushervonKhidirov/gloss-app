@@ -84,8 +84,6 @@ const QueueItem: FC<ServiceItemProps> = ({ queue }) => {
           <QueueItemBody queue={queue} />
         </WingBlank>
       </Card.Body>
-
-      {/* <Card.Footer content={service.price + ' с'} extra={minutesToTime(service.duration)} /> */}
     </Card>
   );
 };
