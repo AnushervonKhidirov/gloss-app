@@ -14,6 +14,7 @@ const tabs = [{ title: 'Все услуги' }, { title: 'Мои услуги' }
 
 const ServicesScreen = () => {
   const { setMany } = useServiceStore(state => state);
+
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -21,7 +22,7 @@ const ServicesScreen = () => {
     setLoading(true);
 
     const [services, servicesErr] = await serviceService.findMany();
-    const [selectedServices, selectedServicesErr] = await serviceService.findManySelected();
+    const [selectedServices, selectedServicesErr] = await serviceService.findMySelected();
     const [categories, categoriesErr] = await categoryService.findMany();
 
     if (servicesErr || selectedServicesErr || categoriesErr) {

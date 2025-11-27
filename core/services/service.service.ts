@@ -2,6 +2,7 @@ import type { ReturnWithErrPromise } from '@type/common.type';
 import type {
   CreateService,
   CreateUpdateWorkerService,
+  QueryService,
   SelectedService,
   Service,
   ServicesByCategory,
@@ -69,9 +70,23 @@ class ServiceService {
     }
   }
 
-  async findManySelected(): ReturnWithErrPromise<SelectedService[]> {
+  async findManySelected(query: QueryService): ReturnWithErrPromise<SelectedService[]> {
     try {
-      const response = await apiClient.get<SelectedService[]>(`${this.endpoint}/worker`);
+      const queryString = new URLSearchParams(query);
+      const response = await apiClient.get<SelectedService[]>(
+        `${this.endpoint}/worker?${queryString}`,
+      );
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async findMySelected(): ReturnWithErrPromise<SelectedService[]> {
+    try {
+      const response = await apiClient.get<SelectedService[]>(`${this.endpoint}/worker/my`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];

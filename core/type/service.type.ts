@@ -36,3 +36,8 @@ export type CreateUpdateWorkerService = {
 export type ServicesByCategory = {
   [key: string]: Service[];
 };
+
+export type QueryService = {
+  userId?: string;
+  serviceId?: string;
+};

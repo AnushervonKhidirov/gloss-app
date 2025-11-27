@@ -42,11 +42,9 @@ const MyServiceSection = () => {
   }
 
   async function refreshServices() {
-    console.log('refreshServices');
-    
     setRefreshing(true);
     const [services, serviceErr] = await serviceService.findMany();
-    const [selectedServices, selectedErr] = await serviceService.findManySelected();
+    const [selectedServices, selectedErr] = await serviceService.findMySelected();
 
     if (selectedErr || serviceErr) {
       Alert.alert('Ошибка', 'Что-то пошло не так');
