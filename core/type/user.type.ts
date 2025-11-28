@@ -5,6 +5,8 @@ export type User = {
   firstName: string;
   verified: boolean;
   archived: boolean;
+  specialtyId: number | null;
+  specialty: { id: number; value: string } | null;
   role: Role;
 };
 
