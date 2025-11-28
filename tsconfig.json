@@ -5,7 +5,8 @@
     "paths": {
       "@commonComponent/*": ["./component/common/*"],
       "@component/*": ["./component/*"],
-      "@services/*": ["./core/services/*"],
+      "@constant/*": ["./core/constant/*"],
+      "@service/*": ["./core/service/*"],
       "@helper/*": ["./core/helper/*"],
       "@api/*": ["./core/api/*"],
       "@store/*": ["./core/store/*"],

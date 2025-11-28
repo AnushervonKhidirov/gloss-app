@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const TabsLayout = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-      <Tabs screenOptions={{ headerShown: false, animation: 'fade' }}>
+      <Tabs screenOptions={{ headerShown: false, animation: 'shift' }}>
         <Tabs.Screen
           name="index"
           options={{
@@ -17,11 +17,11 @@ const TabsLayout = () => {
         />
 
         <Tabs.Screen
-          name="workers"
+          name="clients"
           options={{
-            title: 'Сотрудники',
+            title: 'Клиенты',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons size={24} name="account-multiple" color={color} />
+              <MaterialCommunityIcons size={24} name="human-male-female" color={color} />
             ),
           }}
         />
@@ -32,6 +32,16 @@ const TabsLayout = () => {
             title: 'Услуги',
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons size={24} name="hand-coin" color={color} />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="workers"
+          options={{
+            title: 'Сотрудники',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons size={24} name="account-multiple" color={color} />
             ),
           }}
         />

@@ -9,7 +9,7 @@ import { Alert } from 'react-native';
 import SelectableServiceList from '../selectable-service-list';
 import ServiceList from '../service-list';
 
-import serviceService from '@services/service.service';
+import serviceService from '@service/service.service';
 
 function convertSelectedService(selectedServices: SelectedService[]): Service[] {
   return selectedServices.map(workerService => {

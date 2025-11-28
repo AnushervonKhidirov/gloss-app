@@ -8,6 +8,7 @@ import { Role } from '@type/user.type';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { gray, green, orange, red } from '@ant-design/colors';
+import { scrollerTabMarginBottom } from '@constant/scroller';
 
 type WorkerListProps = PropsWithChildren<{
   workers: User[];
@@ -55,7 +56,7 @@ const WorkerList: FC<WorkerListProps> = ({
       <View>{children}</View>
 
       <ScrollView
-        style={{ marginBottom: 43 }}
+        style={{ marginBottom: scrollerTabMarginBottom }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh(true)} />
         }

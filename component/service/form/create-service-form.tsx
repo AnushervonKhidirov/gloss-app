@@ -7,7 +7,7 @@ import AutoSelect from '@commonComponent/input/autocomplete';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
-import serviceService from '@services/service.service';
+import serviceService from '@service/service.service';
 
 type CreateServiceFormProps = { categories: Category[]; onSuccess: (service: Service) => void };
 

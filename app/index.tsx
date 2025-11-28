@@ -4,8 +4,8 @@ import { Animated, Image } from 'react-native';
 
 import useUserStore from '@store/user.store';
 
-import TokenService from '@services/token.service';
-import userService from '@services/user.service';
+import TokenService from '@service/token.service';
+import userService from '@service/user.service';
 
 const HomeScreen = () => {
   const router = useRouter();

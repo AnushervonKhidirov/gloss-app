@@ -6,7 +6,7 @@ import useUsersStore from '@store/users.store';
 import { useEffect, useState } from 'react';
 import { Alert, Text } from 'react-native';
 
-import userService from '@services/user.service';
+import userService from '@service/user.service';
 
 const WorkersScreen = () => {
   const { users, setUsers, updateUser } = useUsersStore(state => state);

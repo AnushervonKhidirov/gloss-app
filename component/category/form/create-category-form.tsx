@@ -5,7 +5,7 @@ import { Button, Form, Input } from '@ant-design/react-native';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
-import categoryService from '@services/category.service';
+import categoryService from '@service/category.service';
 
 const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ onSuccess }) => {
   const [form] = Form.useForm();

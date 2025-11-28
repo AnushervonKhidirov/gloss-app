@@ -10,7 +10,7 @@ import CreateServiceForm from '../form/create-service-form';
 import EditServiceForm from '../form/edit-service-form';
 import ServiceList from '../service-list';
 
-import serviceService from '@services/service.service';
+import serviceService from '@service/service.service';
 
 const ServiceSection = () => {
   const { services, categories, setServices, pushServices, editService, deleteService } =

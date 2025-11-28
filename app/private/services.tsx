@@ -7,8 +7,8 @@ import CategorySection from '@component/category/section/category-section';
 import MyServiceSection from '@component/service/section/my-service-section';
 import ServiceSection from '@component/service/section/service-section';
 
-import categoryService from '@services/category.service';
-import serviceService from '@services/service.service';
+import categoryService from '@service/category.service';
+import serviceService from '@service/service.service';
 
 const tabs = [{ title: 'Мои услуги' }, { title: 'Все услуги' }, { title: 'Категории' }];
 

@@ -3,8 +3,8 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import authService from '@services/auth.service';
-import TokenService from '@services/token.service';
+import authService from '@service/auth.service';
+import TokenService from '@service/token.service';
 
 const ProfileScreen = () => {
   const router = useRouter();

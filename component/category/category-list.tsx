@@ -5,6 +5,8 @@ import { Card } from '@ant-design/react-native';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ActionButtons from '../common/action-buttons';
 
+import { scrollerTabMarginBottom } from '@constant/scroller';
+
 type CategoryListProps = PropsWithChildren<{
   categories: Category[];
   emptyMessage?: string;
@@ -31,7 +33,7 @@ const CategoryList: FC<CategoryListProps> = ({
     <View style={style.container}>
       <View>{children}</View>
 
-      <ScrollView style={{ marginBottom: 43 }}>
+      <ScrollView style={{ marginBottom: scrollerTabMarginBottom }}>
         <View style={style.list}>
           {categories.length > 0 ? (
             categories.map(category => (

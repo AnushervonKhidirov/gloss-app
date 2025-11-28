@@ -1,6 +1,6 @@
 import type { Token } from '@type/auth.type';
 
-import TokenService from '@services/token.service';
+import TokenService from '@service/token.service';
 import axios from 'axios';
 
 import { HttpException, isHttpException } from '@helper/error-handler';

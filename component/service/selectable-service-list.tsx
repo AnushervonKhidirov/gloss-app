@@ -5,7 +5,7 @@ import { Button, Card, Checkbox, Input, WingBlank } from '@ant-design/react-nati
 import { useEffect, useState } from 'react';
 import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import serviceService from '@services/service.service';
+import serviceService from '@service/service.service';
 
 import { gray } from '@ant-design/colors';
 import { minutesToTime } from '@helper/time-converter.helper';

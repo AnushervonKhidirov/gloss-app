@@ -8,7 +8,7 @@ export type Queue = {
   startAt: Dayjs;
   endAt: Dayjs;
   userId: number;
-  user: User;
+  user: User & { workerService: { serviceId: number; price: number | null }[] };
   clientId: number;
   client: Client;
   serviceId: number;
