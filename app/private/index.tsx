@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 
 import { Tabs } from '@ant-design/react-native';
 import LoadingView from '@commonComponent/loading-view';
+import CompletedQueueSection from '@component/queue/section/completed-queue-section';
 import MyQueueSection from '@component/queue/section/my-queue-section';
 import QueueSection from '@component/queue/section/queue-section';
 
 import queueService from '@service/queue.service';
+import { Role } from '@type/user.type';
 
 const tabs = [{ title: 'Мои' }, { title: 'Остальные' }];
 
@@ -20,8 +22,13 @@ const HomeScreen = () => {
   async function fetchQueue() {
     setLoading(true);
 
-    const [myQueue, myQueueErr] = await queueService.findMy();
-    const [queue, queueErr] = await queueService.findMany({ exceptUserId: user?.id.toString() });
+    const nowString = new Date().toISOString();
+
+    const [myQueue, myQueueErr] = await queueService.findMy({ dateFrom: nowString });
+    const [queue, queueErr] = await queueService.findMany({
+      exceptUserId: user?.id.toString(),
+      dateFrom: nowString,
+    });
 
     if (myQueueErr || queueErr) {
       setIsError(true);
@@ -43,9 +50,10 @@ const HomeScreen = () => {
       isError={isError}
       errorMessage="Невозможно получить данные, пожалуйста повторите позже"
     >
-      <Tabs tabs={tabs}>
+      <Tabs tabs={user?.role === Role.ADMIN ? [...tabs, { title: 'Оконченные' }] : tabs}>
         <MyQueueSection />
         <QueueSection />
+        {user?.role === Role.ADMIN && <CompletedQueueSection />}
       </Tabs>
     </LoadingView>
   );

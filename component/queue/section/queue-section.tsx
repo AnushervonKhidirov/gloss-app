@@ -10,10 +10,13 @@ const QueueSection = () => {
   const { queue, setQueue } = useQueueStore(state => state);
 
   async function refreshQueue() {
-    const [queue, err] = await queueService.findMany({ exceptUserId: user?.id.toString() });
+    const [queue, err] = await queueService.findMany({
+      exceptUserId: user?.id.toString(),
+      dateFrom: new Date().toISOString(),
+    });
 
     if (err) {
-      Alert.alert('Ошибка', 'Что-то пошло не так');
+      Alert.alert('Ошибка', err.error);
     } else {
       setQueue(queue);
     }

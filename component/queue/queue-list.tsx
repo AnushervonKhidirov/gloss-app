@@ -232,7 +232,7 @@ const FooterActions: FC<QueueItemProps> = ({ queue }) => {
           {isPassed ? 'Удалить' : 'Отменить'}
         </Button>
 
-        {isPassed && (
+        {isPassed && user?.role === Role.ADMIN && (
           <Button type="primary" size="small" loading={statisticLoading} onPress={confirmStatistic}>
             Добавить в статистику
           </Button>

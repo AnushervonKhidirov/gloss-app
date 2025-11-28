@@ -8,10 +8,10 @@ const MyQueueSection = () => {
   const { myQueue, setMyQueue } = useQueueStore(state => state);
 
   async function refreshQueue() {
-    const [queue, err] = await queueService.findMy();
+    const [queue, err] = await queueService.findMy({ dateFrom: new Date().toISOString() });
 
     if (err) {
-      Alert.alert('Ошибка', 'Что-то пошло не так');
+      Alert.alert('Ошибка', err.error);
     } else {
       setMyQueue(queue);
     }
