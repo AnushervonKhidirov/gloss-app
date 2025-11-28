@@ -47,7 +47,8 @@ const MyServiceSection = () => {
     const [selectedServices, selectedErr] = await serviceService.findMySelected();
 
     if (selectedErr || serviceErr) {
-      Alert.alert('Ошибка', 'Что-то пошло не так');
+      const errors = [selectedErr?.error, serviceErr?.error].filter((message) => !!message)
+      Alert.alert('Ошибка', errors.join(' ; '));
     } else {
       setSelectedServices(selectedServices);
       setServices(services);

@@ -1,6 +1,8 @@
 import type { Category } from '@type/category.type';
 
 import useServiceStore from '@store/service.store';
+import useUserStore from '@store/user.store';
+import { Role } from '@type/user.type';
 import { useState } from 'react';
 
 import { Button } from '@ant-design/react-native';
@@ -13,9 +15,10 @@ import EditCategoryForm from '../form/edit-category-form';
 import categoryService from '@service/category.service';
 
 const CategorySection = () => {
-  const { categories, pushCategories, editCategory, deleteCategory } = useServiceStore(
-    state => state,
-  );
+  const user = useUserStore(state => state.user);
+
+  const { categories, pushCategories, editCategory, deleteCategory, setCategories } =
+    useServiceStore(state => state);
 
   const [toEdit, setToEdit] = useState<Category | null>(null);
   const [createCategoryModalVisible, setCreateCategoryModalVisible] = useState(false);
@@ -56,39 +59,52 @@ const CategorySection = () => {
     const [removedService, err] = await categoryService.delete(category.id);
 
     if (err) {
-      if (err.statusCode === 403) {
-        Alert.alert('Запрет', 'Только администранор может создавать услуги');
-      } else if (err.statusCode >= 500) {
-        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
-      } else {
-        Alert.alert('Ошибка', 'Причина не известна');
-      }
+      Alert.alert('Ошибка', err.error);
     } else {
       deleteCategory(removedService);
     }
   }
 
+  async function refreshCategory() {
+    const [category, err] = await categoryService.findMany();
+
+    if (err) {
+      Alert.alert('Ошибка', 'Что-то пошло не так');
+    } else {
+      setCategories(category);
+    }
+  }
+
   return (
-    <CategoryList categories={categories} onEdit={openEditServiceModal} onRemove={removeConfirm}>
-      <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
-        Создать категорию
-      </Button>
+    <CategoryList
+      categories={categories}
+      onEdit={user?.role === Role.ADMIN ? openEditServiceModal : undefined}
+      onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
+      refresh={refreshCategory}
+    >
+      {user?.role === Role.ADMIN && (
+        <>
+          <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
+            Создать категорию
+          </Button>
 
-      <Modal
-        title="Создание категории"
-        isOpen={createCategoryModalVisible}
-        close={() => setCreateCategoryModalVisible(false)}
-      >
-        <CreateCategoryForm onSuccess={push} />
-      </Modal>
+          <Modal
+            title="Создание категории"
+            isOpen={createCategoryModalVisible}
+            close={() => setCreateCategoryModalVisible(false)}
+          >
+            <CreateCategoryForm onSuccess={push} />
+          </Modal>
 
-      <Modal
-        title="Создание категории"
-        isOpen={editCategoryModalVisible}
-        close={() => setEditCategoryModalVisible(false)}
-      >
-        <EditCategoryForm categoryToEdit={toEdit} onSuccess={edit} />
-      </Modal>
+          <Modal
+            title="Редактирование категории"
+            isOpen={editCategoryModalVisible}
+            close={() => setEditCategoryModalVisible(false)}
+          >
+            <EditCategoryForm categoryToEdit={toEdit} onSuccess={edit} />
+          </Modal>
+        </>
+      )}
     </CategoryList>
   );
 };

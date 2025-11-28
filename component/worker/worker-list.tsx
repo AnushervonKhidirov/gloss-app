@@ -53,7 +53,7 @@ const WorkerList: FC<WorkerListProps> = ({
 
   return (
     <View style={styles.container}>
-      <View>{children}</View>
+      {children}
 
       <ScrollView
         style={{ marginBottom: scrollerTabMarginBottom }}

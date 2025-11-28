@@ -2,7 +2,8 @@ import type { Category } from '@type/category.type';
 import type { FC, PropsWithChildren } from 'react';
 
 import { Card } from '@ant-design/react-native';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import ActionButtons from '../common/action-buttons';
 
 import { scrollerTabMarginBottom } from '@constant/scroller';
@@ -12,6 +13,7 @@ type CategoryListProps = PropsWithChildren<{
   emptyMessage?: string;
   onEdit?: (category: Category) => void;
   onRemove?: (category: Category) => void;
+  refresh: () => Promise<void>;
 }>;
 
 type CategoryItemProps = {
@@ -24,16 +26,28 @@ const CategoryList: FC<CategoryListProps> = ({
   categories,
   onEdit,
   onRemove,
+  refresh,
   emptyMessage,
   children,
 }) => {
   const message = emptyMessage ?? 'Нет созданных категорий';
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function onRefresh() {
+    setRefreshing(true);
+    await refresh();
+    setRefreshing(false);
+  }
+
   return (
     <View style={style.container}>
-      <View>{children}</View>
+      {children}
 
-      <ScrollView style={{ marginBottom: scrollerTabMarginBottom }}>
+      <ScrollView
+        style={{ marginBottom: scrollerTabMarginBottom }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         <View style={style.list}>
           {categories.length > 0 ? (
             categories.map(category => (
@@ -58,12 +72,8 @@ const CategoryItem: FC<CategoryItemProps> = ({ category, onEdit, onRemove }) => 
     <Card styles={{ card: style.card }}>
       <Text style={{ fontSize: 18, flex: 1 }}>{category.value}</Text>
       <ActionButtons
-        onEdit={() => {
-          if (typeof onEdit === 'function') onEdit(category);
-        }}
-        onRemove={() => {
-          if (typeof onRemove === 'function') onRemove(category);
-        }}
+        onEdit={onEdit?.bind(null, category)}
+        onRemove={onRemove?.bind(null, category)}
       />
     </Card>
   );

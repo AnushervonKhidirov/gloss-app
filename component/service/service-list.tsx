@@ -45,7 +45,7 @@ const ServiceList: FC<ServiceListProps> = ({
 
   return (
     <View style={style.container}>
-      <View>{children}</View>
+      {children}
 
       <ScrollView
         style={{ marginBottom: scrollerTabMarginBottom }}
@@ -80,12 +80,8 @@ const ServiceItem: FC<ServiceItemProps> = ({ service, editable, onEdit, onRemove
           editable && (
             <ActionButtons
               styles={{ alignSelf: 'flex-end' }}
-              onEdit={() => {
-                if (typeof onEdit === 'function') onEdit(service);
-              }}
-              onRemove={() => {
-                if (typeof onRemove === 'function') onRemove(service);
-              }}
+              onEdit={onEdit?.bind(null, service)}
+              onRemove={onRemove?.bind(null, service)}
             />
           )
         }

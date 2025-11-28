@@ -1,6 +1,8 @@
 import type { Service } from '@type/service.type';
 
 import useServiceStore from '@store/service.store';
+import useUserStore from '@store/user.store';
+import { Role } from '@type/user.type';
 import { useState } from 'react';
 
 import { Button } from '@ant-design/react-native';
@@ -13,8 +15,10 @@ import ServiceList from '../service-list';
 import serviceService from '@service/service.service';
 
 const ServiceSection = () => {
+  const user = useUserStore(state => state.user);
   const { services, categories, setServices, pushServices, editService, deleteService } =
     useServiceStore(state => state);
+
   const [toEdit, setToEdit] = useState<Service | null>(null);
   const [createServiceModalVisible, setCreateServiceModalVisible] = useState(false);
   const [editServiceModalVisible, setEditServiceModalVisible] = useState(false);
@@ -65,7 +69,7 @@ const ServiceSection = () => {
     const [services, err] = await serviceService.findMany();
 
     if (err) {
-      Alert.alert('Ошибка', 'Что-то пошло не так');
+      Alert.alert('Ошибка', err.error);
     } else {
       setServices(services);
     }
@@ -77,13 +81,7 @@ const ServiceSection = () => {
     const [removedService, err] = await serviceService.delete(service.id);
 
     if (err) {
-      if (err.statusCode === 403) {
-        Alert.alert('Запрет', 'Только администранор может создавать услуги');
-      } else if (err.statusCode >= 500) {
-        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
-      } else {
-        Alert.alert('Ошибка', 'Причина не известна');
-      }
+      Alert.alert('Ошибка', err.error);
     } else {
       deleteService(removedService);
     }
@@ -95,29 +93,33 @@ const ServiceSection = () => {
       editable={true}
       refreshing={refreshing}
       emptyMessage="Список предоставляемых услуг пуст"
-      onEdit={openEditServiceModal}
-      onRemove={removeConfirm}
+      onEdit={user?.role === Role.ADMIN ? openEditServiceModal : undefined}
+      onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
       onRefresh={refreshServices}
     >
-      <Button type="primary" onPress={openCreateForm}>
-        Создать услугу
-      </Button>
+      {user?.role === Role.ADMIN && (
+        <>
+          <Button type="primary" onPress={openCreateForm}>
+            Создать услугу
+          </Button>
 
-      <Modal
-        title="Создание услуги"
-        isOpen={createServiceModalVisible}
-        close={() => setCreateServiceModalVisible(false)}
-      >
-        <CreateServiceForm categories={categories} onSuccess={push} />
-      </Modal>
+          <Modal
+            title="Создание услуги"
+            isOpen={createServiceModalVisible}
+            close={() => setCreateServiceModalVisible(false)}
+          >
+            <CreateServiceForm categories={categories} onSuccess={push} />
+          </Modal>
 
-      <Modal
-        title="Редактирование услуги"
-        isOpen={editServiceModalVisible}
-        close={() => setEditServiceModalVisible(false)}
-      >
-        <EditServiceForm serviceToEdit={toEdit} categories={categories} onSuccess={edit} />
-      </Modal>
+          <Modal
+            title="Редактирование услуги"
+            isOpen={editServiceModalVisible}
+            close={() => setEditServiceModalVisible(false)}
+          >
+            <EditServiceForm serviceToEdit={toEdit} categories={categories} onSuccess={edit} />
+          </Modal>
+        </>
+      )}
     </ServiceList>
   );
 };
