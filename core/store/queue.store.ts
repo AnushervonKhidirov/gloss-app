@@ -18,7 +18,10 @@ type MyQueueState = {
   deleteMyQueue: (queue: Queue) => void;
 };
 
-type QueueStore = QueueState & MyQueueState;
+type QueueStore = QueueState &
+  MyQueueState & {
+    deleteFromAll: (queue: Queue) => void;
+  };
 
 const useQueueStore = create<QueueStore>(set => ({
   queue: [],
@@ -28,30 +31,37 @@ const useQueueStore = create<QueueStore>(set => ({
   pushQueue: newQueue => set(state => ({ queue: [...state.queue, ...newQueue] })),
   editQueue: editedQueue =>
     set(state => {
-      const newServiceList = state.queue.map(queue => {
+      const queue = state.queue.map(queue => {
         return queue.id === editedQueue.id ? editedQueue : queue;
       });
-      return { queue: newServiceList };
+      return { queue };
     }),
   deleteQueue: deletedQueue =>
     set(state => {
-      const newServiceList = state.queue.filter(queue => queue.id !== deletedQueue.id);
-      return { queue: newServiceList };
+      const queue = state.queue.filter(queue => queue.id !== deletedQueue.id);
+      return { queue };
     }),
 
   setMyQueue: myQueue => set(() => ({ myQueue })),
   pushMyQueue: newQueue => set(state => ({ myQueue: [...state.myQueue, ...newQueue] })),
   editMyQueue: editedQueue =>
     set(state => {
-      const newServiceList = state.myQueue.map(queue => {
+      const myQueue = state.myQueue.map(queue => {
         return queue.id === editedQueue.id ? editedQueue : queue;
       });
-      return { myQueue: newServiceList };
+      return { myQueue };
     }),
   deleteMyQueue: deletedQueue =>
     set(state => {
-      const newServiceList = state.myQueue.filter(queue => queue.id !== deletedQueue.id);
-      return { myQueue: newServiceList };
+      const myQueue = state.myQueue.filter(queue => queue.id !== deletedQueue.id);
+      return { myQueue };
+    }),
+
+  deleteFromAll: deletedQueue =>
+    set(state => {
+      const queue = state.queue.filter(queue => queue.id !== deletedQueue.id);
+      const myQueue = state.myQueue.filter(queue => queue.id !== deletedQueue.id);
+      return { queue, myQueue };
     }),
 }));
 
