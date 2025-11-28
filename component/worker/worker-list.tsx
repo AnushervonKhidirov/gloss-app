@@ -1,5 +1,5 @@
 import type { User } from '@type/user.type';
-import type { ComponentProps, FC, PropsWithChildren } from 'react';
+import { useState, type ComponentProps, type FC, type PropsWithChildren } from 'react';
 
 import { Button, Card } from '@ant-design/react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -13,8 +13,7 @@ import { scrollerTabMarginBottom } from '@constant/scroller';
 type WorkerListProps = PropsWithChildren<{
   workers: User[];
   emptyMessage?: string;
-  refreshing: boolean;
-  onRefresh: (refreshing: boolean) => Promise<void>;
+  onRefresh: () => Promise<void>;
   approve: (user: User) => Promise<void>;
   archive: (user: User) => Promise<void>;
   unarchive: (user: User) => Promise<void>;
@@ -42,7 +41,6 @@ type WorkerActionButtonsProps = {
 const WorkerList: FC<WorkerListProps> = ({
   workers,
   emptyMessage,
-  refreshing = false,
   onRefresh,
   approve,
   archive,
@@ -51,6 +49,14 @@ const WorkerList: FC<WorkerListProps> = ({
 }) => {
   const message = emptyMessage ?? 'У вас пока нет работников';
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function refresh() {
+    setRefreshing(true);
+    await onRefresh();
+    setRefreshing(false);
+  }
+
   return (
     <View style={styles.container}>
       {children}
@@ -58,7 +64,7 @@ const WorkerList: FC<WorkerListProps> = ({
       <ScrollView
         style={{ marginBottom: scrollerTabMarginBottom }}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh(true)} />
+          <RefreshControl refreshing={refreshing} onRefresh={refresh} />
         }
       >
         <View style={styles.list}>

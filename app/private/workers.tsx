@@ -11,24 +11,21 @@ import userService from '@service/user.service';
 const WorkersScreen = () => {
   const { users, setUsers, updateUser } = useUsersStore(state => state);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
 
-  async function fetchUsers(refreshing: boolean = false) {
-    if (refreshing) {
-      setRefreshing(true);
-    } else {
-      setLoading(true);
-    }
+  async function fetchUsersOnLoad() {
+    setLoading(true);
+    await fetchUsers();
+    setLoading(false);
+  }
 
+  async function fetchUsers() {
     const [users, err] = await userService.findMany();
+
     if (err) {
-      Alert.alert('Ошибка');
+      Alert.alert('Ошибка', err.error);
     } else {
       setUsers(users);
     }
-
-    setLoading(false);
-    setRefreshing(false);
   }
 
   async function approveUser(user: User) {
@@ -62,14 +59,13 @@ const WorkersScreen = () => {
   }
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsersOnLoad();
   }, []);
 
   return (
     <LoadingView loading={loading}>
       <WorkerList
         workers={users}
-        refreshing={refreshing}
         onRefresh={fetchUsers}
         approve={approveUser}
         archive={archiveUser}
