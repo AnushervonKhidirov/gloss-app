@@ -15,6 +15,6 @@ export function getDateString(date: Dayjs): string {
   const dayText = ['Сегодня', 'Завтра'];
   const diff = date.startOf('day').diff(today, 'day');
 
-  if (dayText[diff]) return `${dayText[diff]} в ${date.format('h:mm a')}`;
-  return date.format('DD MMM в h:mm a (dd)');
+  if (dayText[diff]) return `${dayText[diff]} в ${date.format('H:mm a')}`;
+  return date.format('DD MMM в H:mm a (dd)');
 }
