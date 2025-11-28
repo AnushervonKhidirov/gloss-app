@@ -1,8 +1,9 @@
 export type User = {
   id: number;
   username: string;
-  lastName: string | null;
   firstName: string;
+  lastName: string | null;
+  phone: string;
   verified: boolean;
   archived: boolean;
   specialtyId: number | null;
