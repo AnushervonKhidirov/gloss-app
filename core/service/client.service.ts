@@ -18,7 +18,7 @@ class ClientService {
     }
   }
 
-  async findMany(query: QueryClient): ReturnWithErrPromise<Client[]> {
+  async findMany(query: QueryClient = {}): ReturnWithErrPromise<Client[]> {
     try {
       const queryParams = new URLSearchParams(query);
       const response = await apiClient.get<Client[]>(`${this.endpoint}?${queryParams}`);

@@ -5,7 +5,7 @@ export type Client = {
 };
 
 export type CreateClient = Omit<Client, 'id'>;
-export type UpdateClient = Partial<CreateClient>;
+export type UpdateClient = CreateClient;
 
 export type QueryClient = {
   name?: string;
