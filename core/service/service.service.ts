@@ -11,6 +11,7 @@ import type {
 
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
+import { urlQueryBuilder } from '@helper/url-query-builder';
 
 class ServiceService {
   private readonly endpoint = '/service';
@@ -72,9 +73,9 @@ class ServiceService {
 
   async findManySelected(query: QueryService = {}): ReturnWithErrPromise<SelectedService[]> {
     try {
-      const queryParams = new URLSearchParams(query);
+      const queryString = urlQueryBuilder(query);
       const response = await apiClient.get<SelectedService[]>(
-        `${this.endpoint}/worker?${queryParams}`,
+        `${this.endpoint}/worker?${queryString}`,
       );
 
       if (isHttpException(response.data)) throw new HttpException(response.data);

@@ -3,6 +3,7 @@ import type { CreateQueue, QueryMyQueue, QueryQueue, Queue } from '@type/queue.t
 
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
+import { urlQueryBuilder } from '@helper/url-query-builder';
 import dayjs from 'dayjs';
 
 class QueueService {
@@ -21,8 +22,8 @@ class QueueService {
 
   async findMany(query: QueryQueue = {}): ReturnWithErrPromise<Queue[]> {
     try {
-      const queryParams = new URLSearchParams(query);
-      const response = await apiClient.get<Queue[]>(`${this.endpoint}?${queryParams}`);
+      const queryString = urlQueryBuilder(query);
+      const response = await apiClient.get<Queue[]>(this.endpoint + queryString);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       const queueList = response.data.map(queue => this.convertData(queue));
@@ -34,8 +35,8 @@ class QueueService {
 
   async findMy(query: QueryMyQueue = {}): ReturnWithErrPromise<Queue[]> {
     try {
-      const queryParams = new URLSearchParams(query);
-      const response = await apiClient.get<Queue[]>(`${this.endpoint}/my?${queryParams}`);
+      const queryString = urlQueryBuilder(query);
+      const response = await apiClient.get<Queue[]>(`${this.endpoint}/my${queryString}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       const queueList = response.data.map(queue => this.convertData(queue));

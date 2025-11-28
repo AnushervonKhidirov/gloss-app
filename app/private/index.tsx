@@ -9,7 +9,7 @@ import MyQueueSection from '@component/queue/section/my-queue-section';
 import QueueSection from '@component/queue/section/queue-section';
 
 import queueService from '@service/queue.service';
-import { Role } from '@type/user.type';
+import { Role, User } from '@type/user.type';
 
 const tabs = [{ title: 'Мои' }, { title: 'Остальные' }];
 
@@ -19,14 +19,14 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  async function fetchQueue() {
+  async function fetchQueue(user: User) {
     setLoading(true);
 
     const nowString = new Date().toISOString();
 
     const [myQueue, myQueueErr] = await queueService.findMy({ dateFrom: nowString });
     const [queue, queueErr] = await queueService.findMany({
-      exceptUserId: user?.id.toString(),
+      exceptUserId: user.id.toString(),
       dateFrom: nowString,
     });
 
@@ -41,21 +41,23 @@ const HomeScreen = () => {
   }
 
   useEffect(() => {
-    fetchQueue();
-  }, []);
+    if (user) fetchQueue(user);
+  }, [user]);
 
   return (
-    <LoadingView
-      loading={loading}
-      isError={isError}
-      errorMessage="Невозможно получить данные, пожалуйста повторите позже"
-    >
-      <Tabs tabs={user?.role === Role.ADMIN ? [...tabs, { title: 'Оконченные' }] : tabs}>
-        <MyQueueSection />
-        <QueueSection />
-        {user?.role === Role.ADMIN && <CompletedQueueSection />}
-      </Tabs>
-    </LoadingView>
+    user && (
+      <LoadingView
+        loading={loading}
+        isError={isError}
+        errorMessage="Невозможно получить данные, пожалуйста повторите позже"
+      >
+        <Tabs tabs={user.role === Role.ADMIN ? [...tabs, { title: 'Оконченные' }] : tabs}>
+          <MyQueueSection />
+          <QueueSection />
+          {user.role === Role.ADMIN && <CompletedQueueSection />}
+        </Tabs>
+      </LoadingView>
+    )
   );
 };
 

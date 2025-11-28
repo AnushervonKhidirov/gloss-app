@@ -3,6 +3,7 @@ import type { ReturnWithErrPromise } from '@type/common.type';
 
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
+import { urlQueryBuilder } from '@helper/url-query-builder';
 
 class ClientService {
   private readonly endpoint = '/client';
@@ -20,8 +21,8 @@ class ClientService {
 
   async findMany(query: QueryClient = {}): ReturnWithErrPromise<Client[]> {
     try {
-      const queryParams = new URLSearchParams(query);
-      const response = await apiClient.get<Client[]>(`${this.endpoint}?${queryParams}`);
+      const queryString = urlQueryBuilder(query);
+      const response = await apiClient.get<Client[]>(this.endpoint + queryString);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
