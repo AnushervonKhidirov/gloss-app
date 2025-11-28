@@ -25,6 +25,7 @@ import dayjs from 'dayjs';
 import { scrollerTabMarginBottom } from '@constant/scroller';
 import queueService from '@service/queue.service';
 import { Role } from '@type/user.type';
+import parsePhoneNumber from 'libphonenumber-js';
 
 type QueueListProps = {
   queue: Queue[];
@@ -108,6 +109,8 @@ const QueueItem: FC<QueueItemProps> = ({ queue }) => {
 };
 
 const QueueItemBody: FC<{ queue: Queue }> = ({ queue }) => {
+  const phone = parsePhoneNumber(queue.client.phone);
+
   const price = getPrice(queue);
   const priceText = price === 0 ? 'Бесплатно' : price + ' с';
 
@@ -122,7 +125,7 @@ const QueueItemBody: FC<{ queue: Queue }> = ({ queue }) => {
 
       <View style={styles.bodyListItem}>
         <Text>Номер телефона</Text>
-        <Text>{queue.client.phone}</Text>
+        <Text>{phone?.formatNational()}</Text>
       </View>
 
       <View style={styles.bodyListItem}>
