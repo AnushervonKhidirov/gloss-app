@@ -19,8 +19,10 @@ const HomeScreen = () => {
   async function fetchQueue() {
     setLoading(true);
 
-    const [myQueue, myQueueErr] = await queueService.findMy();
-    const [queue, queueErr] = await queueService.findMany();
+    const nowString = new Date().toISOString();
+
+    const [myQueue, myQueueErr] = await queueService.findMy({ fromDate: nowString });
+    const [queue, queueErr] = await queueService.findMany({ fromDate: nowString });
 
     if (myQueueErr || queueErr) {
       setIsError(true);

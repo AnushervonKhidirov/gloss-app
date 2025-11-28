@@ -20,9 +20,13 @@ export type CreateQueue = Pick<Queue, 'userId' | 'serviceId' | 'clientId'> & {
   startAt: string;
 };
 
-export type QueryQueue = {
-  userId?: string;
-  exceptUserId?: string;
+export type QueryMyQueue = {
   clientId?: string;
   serviceId?: string;
+  fromDate?: string;
+};
+
+export type QueryQueue = QueryMyQueue & {
+  userId?: string;
+  exceptUserId?: string;
 };

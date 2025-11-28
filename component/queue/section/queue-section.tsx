@@ -11,7 +11,7 @@ const QueueSection = () => {
 
   async function refreshQueue() {
     setRefreshing(true);
-    const [queue, err] = await queueService.findMany();
+    const [queue, err] = await queueService.findMany({ fromDate: new Date().toISOString() });
 
     if (err) {
       Alert.alert('Ошибка', 'Что-то пошло не так');
