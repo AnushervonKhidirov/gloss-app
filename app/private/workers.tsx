@@ -1,5 +1,3 @@
-import type { User } from '@type/user.type';
-
 import LoadingView from '@commonComponent/loading-view';
 import WorkerList from '@component/worker/worker-list';
 import useUsersStore from '@store/users.store';
@@ -9,7 +7,7 @@ import { Alert, Text } from 'react-native';
 import userService from '@service/user.service';
 
 const WorkersScreen = () => {
-  const { users, setUsers, updateUser } = useUsersStore(state => state);
+  const { users, setUsers } = useUsersStore(state => state);
   const [loading, setLoading] = useState(false);
 
   async function fetchUsersOnLoad() {
@@ -28,49 +26,13 @@ const WorkersScreen = () => {
     }
   }
 
-  async function approveUser(user: User) {
-    const [approvedUser, err] = await userService.approve(user);
-
-    if (err) {
-      Alert.alert('Ошибка');
-    } else {
-      updateUser(approvedUser);
-    }
-  }
-
-  async function archiveUser(user: User) {
-    const [archivedUser, err] = await userService.archive(user);
-
-    if (err) {
-      Alert.alert('Ошибка');
-    } else {
-      updateUser(archivedUser);
-    }
-  }
-
-  async function unarchiveUser(user: User) {
-    const [archivedUser, err] = await userService.unArchive(user);
-
-    if (err) {
-      Alert.alert('Ошибка');
-    } else {
-      updateUser(archivedUser);
-    }
-  }
-
   useEffect(() => {
     fetchUsersOnLoad();
   }, []);
 
   return (
     <LoadingView loading={loading}>
-      <WorkerList
-        workers={users}
-        onRefresh={fetchUsers}
-        approve={approveUser}
-        archive={archiveUser}
-        unarchive={unarchiveUser}
-      >
+      <WorkerList workers={users} onRefresh={fetchUsers}>
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Ваши сотрудники</Text>
       </WorkerList>
     </LoadingView>

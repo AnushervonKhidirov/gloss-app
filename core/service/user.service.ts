@@ -40,9 +40,9 @@ class UserService {
     }
   }
 
-  async approve(user: User): ReturnWithErrPromise<User> {
+  async approve(userId: number): ReturnWithErrPromise<User> {
     try {
-      const response = await apiClient.patch<User>(`${this.endpoint}/approve/${user.id}`);
+      const response = await apiClient.patch<User>(`${this.endpoint}/approve/${userId}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
@@ -51,9 +51,9 @@ class UserService {
     }
   }
 
-  async archive(user: User): ReturnWithErrPromise<User> {
+  async archive(userId: number): ReturnWithErrPromise<User> {
     try {
-      const response = await apiClient.patch<User>(`${this.endpoint}/archive/${user.id}`);
+      const response = await apiClient.patch<User>(`${this.endpoint}/archive/${userId}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
@@ -62,9 +62,20 @@ class UserService {
     }
   }
 
-  async unArchive(user: User): ReturnWithErrPromise<User> {
+  async unArchive(userId: number): ReturnWithErrPromise<User> {
     try {
-      const response = await apiClient.patch<User>(`${this.endpoint}/unarchive/${user.id}`);
+      const response = await apiClient.patch<User>(`${this.endpoint}/unarchive/${userId}`);
+
+      if (isHttpException(response.data)) throw new HttpException(response.data);
+      return [response.data, null];
+    } catch (err) {
+      return errorHandler(err);
+    }
+  }
+
+  async delete(userId: number): ReturnWithErrPromise<User> {
+    try {
+      const response = await apiClient.delete<User>(`${this.endpoint}/${userId}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];
