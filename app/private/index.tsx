@@ -1,5 +1,5 @@
-
 import useQueueStore from '@store/queue.store';
+import useUserStore from '@store/user.store';
 import { useEffect, useState } from 'react';
 
 import { Tabs } from '@ant-design/react-native';
@@ -9,10 +9,11 @@ import QueueSection from '@component/queue/section/queue-section';
 
 import queueService from '@service/queue.service';
 
-const tabs = [{ title: 'Мои' }, { title: 'Все' }];
+const tabs = [{ title: 'Мои' }, { title: 'Остальные' }];
 
 const HomeScreen = () => {
-  const { setQueue, setMyQueue, deleteQueue, deleteMyQueue } = useQueueStore(state => state);
+  const user = useUserStore(state => state.user);
+  const { setQueue, setMyQueue } = useQueueStore(state => state);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -20,7 +21,7 @@ const HomeScreen = () => {
     setLoading(true);
 
     const [myQueue, myQueueErr] = await queueService.findMy();
-    const [queue, queueErr] = await queueService.findMany();
+    const [queue, queueErr] = await queueService.findMany({ exceptUserId: user?.id.toString() });
 
     if (myQueueErr || queueErr) {
       setIsError(true);

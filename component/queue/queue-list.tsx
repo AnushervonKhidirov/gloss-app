@@ -5,6 +5,7 @@ import type { FC } from 'react';
 import { Button, Card, WingBlank } from '@ant-design/react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useQueueStore from '@store/queue.store';
+import useUserStore from '@store/user.store';
 import { useState } from 'react';
 import {
   Alert,
@@ -23,6 +24,7 @@ import dayjs from 'dayjs';
 
 import { scrollerTabMarginBottom } from '@constant/scroller';
 import queueService from '@service/queue.service';
+import { Role } from '@type/user.type';
 
 type QueueListProps = {
   queue: Queue[];
@@ -170,6 +172,7 @@ const ConversationActions: FC<Omit<QueueItemProps, 'onRemove'>> = ({ queue }) =>
 };
 
 const FooterActions: FC<QueueItemProps> = ({ queue }) => {
+  const user = useUserStore(state => state.user);
   const { deleteFromAll } = useQueueStore(state => state);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [statisticLoading, setStatisticLoading] = useState(false);
@@ -223,17 +226,19 @@ const FooterActions: FC<QueueItemProps> = ({ queue }) => {
   }
 
   return (
-    <View style={{ alignSelf: 'flex-end', flexDirection: 'row', gap: 5 }}>
-      <Button type="warning" size="small" loading={removeLoading} onPress={confirmRemoving}>
-        {isPassed ? 'Удалить' : 'Отменить'}
-      </Button>
-
-      {isPassed && (
-        <Button type="primary" size="small" loading={statisticLoading} onPress={confirmStatistic}>
-          Добавить в статистику
+    (user?.role === Role.ADMIN || user?.id === queue.userId) && (
+      <View style={{ alignSelf: 'flex-end', flexDirection: 'row', gap: 5 }}>
+        <Button type="warning" size="small" loading={removeLoading} onPress={confirmRemoving}>
+          {isPassed ? 'Удалить' : 'Отменить'}
         </Button>
-      )}
-    </View>
+
+        {isPassed && (
+          <Button type="primary" size="small" loading={statisticLoading} onPress={confirmStatistic}>
+            Добавить в статистику
+          </Button>
+        )}
+      </View>
+    )
   );
 };
 
