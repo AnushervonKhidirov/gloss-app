@@ -72,9 +72,9 @@ class ServiceService {
 
   async findManySelected(query: QueryService = {}): ReturnWithErrPromise<SelectedService[]> {
     try {
-      const queryString = new URLSearchParams(query);
+      const queryParams = new URLSearchParams(query);
       const response = await apiClient.get<SelectedService[]>(
-        `${this.endpoint}/worker?${queryString}`,
+        `${this.endpoint}/worker?${queryParams}`,
       );
 
       if (isHttpException(response.data)) throw new HttpException(response.data);

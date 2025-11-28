@@ -21,8 +21,8 @@ class QueueService {
 
   async findMany(query: QueryQueue = {}): ReturnWithErrPromise<Queue[]> {
     try {
-      const queryString = new URLSearchParams(query);
-      const response = await apiClient.get<Queue[]>(`${this.endpoint}?${queryString.toString()}`);
+      const queryParams = new URLSearchParams(query);
+      const response = await apiClient.get<Queue[]>(`${this.endpoint}?${queryParams}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       const queueList = response.data.map(queue => this.convertData(queue));
@@ -34,10 +34,8 @@ class QueueService {
 
   async findMy(query: QueryMyQueue = {}): ReturnWithErrPromise<Queue[]> {
     try {
-      const queryString = new URLSearchParams(query);
-      const response = await apiClient.get<Queue[]>(
-        `${this.endpoint}/my?${queryString.toString()}`,
-      );
+      const queryParams = new URLSearchParams(query);
+      const response = await apiClient.get<Queue[]>(`${this.endpoint}/my?${queryParams}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       const queueList = response.data.map(queue => this.convertData(queue));
