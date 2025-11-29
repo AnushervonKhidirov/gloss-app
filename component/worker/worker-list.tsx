@@ -94,15 +94,11 @@ const WorkerItem: FC<{ worker: User }> = ({ worker }) => {
         extra={<ConversationActions worker={worker} />}
       />
 
-      {worker.specialty ? (
-        <Card.Body>
-          <WingBlank>
-            <WorkerItemBody worker={worker} />
-          </WingBlank>
-        </Card.Body>
-      ) : (
-        <></>
-      )}
+      <Card.Body>
+        <WingBlank>
+          <WorkerItemBody worker={worker} />
+        </WingBlank>
+      </Card.Body>
 
       <Card.Footer content={<WorkerActionButtons worker={worker} />} />
     </Card>
