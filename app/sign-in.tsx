@@ -9,11 +9,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
+import userService from '@service/user.service';
+import useUserStore from '@store/user.store';
 
 const SignInScreen = () => {
   const [form] = Form.useForm();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const setUser = useUserStore(state => state.setUser);
 
   async function onFinish(value: SignIn) {
     setLoading(true);
@@ -21,21 +25,25 @@ const SignInScreen = () => {
     const [token, err] = await authService.signIn(value);
 
     if (err) {
-      if (err.statusCode === 404) {
-        Alert.alert('Пользователь не найден');
-      } else if (err.statusCode === 403) {
-        Alert.alert('Аккаунт не подтвержден', 'Дождитесь пока вас подтвердят');
-      } else if (err.statusCode >= 500) {
-        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
-      } else {
-        Alert.alert('Ошибка', 'Причина не известна');
-      }
-    } else {
-      await TokenService.setToken(token);
-      router.replace('/private');
+      Alert.alert('Ошибка', err.error);
+      setLoading(false);
+      return;
     }
 
+    await TokenService.setToken(token);
+
+    const [user, userErr] = await userService.findMe();
+
+    if (userErr) {
+      Alert.alert('Ошибка', userErr.error);
+      setLoading(false);
+      return;
+    }
+
+    setUser(user);
     setLoading(false);
+
+    router.replace('/private');
   }
 
   return (
