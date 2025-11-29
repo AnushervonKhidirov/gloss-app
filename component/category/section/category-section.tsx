@@ -59,7 +59,7 @@ const CategorySection = () => {
     const [removedService, err] = await categoryService.delete(category.id);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       deleteCategory(removedService);
     }
@@ -69,7 +69,7 @@ const CategorySection = () => {
     const [category, err] = await categoryService.findMany();
 
     if (err) {
-      Alert.alert('Ошибка', 'Что-то пошло не так');
+      Alert.alert(err.error, err.message);
     } else {
       setCategories(category);
     }

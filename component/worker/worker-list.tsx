@@ -174,7 +174,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     const [approvedUser, err] = await userService.approve(userId);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       updateUser(approvedUser);
     }
@@ -184,7 +184,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     const [archivedUser, err] = await userService.archive(userId);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       updateUser(archivedUser);
     }
@@ -194,7 +194,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     const [archivedUser, err] = await userService.unArchive(userId);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       updateUser(archivedUser);
     }
@@ -204,7 +204,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     const [archivedUser, err] = await userService.delete(userId);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       removeUser(archivedUser);
     }

@@ -30,7 +30,7 @@ apiClient.interceptors.response.use(async response => {
     const token = await TokenService.getToken();
 
     if (!token) {
-      throw new HttpException({ message: 'Token not found from Client', statusCode: 404 });
+      throw new HttpException({ error: 'Токен не найден', statusCode: 0 });
     }
 
     const response = await apiClient.post<Token>('/auth/refresh-token', token);

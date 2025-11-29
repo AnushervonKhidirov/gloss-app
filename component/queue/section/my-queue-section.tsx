@@ -11,13 +11,13 @@ const MyQueueSection = () => {
     const [queue, err] = await queueService.findMy({ dateFrom: new Date().toISOString() });
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       setMyQueue(queue);
     }
   }
 
-  return <QueueList queue={myQueue} refresh={refreshQueue} />;
+  return <QueueList queue={myQueue} refresh={refreshQueue} emptyMessage='У вас пока нет очереди' />;
 };
 
 export default MyQueueSection;

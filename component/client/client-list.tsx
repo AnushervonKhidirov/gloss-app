@@ -128,7 +128,7 @@ const FooterActions: FC<ClientWithEditProps> = ({ client, onEdit }) => {
     const [clientToRemove, err] = await clientService.delete(client.id);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       removeCLient(clientToRemove);
     }

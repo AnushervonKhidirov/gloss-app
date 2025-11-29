@@ -20,7 +20,7 @@ const WorkersScreen = () => {
     const [users, err] = await userService.findMany();
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       setUsers(users);
     }

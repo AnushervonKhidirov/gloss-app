@@ -16,7 +16,7 @@ const QueueSection = () => {
     });
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       setQueue(queue);
     }

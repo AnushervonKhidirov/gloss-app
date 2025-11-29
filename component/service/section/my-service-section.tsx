@@ -43,12 +43,13 @@ const MyServiceSection = () => {
 
   async function refreshServices() {
     setRefreshing(true);
+
     const [services, serviceErr] = await serviceService.findMany();
     const [selectedServices, selectedErr] = await serviceService.findMySelected();
 
     if (selectedErr || serviceErr) {
-      const errors = [selectedErr?.error, serviceErr?.error].filter((message) => !!message)
-      Alert.alert('Ошибка', errors.join(' ; '));
+      if (selectedErr) Alert.alert(selectedErr.error, selectedErr.message);
+      if (serviceErr) Alert.alert(serviceErr.error, serviceErr.message);
     } else {
       setSelectedServices(selectedServices);
       setServices(services);

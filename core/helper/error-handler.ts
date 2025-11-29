@@ -1,18 +1,20 @@
-type HttpExceptionProps = { statusCode: number; message: string };
+type HttpExceptionProps = { error: string; statusCode: number; message?: string };
 
 export class HttpException {
   statusCode: number;
   error: string;
+  message?: string;
 
-  constructor({ statusCode, message }: HttpExceptionProps) {
+  constructor({ statusCode, error, message }: HttpExceptionProps) {
     this.statusCode = statusCode;
-    this.error = message;
+    this.error = error;
+    this.message = message;
   }
 }
 
 export function isHttpException(err: unknown): err is HttpExceptionProps {
   const isErrorObj = err && typeof err === 'object';
-  const isHttpError = isErrorObj && 'statusCode' in err && 'message' in err;
+  const isHttpError = isErrorObj && 'statusCode' in err && 'error' in err;
 
   if (isErrorObj && isHttpError && typeof err.statusCode === 'number' && err.statusCode >= 300) {
     return true;
@@ -24,6 +26,6 @@ export function errorHandler(err: unknown): [null, HttpException] {
   if (err instanceof HttpException) return [null, err];
   return [
     null,
-    new HttpException({ statusCode: 500, message: 'Something went wrong, please try again later' }),
+    new HttpException({ error: 'Ошибка', message: 'Причина неизвестна', statusCode: 0 }),
   ];
 }

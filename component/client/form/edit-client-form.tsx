@@ -25,7 +25,7 @@ const EditClientForm: FC<EditClientFormProps> = ({ clientToEdit, onSuccess }) =>
     const [client, err] = await clientService.update(clientToEdit.id, value);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       onSuccess(client);
     }

@@ -31,13 +31,7 @@ const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, 
     const [service, err] = await serviceService.update(serviceToEdit.id, value);
 
     if (err) {
-      if (err.statusCode === 403) {
-        Alert.alert('Запрет', 'Только администранор может редактировать услуги');
-      } else if (err.statusCode >= 500) {
-        Alert.alert('Ошибка сервера', 'Что-то пошло не так, попробуйте позже');
-      } else {
-        Alert.alert('Ошибка', 'Причина не известна');
-      }
+      Alert.alert(err.error, err.message);
     } else {
       onSuccess(service);
     }

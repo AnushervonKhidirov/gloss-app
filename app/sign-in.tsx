@@ -25,7 +25,7 @@ const SignInScreen = () => {
     const [token, err] = await authService.signIn(value);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
       setLoading(false);
       return;
     }
@@ -35,7 +35,7 @@ const SignInScreen = () => {
     const [user, userErr] = await userService.findMe();
 
     if (userErr) {
-      Alert.alert('Ошибка', userErr.error);
+      Alert.alert(userErr.error, userErr.message);
       setLoading(false);
       return;
     }

@@ -11,7 +11,9 @@ const CompletedQueueSection = () => {
   async function fetchQueue() {
     const [queue, err] = await queueService.findMany({ dateTo: new Date().toISOString() });
 
-    if (!err) {
+    if (err) {
+      Alert.alert(err.error, err.message);
+    } else {
       setCompletedQueue(queue);
     }
   }
@@ -20,17 +22,7 @@ const CompletedQueueSection = () => {
     fetchQueue();
   }, []);
 
-  async function refreshQueue() {
-    const [queue, err] = await queueService.findMany({ dateTo: new Date().toISOString() });
-
-    if (err) {
-      Alert.alert('Ошибка', err.error);
-    } else {
-      setCompletedQueue(queue);
-    }
-  }
-
-  return <QueueList queue={completedQueue} refresh={refreshQueue} emptyMessage="Список пуст" />;
+  return <QueueList queue={completedQueue} refresh={fetchQueue} emptyMessage="Список пуст" />;
 };
 
 export default CompletedQueueSection;

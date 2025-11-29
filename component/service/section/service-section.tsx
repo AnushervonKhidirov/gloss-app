@@ -69,7 +69,7 @@ const ServiceSection = () => {
     const [services, err] = await serviceService.findMany();
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       setServices(services);
     }
@@ -81,7 +81,7 @@ const ServiceSection = () => {
     const [removedService, err] = await serviceService.delete(service.id);
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       deleteService(removedService);
     }

@@ -27,7 +27,7 @@ const ClientScreen = () => {
     const [users, err] = await clientService.findMany();
 
     if (err) {
-      Alert.alert('Ошибка', err.error);
+      Alert.alert(err.error, err.message);
     } else {
       setClients(users);
     }
