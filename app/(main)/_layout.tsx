@@ -16,6 +16,7 @@ const MainLayout = () => {
   return (
     <Drawer
       screenOptions={{
+        swipeEdgeWidth: 100,
         drawerPosition: 'right',
         drawerContentContainerStyle: styles.drawerMenu,
         drawerItemStyle: styles.drawerMenuItem,
