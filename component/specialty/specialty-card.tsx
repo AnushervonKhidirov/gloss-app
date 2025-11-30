@@ -6,6 +6,7 @@ import ActionButtons from '@commonComponent/action-buttons';
 import { Text, View } from 'react-native';
 
 import { gray } from '@ant-design/colors';
+import { cardStyle } from '@constant/card-style';
 
 type SpecialtyItemProps = {
   specialty: Specialty;
@@ -17,10 +18,10 @@ const SpecialtyCard: FC<SpecialtyItemProps> = ({ specialty, onEdit, onRemove }) 
   return (
     <Card>
       <Card.Header
+        styles={cardStyle.header}
         title={<Text>{specialty.name}</Text>}
         extra={
           <ActionButtons
-            styles={{ alignSelf: 'flex-end' }}
             onEdit={onEdit?.bind(null, specialty)}
             onRemove={onRemove?.bind(null, specialty)}
           />

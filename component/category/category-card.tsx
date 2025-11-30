@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 import { Card } from '@ant-design/react-native';
 import ActionButtons from '@commonComponent/action-buttons';
+import { cardStyle } from '@constant/card-style';
 import { Text } from 'react-native';
 
 type CategoryItemProps = {
@@ -15,10 +16,10 @@ const CategoryCard: FC<CategoryItemProps> = ({ category, onEdit, onRemove }) => 
   return (
     <Card style={{ paddingTop: 5, paddingRight: 0, paddingBottom: 5, paddingLeft: 0 }}>
       <Card.Header
+        styles={cardStyle.header}
         title={<Text style={{ fontSize: 18 }}>{category.value}</Text>}
         extra={
           <ActionButtons
-            styles={{ alignSelf: 'flex-end' }}
             onEdit={onEdit?.bind(null, category)}
             onRemove={onRemove?.bind(null, category)}
           />

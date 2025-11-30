@@ -13,6 +13,7 @@ import { Button, Card, WingBlank } from '@ant-design/react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { cardStyle } from '@constant/card-style';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
 import appointmentService from '@service/appointment.service';
 import parsePhoneNumber from 'libphonenumber-js';
@@ -37,6 +38,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
   return (
     <Card>
       <Card.Header
+        styles={cardStyle.header}
         title={
           <AppointmentHeader
             clientName={appointment.client.name}
@@ -71,7 +73,7 @@ const AppointmentHeader: FC<{ clientName: string; serviceName: string }> = ({
 
 const ConnectActions: FC<{ phone: string }> = ({ phone }) => {
   return (
-    <View style={{ alignSelf: 'flex-end', flexDirection: 'row', gap: 5 }}>
+    <View style={{ flexDirection: 'row', gap: 5 }}>
       <Pressable onPress={() => Linking.openURL(`sms:${phone}`)}>
         <MaterialCommunityIcons name="email-outline" size={24} color={blue.primary} />
       </Pressable>
