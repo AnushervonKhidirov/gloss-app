@@ -1,25 +1,27 @@
-import type { Category, CreateCategory } from '@type/category.type';
+import type { CreateSpecialty, Specialty } from '@type/specialty.type';
 import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
-import categoryService from '@service/category.service';
+import specialtyService from '@service/specialty.service';
 
-const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ onSuccess }) => {
+const CreateSpecialtyForm: FC<{ onSuccess: (specialty: Specialty) => void }> = ({ onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  async function onFinish(value: CreateCategory) {
+  async function onFinish(value: CreateSpecialty) {
     setLoading(true);
 
-    const [category, err] = await categoryService.create(value);
+    if (!value.desc) delete value.desc;
+
+    const [specialty, err] = await specialtyService.create(value);
 
     if (err) {
       Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
-      onSuccess(category);
+      onSuccess(specialty);
     }
 
     setLoading(false);
@@ -33,10 +35,17 @@ const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ o
       <View style={styles.form_wrapper}>
         <Form form={form} onFinish={onFinish}>
           <Form.Item
-            name="value"
-            rules={[{ required: true, message: 'Введите название категории' }]}
+            name="name"
+            rules={[{ required: true, message: 'Введите название специальности' }]}
           >
-            <Input placeholder="Название категории" />
+            <Input placeholder="Название специальности" />
+          </Form.Item>
+
+          <Form.Item name="desc">
+            <Input.TextArea
+              autoSize={{ minRows: 3, maxRows: 5 }}
+              placeholder="Описание специальности"
+            />
           </Form.Item>
 
           <Form.Item>
@@ -57,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateCategoryForm;
+export default CreateSpecialtyForm;

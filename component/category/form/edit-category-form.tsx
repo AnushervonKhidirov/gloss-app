@@ -23,7 +23,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
     const [category, err] = await categoryService.update(categoryToEdit.id, value);
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
       onSuccess(category);
     }
@@ -44,7 +44,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
               name="value"
               rules={[{ required: true, message: 'Введите название категории' }]}
             >
-              <Input placeholder="Название категории"></Input>
+              <Input placeholder="Название категории" />
             </Form.Item>
 
             <Form.Item>
@@ -61,8 +61,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
 
 const styles = StyleSheet.create({
   form_wrapper: {
-    display: 'flex',
-    height: '100%',
+    flex: 1,
     justifyContent: 'center',
   },
 });

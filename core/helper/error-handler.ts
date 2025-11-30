@@ -3,7 +3,7 @@ type HttpExceptionProps = { error: string; statusCode: number; message?: string 
 export class HttpException {
   statusCode: number;
   error: string;
-  message?: string;
+  message?: string | string[];
 
   constructor({ statusCode, error, message }: HttpExceptionProps) {
     this.statusCode = statusCode;

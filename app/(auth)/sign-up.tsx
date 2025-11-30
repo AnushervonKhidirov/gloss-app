@@ -29,7 +29,7 @@ const SignUpScreen = () => {
     const [_, err] = await authService.signUp(value);
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
       Alert.alert('Вы успешно зарегистрировались', 'Дождитесь подтверждения');
     }

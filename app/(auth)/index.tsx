@@ -29,7 +29,7 @@ const SignInScreen = () => {
     const [token, err] = await authService.signIn(value);
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
       setLoading(false);
       return;
     }

@@ -22,7 +22,7 @@ const MyAppointmentScreen = () => {
     const [appointments, err] = await appointmentService.findMy({ dateFrom: dayjs() });
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
       setMyAppointments(appointments);
     }

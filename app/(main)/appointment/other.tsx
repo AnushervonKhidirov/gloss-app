@@ -21,15 +21,13 @@ const OthersAppointmentScreen = () => {
   }
 
   async function fetch() {
-    console.log(user);
-
     const [appointments, err] = await appointmentService.findMany({
       exceptUserId: user?.id,
       dateFrom: dayjs(),
     });
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
       setAppointments(appointments);
     }

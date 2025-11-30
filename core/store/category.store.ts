@@ -17,8 +17,10 @@ const useCategoryStore = create<CategoryState & CategoryActions>(set => ({
   categories: [],
 
   setCategories: categories => set(() => ({ categories })),
+
   pushCategories: newCategories =>
     set(state => ({ categories: [...state.categories, ...newCategories] })),
+
   editCategory: editedCategory =>
     set(state => {
       const newCategoryList = state.categories.map(category => {
@@ -26,6 +28,7 @@ const useCategoryStore = create<CategoryState & CategoryActions>(set => ({
       });
       return { categories: newCategoryList };
     }),
+
   deleteCategory: deletedCategory =>
     set(state => {
       const newCategoryList = state.categories.filter(

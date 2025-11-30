@@ -43,7 +43,7 @@ const CategoryScreen = () => {
   function removeConfirm(category: Category) {
     Alert.alert(
       'Удаление',
-      `После удаления нельзя восстановить! Вы хотите удалить ${category.value}?`,
+      `Удалить ${category.value}?\n\nПосле удаления нельзя восстановить!`,
       [
         {
           text: 'Да',
@@ -60,7 +60,7 @@ const CategoryScreen = () => {
     const [removedService, err] = await categoryService.delete(category.id);
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
       deleteCategory(removedService);
     }
@@ -76,7 +76,7 @@ const CategoryScreen = () => {
     const [categories, err] = await categoryService.findMany();
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
     } else {
       setCategories(categories);
     }
