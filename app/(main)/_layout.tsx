@@ -50,14 +50,6 @@ const MainLayout = () => {
       />
 
       <Drawer.Screen
-        name="service"
-        options={{
-          drawerLabel: 'Услуги',
-          title: 'Услуги',
-        }}
-      />
-
-      <Drawer.Screen
         name="worker"
         options={{
           drawerLabel: 'Сотрудники',
@@ -66,10 +58,26 @@ const MainLayout = () => {
       />
 
       <Drawer.Screen
+        name="service"
+        options={{
+          drawerLabel: 'Услуги',
+          title: 'Услуги',
+        }}
+      />
+
+      <Drawer.Screen
         name="category"
         options={{
           drawerLabel: 'Категории',
           title: 'Категории',
+        }}
+      />
+
+      <Drawer.Screen
+        name="specialty"
+        options={{
+          drawerLabel: 'Специальности',
+          title: 'Специальности',
         }}
       />
 

@@ -1,6 +1,6 @@
 import useAppointmentStore from '@store/appointment.store';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import LoadingView from '@commonComponent/loading-view';
 import AppointmentList from '@component/appointment/appointment-list';
@@ -28,7 +28,7 @@ const MyAppointmentScreen = () => {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchOnLoad();
   }, []);
 

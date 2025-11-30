@@ -17,6 +17,7 @@ const TabBar: FC<TabBarProps> = ({ tabs }) => {
   return (
     <Tabs
       screenOptions={{
+        sceneStyle: { padding: 16 },
         headerShown: false,
         animation: 'shift',
         tabBarStyle: { display: tabList.length > 1 ? undefined : 'none' },
