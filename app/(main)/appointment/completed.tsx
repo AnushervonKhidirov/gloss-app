@@ -1,5 +1,4 @@
 import useAppointmentStore from '@store/appointment.store';
-import useUserStore from '@store/user.store';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -9,9 +8,8 @@ import { Alert } from 'react-native';
 
 import appointmentService from '@service/appointment.service';
 
-const OthersAppointmentScreen = () => {
-  const user = useUserStore(state => state.user);
-  const { appointments, setAppointments } = useAppointmentStore(state => state);
+const PassedAppointmentScreen = () => {
+  const { completedAppointments, setCompletedAppointments } = useAppointmentStore(state => state);
   const [loading, setLoading] = useState(true);
 
   async function fetchOnLoad() {
@@ -21,17 +19,12 @@ const OthersAppointmentScreen = () => {
   }
 
   async function fetch() {
-    console.log(user);
-
-    const [appointments, err] = await appointmentService.findMany({
-      exceptUserId: user?.id,
-      dateFrom: dayjs(),
-    });
+    const [appointments, err] = await appointmentService.findMany({ dateTo: dayjs() });
 
     if (err) {
       Alert.alert(err.error, err.message);
     } else {
-      setAppointments(appointments);
+      setCompletedAppointments(appointments);
     }
   }
 
@@ -41,9 +34,9 @@ const OthersAppointmentScreen = () => {
 
   return (
     <LoadingView loading={loading}>
-      <AppointmentList appointments={appointments} refresh={fetch} />
+      <AppointmentList appointments={completedAppointments} refresh={fetch} />
     </LoadingView>
   );
 };
 
-export default OthersAppointmentScreen;
+export default PassedAppointmentScreen;

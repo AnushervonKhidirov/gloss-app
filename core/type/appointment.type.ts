@@ -3,7 +3,7 @@ import type { Client } from './client.type';
 import type { Service } from './service.type';
 import type { User } from './user.type';
 
-export type Queue = {
+export type Appointment = {
   id: number;
   startAt: Dayjs;
   endAt: Dayjs;
@@ -15,19 +15,19 @@ export type Queue = {
   service: Service;
 };
 
-export type CreateQueue = Pick<Queue, 'userId' | 'serviceId' | 'clientId'> & {
+export type CreateAppointment = Pick<Appointment, 'userId' | 'serviceId' | 'clientId'> & {
   clientId: number;
   startAt: string;
 };
 
-export type QueryMyQueue = {
-  clientId?: string;
-  serviceId?: string;
-  dateFrom?: string;
-  dateTo?: string;
+export type QueryMyAppointment = {
+  clientId?: number;
+  serviceId?: number;
+  dateFrom?: Dayjs;
+  dateTo?: Dayjs;
 };
 
-export type QueryQueue = QueryMyQueue & {
-  userId?: string;
-  exceptUserId?: string;
+export type QueryAppointment = QueryMyAppointment & {
+  userId?: number;
+  exceptUserId?: number;
 };

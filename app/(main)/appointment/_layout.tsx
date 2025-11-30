@@ -3,7 +3,7 @@ import TabBar from '@commonComponent/tab-bar';
 const tabs = [
   { name: 'index', title: 'Мои записи' },
   { name: 'other', title: 'Остальные' },
-  { name: 'passed', title: 'Прошедшие' },
+  { name: 'completed', title: 'Законченные' },
 ];
 
 const AppointmentLayout = () => {
