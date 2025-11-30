@@ -1,7 +1,5 @@
-import { Text } from 'react-native';
+import { Redirect } from 'expo-router';
 
-const AppointmentScreen = () => {
-  return <Text>Записи</Text>;
-};
-
-export default AppointmentScreen;
+export default function MainScreen() {
+  return <Redirect href="/appointment" />;
+}

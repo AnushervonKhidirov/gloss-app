@@ -28,6 +28,13 @@ const MainLayout = () => {
       <Drawer.Screen
         name="index"
         options={{
+          drawerItemStyle: { display: 'none' },
+        }}
+      />
+
+      <Drawer.Screen
+        name="appointment"
+        options={{
           drawerLabel: 'Записи',
           title: 'Записи',
         }}
