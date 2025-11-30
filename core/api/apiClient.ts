@@ -2,13 +2,14 @@ import type { Token } from '@type/auth.type';
 
 import TokenService from '@service/token.service';
 import axios from 'axios';
+import { router } from 'expo-router';
 
 import { HttpException, isHttpException } from '@helper/error-handler';
 
 let isRefreshing = false;
 
 const apiClient = axios.create({
-  baseURL: 'http://192.168.0.93:4000',
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -37,6 +38,7 @@ apiClient.interceptors.response.use(async response => {
 
     if (isHttpException(response.data)) {
       await TokenService.removeToken();
+      router.navigate('/(auth)');
       throw new HttpException(response.data);
     }
 
