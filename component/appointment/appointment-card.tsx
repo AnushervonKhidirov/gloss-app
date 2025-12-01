@@ -123,9 +123,11 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   const isPassed = dayjs().isAfter(appointment.endAt);
 
   function confirmRemoving() {
+    const text = isPassed ? 'удалить' : 'отменить'
+
     Alert.alert(
       'Удаление',
-      `Вы уверены что хотите отменить очередь клиента ${appointment.client.name}`,
+      `Вы уверены что хотите ${text} очередь клиента ${appointment.client.name}`,
       [{ text: 'Да', onPress: () => remove(appointment) }, { text: 'Нет' }],
     );
   }
