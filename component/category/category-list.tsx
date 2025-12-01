@@ -1,8 +1,8 @@
 import type { Category } from '@type/category.type';
 import type { FC, PropsWithChildren } from 'react';
 
-import { useState } from 'react';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import ScrollView from '@commonComponent/scroll-view';
+import { Text, View } from 'react-native';
 import CategoryCard from './category-card';
 
 type CategoryListProps = PropsWithChildren<{
@@ -23,20 +23,9 @@ const CategoryList: FC<CategoryListProps> = ({
 }) => {
   const message = emptyMessage ?? 'Список категорий пуст';
 
-  const [refreshing, setRefreshing] = useState(false);
-
-  async function onRefresh() {
-    setRefreshing(true);
-    await refresh();
-    setRefreshing(false);
-  }
-
   return (
     <View style={{ flex: 1, gap: 16 }}>
-      <ScrollView
-        style={{ flex: 1, paddingRight: 10, marginRight: -10 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
+      <ScrollView onRefresh={refresh}>
         <View style={{ gap: 10, flex: 1 }}>
           {categories.length > 0 ? (
             categories.map(category => (

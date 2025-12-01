@@ -3,8 +3,9 @@ import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
 import categoryService from '@service/category.service';
 
 const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ onSuccess }) => {
@@ -17,7 +18,7 @@ const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ o
     const [category, err] = await categoryService.create(value);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       onSuccess(category);
     }

@@ -4,8 +4,8 @@ import { useLayoutEffect, useState } from 'react';
 
 import LoadingView from '@commonComponent/loading-view';
 import AppointmentList from '@component/appointment/appointment-list';
-import { Alert } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
 import appointmentService from '@service/appointment.service';
 
 const MyAppointmentScreen = () => {
@@ -22,7 +22,7 @@ const MyAppointmentScreen = () => {
     const [appointments, err] = await appointmentService.findMy({ dateFrom: dayjs() });
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err)
     } else {
       setMyAppointments(appointments);
     }

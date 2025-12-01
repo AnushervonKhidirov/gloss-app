@@ -8,6 +8,7 @@ import { useLayoutEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { alertError } from '@helper/error-handler';
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
 
@@ -29,7 +30,7 @@ const SignUpScreen = () => {
     const [_, err] = await authService.signUp(value);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err)
     } else {
       Alert.alert('Вы успешно зарегистрировались', 'Дождитесь подтверждения');
     }

@@ -10,8 +10,8 @@ import { useState } from 'react';
 
 import { blue, gray, green, orange } from '@ant-design/colors';
 import { Button, Card, WingBlank } from '@ant-design/react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import ConnectActionButtons from '@commonComponent/connect-action-buttons';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { cardStyle } from '@constant/card-style';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
@@ -45,7 +45,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
             serviceName={appointment.service.name}
           />
         }
-        extra={<ConnectActions phone={appointment.client.phone} />}
+        extra={<ConnectActionButtons phone={appointment.client.phone} />}
       />
 
       <Card.Body>
@@ -67,20 +67,6 @@ const AppointmentHeader: FC<{ clientName: string; serviceName: string }> = ({
     <View>
       <Text style={{ fontSize: 17 }}>{clientName}</Text>
       <Text style={{ color: gray[2] }}>{serviceName}</Text>
-    </View>
-  );
-};
-
-const ConnectActions: FC<{ phone: string }> = ({ phone }) => {
-  return (
-    <View style={{ flexDirection: 'row', gap: 5 }}>
-      <Pressable onPress={() => Linking.openURL(`sms:${phone}`)}>
-        <MaterialCommunityIcons name="email-outline" size={24} color={blue.primary} />
-      </Pressable>
-
-      <Pressable onPress={() => Linking.openURL(`tel:${phone}`)}>
-        <MaterialCommunityIcons name="phone" size={24} color={green.primary} />
-      </Pressable>
     </View>
   );
 };

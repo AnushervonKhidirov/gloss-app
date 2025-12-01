@@ -4,9 +4,10 @@ import { Button, Form, Input } from '@ant-design/react-native';
 import InputPassword from '@commonComponent/input/input-password';
 import { Link, useRouter } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { alertError } from '@helper/error-handler';
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
 
@@ -29,7 +30,7 @@ const SignInScreen = () => {
     const [token, err] = await authService.signIn(value);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err)
       setLoading(false);
       return;
     }

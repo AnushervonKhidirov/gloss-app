@@ -14,6 +14,8 @@ import CreateCategoryForm from '@component/category/form/create-category-form';
 import EditCategoryForm from '@component/category/form/edit-category-form';
 import { Alert } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
+
 const CategoryScreen = () => {
   const user = useUserStore(state => state.user);
   const { categories, pushCategories, editCategory, deleteCategory, setCategories } =
@@ -41,26 +43,22 @@ const CategoryScreen = () => {
   }
 
   function removeConfirm(category: Category) {
-    Alert.alert(
-      'Удаление',
-      `Удалить ${category.value}?\n\nПосле удаления нельзя восстановить!`,
-      [
-        {
-          text: 'Да',
-          onPress: () => remove(category),
-        },
-        {
-          text: 'Нет',
-        },
-      ],
-    );
+    Alert.alert('Удаление', `Удалить ${category.value}?\n\nПосле удаления нельзя восстановить!`, [
+      {
+        text: 'Да',
+        onPress: () => remove(category),
+      },
+      {
+        text: 'Нет',
+      },
+    ]);
   }
 
   async function remove(category: Category) {
     const [removedService, err] = await categoryService.delete(category.id);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       deleteCategory(removedService);
     }
@@ -76,7 +74,7 @@ const CategoryScreen = () => {
     const [categories, err] = await categoryService.findMany();
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       setCategories(categories);
     }
@@ -95,29 +93,27 @@ const CategoryScreen = () => {
         onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
       >
         {user?.role === Role.ADMIN && (
-          <>
-            <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
-              Создать категорию
-            </Button>
-
-            <Modal
-              title="Создание категории"
-              isOpen={createCategoryModalVisible}
-              close={() => setCreateCategoryModalVisible(false)}
-            >
-              <CreateCategoryForm onSuccess={push} />
-            </Modal>
-
-            <Modal
-              title="Редактирование категории"
-              isOpen={editCategoryModalVisible}
-              close={() => setEditCategoryModalVisible(false)}
-            >
-              <EditCategoryForm categoryToEdit={toEdit} onSuccess={edit} />
-            </Modal>
-          </>
+          <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
+            Создать категорию
+          </Button>
         )}
       </CategoryList>
+
+      <Modal
+        title="Создание категории"
+        isOpen={createCategoryModalVisible}
+        close={() => setCreateCategoryModalVisible(false)}
+      >
+        <CreateCategoryForm onSuccess={push} />
+      </Modal>
+
+      <Modal
+        title="Редактирование категории"
+        isOpen={editCategoryModalVisible}
+        close={() => setEditCategoryModalVisible(false)}
+      >
+        <EditCategoryForm categoryToEdit={toEdit} onSuccess={edit} />
+      </Modal>
     </LoadingView>
   );
 };

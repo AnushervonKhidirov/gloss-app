@@ -5,8 +5,8 @@ import { useLayoutEffect, useState } from 'react';
 
 import LoadingView from '@commonComponent/loading-view';
 import AppointmentList from '@component/appointment/appointment-list';
-import { Alert } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
 import appointmentService from '@service/appointment.service';
 
 const OthersAppointmentScreen = () => {
@@ -27,7 +27,7 @@ const OthersAppointmentScreen = () => {
     });
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err)
     } else {
       setAppointments(appointments);
     }

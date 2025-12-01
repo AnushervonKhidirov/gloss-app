@@ -2,9 +2,10 @@ import type { Category, UpdateCategory } from '@type/category.type';
 import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
+import { alertError } from '@helper/error-handler';
 import categoryService from '@service/category.service';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
 type EditCategoryFormProps = {
   categoryToEdit: Category | null;
@@ -23,7 +24,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
     const [category, err] = await categoryService.update(categoryToEdit.id, value);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       onSuccess(category);
     }

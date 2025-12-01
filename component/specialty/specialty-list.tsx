@@ -1,8 +1,8 @@
 import type { Specialty } from '@type/specialty.type';
 import type { FC, PropsWithChildren } from 'react';
 
-import { useState } from 'react';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import ScrollView from '@commonComponent/scroll-view';
+import { Text, View } from 'react-native';
 import SpecialtyCard from './specialty-card';
 
 type SpecialtyListProps = PropsWithChildren<{
@@ -23,20 +23,9 @@ const SpecialtyList: FC<SpecialtyListProps> = ({
 }) => {
   const message = emptyMessage ?? 'Список специальностей пуст';
 
-  const [refreshing, setRefreshing] = useState(false);
-
-  async function onRefresh() {
-    setRefreshing(true);
-    await refresh();
-    setRefreshing(false);
-  }
-
   return (
     <View style={{ flex: 1, gap: 16 }}>
-      <ScrollView
-        style={{ flex: 1, paddingRight: 10, marginRight: -10 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
+      <ScrollView onRefresh={refresh}>
         <View style={{ gap: 10, flex: 1 }}>
           {specialties.length > 0 ? (
             specialties.map(specialty => (

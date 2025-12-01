@@ -14,6 +14,8 @@ import EditSpecialtyForm from '@component/specialty/form/edit-specialty-form';
 import SpecialtyList from '@component/specialty/specialty-list';
 import { Alert } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
+
 const SpecialtyScreen = () => {
   const user = useUserStore(state => state.user);
   const { specialties, pushCategories, editSpecialty, deleteSpecialty, setCategories } =
@@ -56,7 +58,7 @@ const SpecialtyScreen = () => {
     const [removedService, err] = await specialtyService.delete(specialty.id);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       deleteSpecialty(removedService);
     }
@@ -72,7 +74,7 @@ const SpecialtyScreen = () => {
     const [specialties, err] = await specialtyService.findMany();
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       setCategories(specialties);
     }
@@ -91,29 +93,27 @@ const SpecialtyScreen = () => {
         onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
       >
         {user?.role === Role.ADMIN && (
-          <>
-            <Button type="primary" onPress={() => setCreateSpecialtyModalVisible(true)}>
-              Создать специальность
-            </Button>
-
-            <Modal
-              title="Создание категории"
-              isOpen={createSpecialtyModalVisible}
-              close={() => setCreateSpecialtyModalVisible(false)}
-            >
-              <CreateSpecialtyForm onSuccess={push} />
-            </Modal>
-
-            <Modal
-              title="Редактирование категории"
-              isOpen={editSpecialtyModalVisible}
-              close={() => setEditSpecialtyModalVisible(false)}
-            >
-              <EditSpecialtyForm specialtyToEdit={toEdit} onSuccess={edit} />
-            </Modal>
-          </>
+          <Button type="primary" onPress={() => setCreateSpecialtyModalVisible(true)}>
+            Создать специальность
+          </Button>
         )}
       </SpecialtyList>
+
+      <Modal
+        title="Создание категории"
+        isOpen={createSpecialtyModalVisible}
+        close={() => setCreateSpecialtyModalVisible(false)}
+      >
+        <CreateSpecialtyForm onSuccess={push} />
+      </Modal>
+
+      <Modal
+        title="Редактирование категории"
+        isOpen={editSpecialtyModalVisible}
+        close={() => setEditSpecialtyModalVisible(false)}
+      >
+        <EditSpecialtyForm specialtyToEdit={toEdit} onSuccess={edit} />
+      </Modal>
     </LoadingView>
   );
 };

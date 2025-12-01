@@ -3,8 +3,9 @@ import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
 import specialtyService from '@service/specialty.service';
 
 type EditSpecialtyFormProps = {
@@ -25,7 +26,7 @@ const EditSpecialtyForm: FC<EditSpecialtyFormProps> = ({ specialtyToEdit, onSucc
     const [specialty, err] = await specialtyService.update(specialtyToEdit.id, value);
 
     if (err) {
-      Alert.alert(err.error, Array.isArray(err.message) ? err.message.join(';') : err.message);
+      alertError(err);
     } else {
       onSuccess(specialty);
     }
