@@ -30,6 +30,7 @@ const MainLayout = () => {
         name="index"
         options={{
           drawerItemStyle: { display: 'none' },
+          headerShown: false,
         }}
       />
 
