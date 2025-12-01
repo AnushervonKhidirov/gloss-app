@@ -2,7 +2,7 @@ import type { Appointment } from '@type/appointment.type';
 import type { FC } from 'react';
 
 import ScrollView from '@commonComponent/scroll-view';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import AppointmentCard from './appointment-card';
 
 type AppointmentListProps = {
@@ -16,15 +16,13 @@ const AppointmentList: FC<AppointmentListProps> = ({ appointments, emptyMessage,
 
   return (
     <ScrollView onRefresh={refresh}>
-      <View style={{ gap: 10, flex: 1 }}>
-        {appointments.length > 0 ? (
-          appointments.map(appointment => (
-            <AppointmentCard key={appointment.id} appointment={appointment} />
-          ))
-        ) : (
-          <Text>{message}</Text>
-        )}
-      </View>
+      {appointments.length > 0 ? (
+        appointments.map(appointment => (
+          <AppointmentCard key={appointment.id} appointment={appointment} />
+        ))
+      ) : (
+        <Text>{message}</Text>
+      )}
     </ScrollView>
   );
 };

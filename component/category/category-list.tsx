@@ -26,20 +26,18 @@ const CategoryList: FC<CategoryListProps> = ({
   return (
     <View style={{ flex: 1, gap: 16 }}>
       <ScrollView onRefresh={refresh}>
-        <View style={{ gap: 10, flex: 1 }}>
-          {categories.length > 0 ? (
-            categories.map(category => (
-              <CategoryCard
-                key={category.id}
-                category={category}
-                onEdit={onEdit}
-                onRemove={onRemove}
-              />
-            ))
-          ) : (
-            <Text>{message}</Text>
-          )}
-        </View>
+        {categories.length > 0 ? (
+          categories.map(category => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onEdit={onEdit}
+              onRemove={onRemove}
+            />
+          ))
+        ) : (
+          <Text>{message}</Text>
+        )}
       </ScrollView>
 
       {children}

@@ -26,20 +26,18 @@ const SpecialtyList: FC<SpecialtyListProps> = ({
   return (
     <View style={{ flex: 1, gap: 16 }}>
       <ScrollView onRefresh={refresh}>
-        <View style={{ gap: 10, flex: 1 }}>
-          {specialties.length > 0 ? (
-            specialties.map(specialty => (
-              <SpecialtyCard
-                key={specialty.id}
-                specialty={specialty}
-                onEdit={onEdit}
-                onRemove={onRemove}
-              />
-            ))
-          ) : (
-            <Text>{message}</Text>
-          )}
-        </View>
+        {specialties.length > 0 ? (
+          specialties.map(specialty => (
+            <SpecialtyCard
+              key={specialty.id}
+              specialty={specialty}
+              onEdit={onEdit}
+              onRemove={onRemove}
+            />
+          ))
+        ) : (
+          <Text>{message}</Text>
+        )}
       </ScrollView>
 
       {children}
