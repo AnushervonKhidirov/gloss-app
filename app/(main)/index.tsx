@@ -1,11 +1,10 @@
 import TokenService from '@service/token.service';
 import userService from '@service/user.service';
 import useUserStore from '@store/user.store';
-import { router } from 'expo-router';
-import { useLayoutEffect } from 'react';
+import { router, useFocusEffect } from 'expo-router';
 
 export default function MainScreen() {
-  const { setUser } = useUserStore(state => state);
+  const { user, setUser } = useUserStore(state => state);
 
   async function fetchUser() {
     const token = TokenService.getToken();
@@ -25,9 +24,13 @@ export default function MainScreen() {
     }
   }
 
-  useLayoutEffect(() => {
-    fetchUser();
-  }, []);
+  useFocusEffect(() => {
+    if (user) {
+      router.navigate('/(main)/appointment');
+    } else {
+      fetchUser();
+    }
+  });
 
   return <></>;
 }
