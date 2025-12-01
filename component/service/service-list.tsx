@@ -1,5 +1,5 @@
 import type { Service } from '@type/service.type';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, Key, PropsWithChildren } from 'react';
 
 import { Text, View } from 'react-native';
 import ServiceCard from './service-csrd';
@@ -12,6 +12,7 @@ type ServiceListProps = PropsWithChildren<{
   onEdit?: (service: Service) => void;
   onRemove?: (service: Service) => void;
   onRefresh: () => Promise<void>;
+  keyExtractor?: (service: Service) => Key;
 }>;
 
 const ServiceList: FC<ServiceListProps> = ({
@@ -20,6 +21,7 @@ const ServiceList: FC<ServiceListProps> = ({
   onEdit,
   onRemove,
   onRefresh,
+  keyExtractor,
   children,
 }) => {
   const message = emptyMessage ?? 'Список услуг пуст';
@@ -29,7 +31,12 @@ const ServiceList: FC<ServiceListProps> = ({
       <ScrollView onRefresh={onRefresh}>
         {services.length > 0 ? (
           services.map(service => (
-            <ServiceCard key={service.id} service={service} onEdit={onEdit} onRemove={onRemove} />
+            <ServiceCard
+              key={keyExtractor ? keyExtractor(service) : service.id}
+              service={service}
+              onEdit={onEdit}
+              onRemove={onRemove}
+            />
           ))
         ) : (
           <Text>{message}</Text>
