@@ -13,10 +13,10 @@ type ServiceSingleState = {
 };
 
 type ServiceActions = {
-  setServices: ({ services, selectedServices }: ServiceState) => void;
-  pushServices: ({ services, selectedServices }: ServiceState) => void;
-  editService: ({ service, selectedService }: ServiceSingleState) => void;
-  deleteService: ({ service, selectedService }: ServiceSingleState) => void;
+  setServices: ({ services, selectedServices }: Partial<ServiceState>) => void;
+  pushServices: ({ services, selectedServices }: Partial<ServiceState>) => void;
+  editService: ({ service, selectedService }: Partial<ServiceSingleState>) => void;
+  deleteService: ({ service, selectedService }: Partial<ServiceSingleState>) => void;
 };
 
 const useServiceStore = create<ServiceState & ServiceActions>(set => ({
@@ -43,24 +43,29 @@ const useServiceStore = create<ServiceState & ServiceActions>(set => ({
 
   editService: ({ service, selectedService }) =>
     set(state => {
-      const updatedServices = state.services.map(serviceState => {
-        return serviceState.id === service.id ? service : serviceState;
-      });
-
-      const updatedSelectedServices = state.selectedServices.map(serviceState => {
-        return serviceState.id === selectedService.id ? selectedService : serviceState;
-      });
-
-      return { services: updatedServices, selectedServices: updatedSelectedServices };
+      return {
+        services: service
+          ? state.services.map(serviceState =>
+              serviceState.id === service.id ? service : serviceState,
+            )
+          : state.services,
+        selectedServices: selectedService
+          ? state.selectedServices.map(serviceState =>
+              serviceState.id === selectedService.id ? selectedService : serviceState,
+            )
+          : state.selectedServices,
+      };
     }),
 
   deleteService: ({ service, selectedService }) =>
     set(state => {
       return {
-        services: state.services.filter(serviceState => serviceState.id !== service.id),
-        selectedServices: state.selectedServices.filter(
-          serviceState => serviceState.id !== selectedService.id,
-        ),
+        services: service
+          ? state.services.filter(serviceState => serviceState.id !== service.id)
+          : state.services,
+        selectedServices: selectedService
+          ? state.selectedServices.filter(serviceState => serviceState.id !== selectedService.id)
+          : state.selectedServices,
       };
     }),
 }));

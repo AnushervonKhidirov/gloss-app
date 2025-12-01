@@ -27,15 +27,15 @@ const OthersAppointmentScreen = () => {
     });
 
     if (err) {
-      alertError(err)
+      alertError(err);
     } else {
-      setAppointments(appointments);
+      setAppointments({ appointments });
     }
   }
 
   useLayoutEffect(() => {
     fetchOnLoad();
-  }, []);
+  }, [user]);
 
   return (
     <LoadingView loading={loading}>

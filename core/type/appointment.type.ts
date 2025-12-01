@@ -20,14 +20,11 @@ export type CreateAppointment = Pick<Appointment, 'userId' | 'serviceId' | 'clie
   startAt: string;
 };
 
-export type QueryMyAppointment = {
+export type QueryAppointment = {
   clientId?: number;
   serviceId?: number;
   dateFrom?: Dayjs;
   dateTo?: Dayjs;
-};
-
-export type QueryAppointment = QueryMyAppointment & {
   userId?: number;
   exceptUserId?: number;
 };

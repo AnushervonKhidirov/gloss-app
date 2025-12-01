@@ -2,84 +2,83 @@ import type { Appointment } from '@type/appointment.type';
 
 import { create } from 'zustand';
 
-type MyAppointmentState = {
-  myAppointments: Appointment[];
-  setMyAppointments: (appointments: Appointment[]) => void;
-  pushMyAppointments: (appointments: Appointment[]) => void;
-  deleteMyAppointments: (appointments: Appointment) => void;
-};
-
 type AppointmentState = {
   appointments: Appointment[];
-  setAppointments: (appointments: Appointment[]) => void;
-  pushAppointments: (appointments: Appointment[]) => void;
-  deleteAppointment: (appointments: Appointment) => void;
-};
-
-type CompletedAppointmentState = {
+  myAppointments: Appointment[];
   completedAppointments: Appointment[];
-  setCompletedAppointments: (appointments: Appointment[]) => void;
-  pushCompletedAppointments: (appointments: Appointment[]) => void;
-  deleteCompletedAppointment: (appointments: Appointment) => void;
 };
 
-type AppointmentStore = MyAppointmentState &
-  AppointmentState &
-  CompletedAppointmentState & {
-    deleteFromAll: (appointments: Appointment) => void;
-  };
+type AppointmentSingleState = {
+  appointment: Appointment;
+  myAppointment: Appointment;
+  completedAppointment: Appointment;
+};
 
-const useAppointmentStore = create<AppointmentStore>(set => ({
+type AppointmentActions = {
+  setAppointments: ({
+    appointments,
+    myAppointments,
+    completedAppointments,
+  }: Partial<AppointmentState>) => void;
+  pushAppointments: ({
+    appointments,
+    myAppointments,
+    completedAppointments,
+  }: Partial<AppointmentState>) => void;
+  deleteAppointment: ({
+    appointment,
+    myAppointment,
+    completedAppointment,
+  }: Partial<AppointmentSingleState>) => void;
+};
+
+const useAppointmentStore = create<AppointmentState & AppointmentActions>(set => ({
   myAppointments: [],
   appointments: [],
   completedAppointments: [],
 
-  setMyAppointments: myAppointments => set(() => ({ myAppointments })),
-  pushMyAppointments: newAppointment =>
-    set(state => ({ myAppointments: [...state.myAppointments, ...newAppointment] })),
-  deleteMyAppointments: deletedAppointment =>
+  setAppointments: ({ appointments, completedAppointments, myAppointments }) =>
     set(state => {
-      const myAppointments = state.myAppointments.filter(
-        appointments => appointments.id !== deletedAppointment.id,
-      );
-      return { myAppointments };
+      return {
+        appointments: appointments ?? state.appointments,
+        completedAppointments: completedAppointments ?? state.completedAppointments,
+        myAppointments: myAppointments ?? state.myAppointments,
+      };
     }),
 
-  setAppointments: appointments => set(() => ({ appointments })),
-  pushAppointments: newAppointment =>
-    set(state => ({ appointments: [...state.appointments, ...newAppointment] })),
-  deleteAppointment: deletedAppointment =>
+  pushAppointments: ({ appointments, completedAppointments, myAppointments }) =>
     set(state => {
-      const appointments = state.appointments.filter(
-        appointments => appointments.id !== deletedAppointment.id,
-      );
-      return { appointments };
+      return {
+        appointments: appointments ? [...state.appointments, ...appointments] : state.appointments,
+        completedAppointments: completedAppointments
+          ? [...state.completedAppointments, ...completedAppointments]
+          : state.completedAppointments,
+        myAppointments: myAppointments
+          ? [...state.myAppointments, ...myAppointments]
+          : state.myAppointments,
+      };
     }),
 
-  setCompletedAppointments: completedAppointments => set(() => ({ completedAppointments })),
-  pushCompletedAppointments: newAppointment =>
-    set(state => ({ completedAppointments: [...state.completedAppointments, ...newAppointment] })),
-
-  deleteCompletedAppointment: deletedAppointment =>
+  deleteAppointment: ({ appointment, completedAppointment, myAppointment }) =>
     set(state => {
-      const appointments = state.completedAppointments.filter(
-        appointments => appointments.id !== deletedAppointment.id,
-      );
-      return { appointments };
-    }),
+      return {
+        appointments: appointment
+          ? state.appointments.filter(appointmentsState => appointmentsState.id !== appointment.id)
+          : state.appointments,
 
-  deleteFromAll: deletedAppointment =>
-    set(state => {
-      const appointments = state.appointments.filter(
-        appointments => appointments.id !== deletedAppointment.id,
-      );
-      const myAppointments = state.myAppointments.filter(
-        appointments => appointments.id !== deletedAppointment.id,
-      );
-      const completedAppointments = state.completedAppointments.filter(
-        appointments => appointments.id !== deletedAppointment.id,
-      );
-      return { appointments, myAppointments, completedAppointments };
+        completedAppointments: completedAppointment
+          ? state.completedAppointments.filter(
+              completedAppointmentsState =>
+                completedAppointmentsState.id !== completedAppointment.id,
+            )
+          : state.completedAppointments,
+
+        myAppointments: myAppointment
+          ? state.myAppointments.filter(
+              myAppointmentsState => myAppointmentsState.id !== myAppointment.id,
+            )
+          : state.myAppointments,
+      };
     }),
 }));
 

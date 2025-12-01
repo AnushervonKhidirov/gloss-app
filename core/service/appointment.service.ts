@@ -1,9 +1,4 @@
-import type {
-  Appointment,
-  CreateAppointment,
-  QueryAppointment,
-  QueryMyAppointment,
-} from '@type/appointment.type';
+import type { Appointment, CreateAppointment, QueryAppointment } from '@type/appointment.type';
 import type { ReturnWithErrPromise } from '@type/common.type';
 
 import apiClient from '@api/apiClient';
@@ -29,19 +24,6 @@ class AppointmentService {
     try {
       const queryString = urlQueryBuilder(query);
       const response = await apiClient.get<Appointment[]>(this.endpoint + queryString);
-
-      if (isHttpException(response.data)) throw new HttpException(response.data);
-      const appointmentList = response.data.map(appointment => this.convertData(appointment));
-      return [appointmentList, null];
-    } catch (err) {
-      return errorHandler(err);
-    }
-  }
-
-  async findMy(query: QueryMyAppointment = {}): ReturnWithErrPromise<Appointment[]> {
-    try {
-      const queryString = urlQueryBuilder(query);
-      const response = await apiClient.get<Appointment[]>(`${this.endpoint}/my${queryString}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       const appointmentList = response.data.map(appointment => this.convertData(appointment));

@@ -23,18 +23,18 @@ const useSpecialtyStore = create<SpecialtyState & SpecialtyActions>(set => ({
 
   editSpecialty: editedSpecialty =>
     set(state => {
-      const newSpecialtyList = state.specialties.map(specialty => {
-        return specialty.id === editedSpecialty.id ? editedSpecialty : specialty;
-      });
-      return { specialties: newSpecialtyList };
+      return {
+        specialties: state.specialties.map(specialty =>
+          specialty.id === editedSpecialty.id ? editedSpecialty : specialty,
+        ),
+      };
     }),
 
   deleteSpecialty: deletedSpecialty =>
     set(state => {
-      const newSpecialtyList = state.specialties.filter(
-        specialty => specialty.id !== deletedSpecialty.id,
-      );
-      return { specialties: newSpecialtyList };
+      return {
+        specialties: state.specialties.filter(specialty => specialty.id !== deletedSpecialty.id),
+      };
     }),
 }));
 

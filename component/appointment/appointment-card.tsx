@@ -116,7 +116,7 @@ const AppointmentItemBody: FC<{ appointment: Appointment }> = ({ appointment }) 
 
 const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   const user = useUserStore(state => state.user);
-  const { deleteFromAll } = useAppointmentStore(state => state);
+  const { deleteAppointment } = useAppointmentStore(state => state);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [statisticLoading, setStatisticLoading] = useState(false);
 
@@ -146,7 +146,11 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
     if (err) {
       Alert.alert('Ошибка', err.error);
     } else {
-      deleteFromAll(appointmentToRemove);
+      deleteAppointment({
+        appointment: appointmentToRemove,
+        myAppointment: appointmentToRemove,
+        completedAppointment: appointmentToRemove,
+      });
     }
 
     setRemoveLoading(false);

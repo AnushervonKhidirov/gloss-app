@@ -9,7 +9,7 @@ import { alertError } from '@helper/error-handler';
 import appointmentService from '@service/appointment.service';
 
 const PassedAppointmentScreen = () => {
-  const { completedAppointments, setCompletedAppointments } = useAppointmentStore(state => state);
+  const { completedAppointments, setAppointments } = useAppointmentStore(state => state);
   const [loading, setLoading] = useState(true);
 
   async function fetchOnLoad() {
@@ -24,7 +24,7 @@ const PassedAppointmentScreen = () => {
     if (err) {
       alertError(err)
     } else {
-      setCompletedAppointments(appointments);
+      setAppointments({ completedAppointments: appointments });
     }
   }
 

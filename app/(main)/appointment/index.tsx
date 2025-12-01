@@ -1,4 +1,5 @@
 import useAppointmentStore from '@store/appointment.store';
+import useUserStore from '@store/user.store';
 import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
 
@@ -9,7 +10,8 @@ import { alertError } from '@helper/error-handler';
 import appointmentService from '@service/appointment.service';
 
 const MyAppointmentScreen = () => {
-  const { myAppointments, setMyAppointments } = useAppointmentStore(state => state);
+  const user = useUserStore(state => state.user);
+  const { myAppointments, setAppointments } = useAppointmentStore(state => state);
   const [loading, setLoading] = useState(true);
 
   async function fetchOnLoad() {
@@ -19,18 +21,21 @@ const MyAppointmentScreen = () => {
   }
 
   async function fetch() {
-    const [appointments, err] = await appointmentService.findMy({ dateFrom: dayjs() });
+    const [appointments, err] = await appointmentService.findMany({
+      userId: user?.id,
+      dateFrom: dayjs(),
+    });
 
     if (err) {
-      alertError(err)
+      alertError(err);
     } else {
-      setMyAppointments(appointments);
+      setAppointments({ myAppointments: appointments });
     }
   }
 
   useLayoutEffect(() => {
     fetchOnLoad();
-  }, []);
+  }, [user]);
 
   return (
     <LoadingView loading={loading}>

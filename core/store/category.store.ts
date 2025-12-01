@@ -23,18 +23,18 @@ const useCategoryStore = create<CategoryState & CategoryActions>(set => ({
 
   editCategory: editedCategory =>
     set(state => {
-      const newCategoryList = state.categories.map(category => {
-        return category.id === editedCategory.id ? editedCategory : category;
-      });
-      return { categories: newCategoryList };
+      return {
+        categories: state.categories.map(category =>
+          category.id === editedCategory.id ? editedCategory : category,
+        ),
+      };
     }),
 
   deleteCategory: deletedCategory =>
     set(state => {
-      const newCategoryList = state.categories.filter(
-        category => category.id !== deletedCategory.id,
-      );
-      return { categories: newCategoryList };
+      return {
+        categories: state.categories.filter(category => category.id !== deletedCategory.id),
+      };
     }),
 }));
 
