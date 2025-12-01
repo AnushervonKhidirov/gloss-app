@@ -75,7 +75,7 @@ class ServiceService {
     try {
       const queryString = urlQueryBuilder(query);
       const response = await apiClient.get<SelectedService[]>(
-        `${this.endpoint}/worker?${queryString}`,
+        `${this.endpoint}/worker${queryString}`,
       );
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
