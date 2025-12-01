@@ -85,17 +85,6 @@ class ServiceService {
     }
   }
 
-  async findMySelected(): ReturnWithErrPromise<SelectedService[]> {
-    try {
-      const response = await apiClient.get<SelectedService[]>(`${this.endpoint}/worker/my`);
-
-      if (isHttpException(response.data)) throw new HttpException(response.data);
-      return [response.data, null];
-    } catch (err) {
-      return errorHandler(err);
-    }
-  }
-
   async selectedHandler(
     data: CreateUpdateWorkerService[],
   ): ReturnWithErrPromise<SelectedService[]> {
