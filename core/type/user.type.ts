@@ -1,3 +1,5 @@
+import type { Specialty } from './specialty.type';
+
 export type User = {
   id: number;
   username: string;
@@ -7,7 +9,7 @@ export type User = {
   verified: boolean;
   archived: boolean;
   specialtyId: number | null;
-  specialty: { id: number; value: string } | null;
+  specialty: Omit<Specialty, 'desc'> | null;
   role: Role;
 };
 
