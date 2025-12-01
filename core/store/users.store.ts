@@ -4,13 +4,17 @@ import { create } from 'zustand';
 
 type UsersState = {
   users: User[];
+};
+
+type UsersActions = {
   setUsers: (users: User[]) => void;
   updateUser: (user: User) => void;
   removeUser: (user: User) => void;
 };
 
-const useUsersStore = create<UsersState>(set => ({
+const useUsersStore = create<UsersState & UsersActions>(set => ({
   users: [],
+
   setUsers: users => set(() => ({ users })),
   updateUser: updatedUser =>
     set(state => {
