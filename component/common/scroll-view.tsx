@@ -1,4 +1,5 @@
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type { ViewStyle } from 'react-native';
 
 import { gray } from '@ant-design/colors';
 import { Input } from '@ant-design/react-native';
@@ -54,7 +55,11 @@ const ScrollView = <T extends {}>({
   return (
     <View style={{ flex: 1, gap: 16 }}>
       {searchable && items.length > 0 && (
-        <Input styles={{ input: styles.input }} onChangeText={filtering} placeholder="Поиск" />
+        <Input
+          styles={{ container: styles.inputContainer, input: styles.input as ViewStyle }}
+          onChangeText={filtering}
+          placeholder="Поиск"
+        />
       )}
 
       <NativeScrollView
@@ -75,13 +80,18 @@ const ScrollView = <T extends {}>({
 };
 
 const styles = StyleSheet.create({
-  input: {
+  inputContainer: {
     borderWidth: StyleSheet.hairlineWidth,
-    paddingBlock: 7,
+    paddingBlock: 5,
+    paddingInline: 20,
     backgroundColor: '#fff',
     borderColor: gray[0],
-    borderRadius: 4,
-    fontSize: 14,
+    borderRadius: 100,
+    overflow: 'hidden',
+  },
+
+  input: {
+    fontSize: 16,
     color: gray.primary,
   },
   emptyText: {
