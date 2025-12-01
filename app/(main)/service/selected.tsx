@@ -15,10 +15,10 @@ import SelectableServiceList from '@component/service/selectable-service-list';
 import { alertError } from '@helper/error-handler';
 
 function convertSelectedService(selectedServices: SelectedService[]): Service[] {
-  return selectedServices.map(workerService => {
+  return selectedServices.map(selectedService => {
     return {
-      ...workerService.service,
-      price: workerService.price ?? workerService.service.price,
+      ...selectedService.service,
+      price: selectedService.price ?? selectedService.service.price,
     };
   });
 }
@@ -30,7 +30,7 @@ const SelectedServiceScreen = () => {
   const [selectServicesModalVisible, setSelectServicesModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  function pushWorkerServices(selectedServices: SelectedService[]) {
+  function setSelectedServices(selectedServices: SelectedService[]) {
     setServices({ selectedServices });
     setSelectServicesModalVisible(false);
   }
@@ -100,7 +100,7 @@ const SelectedServiceScreen = () => {
         <SelectableServiceList
           services={services}
           selectedList={selectedServices}
-          onSuccess={pushWorkerServices}
+          onSuccess={setSelectedServices}
           onRefresh={fetchData}
         />
       </Modal>
