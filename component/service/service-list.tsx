@@ -2,7 +2,7 @@ import type { Service } from '@type/service.type';
 import type { FC, Key, PropsWithChildren } from 'react';
 
 import { Text, View } from 'react-native';
-import ServiceCard from './service-csrd';
+import ServiceCard from './service-card';
 
 import ScrollView from '@commonComponent/scroll-view';
 
