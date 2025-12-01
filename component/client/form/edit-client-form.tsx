@@ -4,8 +4,9 @@ import type { FC } from 'react';
 import { Button, Form, Input } from '@ant-design/react-native';
 import clientService from '@service/client.service';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
 type EditClientFormProps = {
@@ -25,7 +26,7 @@ const EditClientForm: FC<EditClientFormProps> = ({ clientToEdit, onSuccess }) =>
     const [client, err] = await clientService.update(clientToEdit.id, value);
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      alertError(err);
     } else {
       onSuccess(client);
     }

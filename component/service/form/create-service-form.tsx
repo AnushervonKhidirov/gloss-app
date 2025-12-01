@@ -3,10 +3,11 @@ import type { CreateService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
-import AutoSelect from '@commonComponent/input/autocomplete';
+import Autocomplete from '@commonComponent/input/autocomplete';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
+import { alertError } from '@helper/error-handler';
 import serviceService from '@service/service.service';
 
 type CreateServiceFormProps = { categories: Category[]; onSuccess: (service: Service) => void };
@@ -23,7 +24,7 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
     const [service, err] = await serviceService.create(value);
 
     if (err) {
-      Alert.alert(err.error, err.message);
+      alertError(err);
     } else {
       onSuccess(service);
     }
@@ -47,7 +48,7 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
             getValueFromEvent={e => Number.parseInt(e.nativeEvent.text)}
             rules={[{ required: true, message: 'Введите цену' }]}
           >
-            <Input type="number" placeholder="Цена"></Input>
+            <Input type="number" placeholder="Цена" />
           </Form.Item>
 
           <Form.Item
@@ -55,15 +56,15 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
             getValueFromEvent={e => Number.parseInt(e.nativeEvent.text)}
             rules={[{ required: true, message: 'Введите продолжительность' }]}
           >
-            <Input type="number" placeholder="Продолжительность"></Input>
+            <Input type="number" placeholder="Продолжительность" />
           </Form.Item>
 
           <Form.Item name="categoryId" rules={[{ required: true, message: 'Выберите категорию' }]}>
-            <AutoSelect name="categoryId" placeholder="Категория" items={categories}></AutoSelect>
+            <Autocomplete name="categoryId" placeholder="Категория" items={categories} />
           </Form.Item>
 
           <Form.Item name="desc">
-            <Input.TextArea placeholder="Описание"></Input.TextArea>
+            <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} placeholder="Описание" />
           </Form.Item>
 
           <Form.Item>

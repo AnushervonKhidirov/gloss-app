@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 
+import { useEffect, useState } from 'react';
+
 import { Form, Input, List } from '@ant-design/react-native';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Portal } from 'react-native-paper';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 type AutocompleteProps = {
   items: AutocompleteItem[];
@@ -12,15 +12,6 @@ type AutocompleteProps = {
   getBy?: 'id' | 'value';
   defaultSelected?: AutocompleteItem;
   onSelect?: (item?: AutocompleteItem) => void;
-};
-
-type Coordinates = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  pageX: number;
-  pageY: number;
 };
 
 type AutocompleteItem = { id: number; value: string };
@@ -33,150 +24,112 @@ const Autocomplete: FC<AutocompleteProps> = ({
   defaultSelected,
   onSelect,
 }) => {
-  const wrapperRef = useRef<View>(null);
-  const scrollerRef = useRef<View>(null);
+  const form = Form.useFormInstance();
+  const [opened, setOpened] = useState(false);
 
-  const [show, setShow] = useState(false);
-  const [inputFocused, setInputFocused] = useState(false);
-  const [listFocused, setListFocused] = useState(false);
-  const listFocusTimeout = useRef<number>(null);
-
+  const [originalInputValue, setOriginalInputValue] = useState('');
   const [inputValue, setInputValue] = useState('');
 
   const [selected, setSelected] = useState<AutocompleteItem | undefined>(defaultSelected);
   const [filteredList, setFilteredList] = useState<AutocompleteItem[]>(items);
 
-  const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
-  const [scrollCoordinates, setScrollCoordinates] = useState<Coordinates | null>(null);
+  function inputHandler(value: string) {
+    const filtered = find(value);
 
-  const form = Form.useFormInstance();
+    setInputValue(value);
+    setFilteredList(filtered);
+    if (filtered.length > 1 || filtered.length === 0) clearSelected();
+  }
 
   function select(item?: AutocompleteItem) {
-    setSelected(item);
     if (item) setInputValue(item.value);
-    if (onSelect) onSelect(item);
-    setShow(false);
+    setSelected(item);
+    setOpened(false);
+  }
+
+  function clearSelected() {
+    setSelected(undefined);
   }
 
   function find(value: string) {
-    return items.filter(item => item.value.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
+    return items.filter(item =>
+      item.value.trim().toLocaleLowerCase().includes(value.trim().toLocaleLowerCase()),
+    );
   }
-
-  function getCoordinates() {
-    wrapperRef.current?.measure((x, y, width, height, pageX, pageY) => {
-      setCoordinates({ x, y, width, height, pageX, pageY });
-    });
-
-    scrollerRef.current?.measure((x, y, width, height, pageX, pageY) => {
-      setScrollCoordinates({ x, y, width, height, pageX, pageY });
-    });
-  }
-
-  function inputValueHandler(value: string) {
-    setInputValue(value);
-    const filtered = find(value);
-    setFilteredList(filtered);
-
-    if (value === '') setSelected(undefined);
-  }
-
-  function inputBlurHandler() {
-    const filtered = find(inputValue);
-
-    if (filtered.length === 1 && !selected) {
-      const autoSelected = filtered[0];
-      select(autoSelected);
-      setInputValue(autoSelected.value);
-    }
-
-    setInputFocused(false);
-  }
-
-  useLayoutEffect(() => {
-    getCoordinates();
-
-    const showSubscriber = Keyboard.addListener('keyboardDidShow', getCoordinates);
-    const hideSubscriber = Keyboard.addListener('keyboardDidHide', getCoordinates);
-
-    return () => {
-      showSubscriber.remove();
-      hideSubscriber.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    setTimeout(getCoordinates, 0);
-  }, [filteredList]);
-
-  useEffect(() => {
-    const shouldShowList = inputFocused || listFocused;
-
-    setShow(shouldShowList);
-
-    if (selected) setInputValue(selected.value);
-  }, [inputFocused, listFocused]);
 
   useEffect(() => {
     const value = getBy === 'id' ? selected?.id : selected?.value;
+    setOriginalInputValue(selected?.value ?? '');
     form.setFieldValue(name, value);
+
+    if (onSelect) onSelect(selected);
   }, [selected]);
 
   return (
-    <View style={styles.wrapper} ref={wrapperRef}>
-      <Input
-        value={inputValue}
-        placeholder={placeholder}
-        onFocus={() => setInputFocused(true)}
-        onBlur={inputBlurHandler}
-        onChangeText={inputValueHandler}
-      />
+    <>
+      <Pressable onPress={() => setOpened(true)}>
+        <Input value={originalInputValue} placeholder={placeholder} disabled />
+      </Pressable>
 
-      {show && (
-        <Portal>
-          <View
-            ref={scrollerRef}
-            style={{
-              ...styles.list,
-              top:
-                coordinates && scrollCoordinates ? coordinates.pageY - scrollCoordinates.height : 0,
-            }}
-          >
-            <ScrollView
-              onScroll={() => {
-                if (listFocusTimeout.current) clearTimeout(listFocusTimeout.current);
-                listFocusTimeout.current = setTimeout(() => setListFocused(false), 1500);
-              }}
-            >
-              <List
-                onTouchStart={() => {
-                  setListFocused(true);
-                  if (listFocusTimeout.current) clearTimeout(listFocusTimeout.current);
-                  listFocusTimeout.current = setTimeout(() => setListFocused(false), 1000);
-                }}
-              >
+      <Modal
+        visible={opened}
+        transparent
+        onRequestClose={() => setOpened(false)}
+        animationType="fade"
+      >
+        <View style={styles.wrapper}>
+          <View style={styles.content}>
+            <Input
+              value={inputValue}
+              placeholder={placeholder}
+              styles={{ container: styles.input }}
+              onChangeText={inputHandler}
+            />
+
+            <ScrollView style={styles.scroller}>
+              <List>
                 {filteredList.map(item => (
-                  <List.Item key={item.id + item.value}>
-                    <Pressable onPress={() => select(item)}>{item.value}</Pressable>
-                  </List.Item>
+                  <Pressable key={item.id + item.value} onPress={() => select(item)}>
+                    <List.Item>{item.value}</List.Item>
+                  </Pressable>
                 ))}
               </List>
             </ScrollView>
           </View>
-        </Portal>
-      )}
-    </View>
+        </View>
+      </Modal>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: 'relative',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'flex-end',
   },
-  list: {
-    maxHeight: 100,
+  content: {
     backgroundColor: '#fff',
-    boxShadow: '0 0 5px #ccc',
-    borderRadius: 10,
+    paddingInline: 20,
+    paddingBlock: 30,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    gap: 20,
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#eee',
+    borderRadius: 5,
+    width: '100%',
+  },
+  scroller: {
+    overflow: 'hidden',
+    minHeight: 45,
+    maxHeight: 180,
+    borderWidth: 2,
+    borderColor: '#eee',
+    borderRadius: 5,
   },
 });
 

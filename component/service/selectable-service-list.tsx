@@ -1,45 +1,31 @@
 import type { CreateUpdateWorkerService, SelectedService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
-import { Button, Card, Checkbox, Input, WingBlank } from '@ant-design/react-native';
-import { useEffect, useState } from 'react';
-import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button } from '@ant-design/react-native';
+import ScrollView from '@commonComponent/scroll-view';
+import { useState } from 'react';
+import { Alert } from 'react-native';
+import SelectedServiceCard from './selected-service-card';
 
 import serviceService from '@service/service.service';
-
-import { gray } from '@ant-design/colors';
-import { minutesToTime } from '@helper/time-converter.helper';
 
 type SelectableServiceListProps = {
   services: Service[];
   selectedList: SelectedService[];
-  refreshing: boolean;
   onSuccess: (workerServices: SelectedService[]) => void;
   onRefresh: () => Promise<void>;
-};
-
-type SelectableServiceItemProps = {
-  service: Service;
-  selectedService?: SelectedService;
-  onSelect: (service: Service, selected: boolean) => void;
-};
-
-type ServiceItemHeaderTextProps = {
-  title: string;
-  category: string;
 };
 
 const SelectableServiceList: FC<SelectableServiceListProps> = ({
   services,
   selectedList,
-  refreshing,
   onSuccess,
   onRefresh,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [selectedServices, setSelectedServices] = useState<Service[]>(
     selectedList.map(selected => selected.service),
   );
-  const [loading, setLoading] = useState(false);
 
   async function submit() {
     setLoading(true);
@@ -84,118 +70,24 @@ const SelectableServiceList: FC<SelectableServiceListProps> = ({
   }
 
   return (
-    <View style={styles.content}>
-      <ScrollView
-        style={styles.scroller}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        <View style={styles.scrollWrapper}>
-          {services.map(service => (
-            <SelectableServiceItem
-              key={service.id}
-              service={service}
-              selectedService={selectedList.find(selected => selected.serviceId === service.id)}
-              onSelect={selectHandler}
-            />
-          ))}
-        </View>
-      </ScrollView>
-
+    <ScrollView
+      searchable
+      onRefresh={onRefresh}
+      items={services}
+      renderItem={service => (
+        <SelectedServiceCard
+          key={`selected-${service.id}`}
+          service={service}
+          selectedService={selectedList.find(selected => selected.serviceId === service.id)}
+          onSelect={selectHandler}
+        />
+      )}
+    >
       <Button type="primary" loading={loading} onPress={submit}>
         Сохранить
       </Button>
-    </View>
+    </ScrollView>
   );
 };
-
-const SelectableServiceItem: FC<SelectableServiceItemProps> = ({
-  service,
-  selectedService,
-  onSelect,
-}) => {
-  const [customPrice, setCustomPrice] = useState<number | null>(
-    selectedService ? selectedService.price : null,
-  );
-  const [selected, setSelected] = useState(!!selectedService);
-
-  function inputHandler(value: string) {
-    setCustomPrice(Number.parseInt(value));
-  }
-
-  useEffect(() => {
-    const finalService: Service = {
-      ...service,
-      price: customPrice && !Number.isNaN(customPrice) ? customPrice : service.price,
-    };
-
-    onSelect(finalService, selected);
-  }, [customPrice, selected]);
-
-  return (
-    <View style={styles.cardWrapper}>
-      <Card styles={{ card: { flex: 1 } }}>
-        <Card.Header
-          title={<ServiceItemHeaderText title={service.name} category={service.category.value} />}
-          extra={
-            <Checkbox
-              styles={{ checkbox_wrapper: { alignSelf: 'flex-end', width: 20 } }}
-              checked={selected}
-              onChange={e => setSelected(e.target.checked)}
-            />
-          }
-        />
-
-        {service.desc ? (
-          <Card.Body>
-            <WingBlank>
-              <Text>{service.desc}</Text>
-            </WingBlank>
-          </Card.Body>
-        ) : (
-          <View></View>
-        )}
-
-        <Card.Footer content={service.price + ' с'} extra={minutesToTime(service.duration)} />
-
-        <WingBlank>
-          <Input
-            type="number"
-            value={customPrice ? customPrice.toString() : undefined}
-            placeholder="Ваша цена (не объязательно)"
-            onChangeText={inputHandler}
-          />
-        </WingBlank>
-      </Card>
-    </View>
-  );
-};
-
-const ServiceItemHeaderText: FC<ServiceItemHeaderTextProps> = ({ title, category }) => {
-  return (
-    <View>
-      <Text style={{ fontSize: 17 }}>{title}</Text>
-      <Text style={{ color: gray[2] }}>{category}</Text>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    gap: 20,
-    marginBottom: 20,
-  },
-  scroller: {
-    flex: 1,
-  },
-  scrollWrapper: {
-    gap: 20,
-  },
-  cardWrapper: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
-  },
-});
 
 export default SelectableServiceList;

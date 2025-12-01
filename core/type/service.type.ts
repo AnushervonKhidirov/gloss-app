@@ -38,6 +38,6 @@ export type ServicesByCategory = {
 };
 
 export type QueryService = {
-  userId?: string;
-  serviceId?: string;
+  userId?: number;
+  serviceId?: number;
 };
