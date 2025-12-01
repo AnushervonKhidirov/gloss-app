@@ -7,7 +7,7 @@ import { blue, green } from '@ant-design/colors';
 
 const ConnectActionButtons: FC<{ phone: string }> = ({ phone }) => {
   return (
-    <View style={{ flexDirection: 'row', gap: 5 }}>
+    <View style={{ flexDirection: 'row', gap: 10 }}>
       <Pressable onPress={() => Linking.openURL(`sms:${phone}`)}>
         <MaterialCommunityIcons name="email-outline" size={24} color={blue.primary} />
       </Pressable>

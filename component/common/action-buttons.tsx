@@ -1,19 +1,18 @@
 import type { FC } from 'react';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 
 import { blue, red } from '@ant-design/colors';
 
 type ActionButtonsProps = {
-  styles?: StyleProp<ViewStyle>;
   onEdit?: () => void;
   onRemove?: () => void;
 };
 
-const ActionButtons: FC<ActionButtonsProps> = ({ styles = {}, onEdit, onRemove }) => {
+const ActionButtons: FC<ActionButtonsProps> = ({ onEdit, onRemove }) => {
   return (
-    <View style={{ flexDirection: 'row', gap: 5, ...(styles as {}) }}>
+    <View style={{ flexDirection: 'row', gap: 10 }}>
       {typeof onRemove === 'function' && (
         <MaterialCommunityIcons
           name="delete-outline"
