@@ -1,14 +1,11 @@
 import type { Service } from '@type/service.type';
-import type { FC, Key, PropsWithChildren } from 'react';
-
-import { Text, View } from 'react-native';
-import ServiceCard from './service-card';
+import { type FC, type Key, type PropsWithChildren } from 'react';
 
 import ScrollView from '@commonComponent/scroll-view';
+import ServiceCard from './service-card';
 
 type ServiceListProps = PropsWithChildren<{
   services: Service[];
-  emptyMessage?: string;
   onEdit?: (service: Service) => void;
   onRemove?: (service: Service) => void;
   onRefresh: () => Promise<void>;
@@ -17,34 +14,28 @@ type ServiceListProps = PropsWithChildren<{
 
 const ServiceList: FC<ServiceListProps> = ({
   services,
-  emptyMessage,
   onEdit,
   onRemove,
   onRefresh,
   keyExtractor,
   children,
 }) => {
-  const message = emptyMessage ?? 'Список услуг пуст';
-
   return (
-    <View style={{ flex: 1, gap: 16 }}>
-      <ScrollView onRefresh={onRefresh}>
-        {services.length > 0 ? (
-          services.map(service => (
-            <ServiceCard
-              key={keyExtractor ? keyExtractor(service) : service.id}
-              service={service}
-              onEdit={onEdit}
-              onRemove={onRemove}
-            />
-          ))
-        ) : (
-          <Text>{message}</Text>
-        )}
-      </ScrollView>
-
+    <ScrollView
+      searchable
+      onRefresh={onRefresh}
+      items={services}
+      renderItem={service => (
+        <ServiceCard
+          key={keyExtractor ? keyExtractor(service) : service.id}
+          service={service}
+          onEdit={onEdit}
+          onRemove={onRemove}
+        />
+      )}
+    >
       {children}
-    </View>
+    </ScrollView>
   );
 };
 

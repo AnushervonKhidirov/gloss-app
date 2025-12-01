@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Button } from '@ant-design/react-native';
 import ScrollView from '@commonComponent/scroll-view';
 import { useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 import SelectedServiceCard from './selected-service-card';
 
 import serviceService from '@service/service.service';
@@ -70,22 +70,23 @@ const SelectableServiceList: FC<SelectableServiceListProps> = ({
   }
 
   return (
-    <View style={{ flex: 1, gap: 16 }}>
-      <ScrollView onRefresh={onRefresh}>
-        {services.map(service => (
-          <SelectedServiceCard
-            key={`selected-${service.id}`}
-            service={service}
-            selectedService={selectedList.find(selected => selected.serviceId === service.id)}
-            onSelect={selectHandler}
-          />
-        ))}
-      </ScrollView>
-
+    <ScrollView
+      searchable
+      onRefresh={onRefresh}
+      items={services}
+      renderItem={service => (
+        <SelectedServiceCard
+          key={`selected-${service.id}`}
+          service={service}
+          selectedService={selectedList.find(selected => selected.serviceId === service.id)}
+          onSelect={selectHandler}
+        />
+      )}
+    >
       <Button type="primary" loading={loading} onPress={submit}>
         Сохранить
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 

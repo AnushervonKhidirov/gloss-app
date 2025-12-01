@@ -2,12 +2,10 @@ import type { Category } from '@type/category.type';
 import type { FC, PropsWithChildren } from 'react';
 
 import ScrollView from '@commonComponent/scroll-view';
-import { Text, View } from 'react-native';
 import CategoryCard from './category-card';
 
 type CategoryListProps = PropsWithChildren<{
   categories: Category[];
-  emptyMessage?: string;
   onEdit?: (category: Category) => void;
   onRemove?: (category: Category) => void;
   refresh: () => Promise<void>;
@@ -18,30 +16,19 @@ const CategoryList: FC<CategoryListProps> = ({
   onEdit,
   onRemove,
   refresh,
-  emptyMessage,
   children,
 }) => {
-  const message = emptyMessage ?? 'Список категорий пуст';
-
   return (
-    <View style={{ flex: 1, gap: 16 }}>
-      <ScrollView onRefresh={refresh}>
-        {categories.length > 0 ? (
-          categories.map(category => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onEdit={onEdit}
-              onRemove={onRemove}
-            />
-          ))
-        ) : (
-          <Text>{message}</Text>
-        )}
-      </ScrollView>
-
+    <ScrollView
+      searchable
+      onRefresh={refresh}
+      items={categories}
+      renderItem={category => (
+        <CategoryCard key={category.id} category={category} onEdit={onEdit} onRemove={onRemove} />
+      )}
+    >
       {children}
-    </View>
+    </ScrollView>
   );
 };
 
