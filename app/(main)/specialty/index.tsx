@@ -100,7 +100,7 @@ const SpecialtyScreen = () => {
       </SpecialtyList>
 
       <Modal
-        title="Создание категории"
+        title="Создание специальности"
         isOpen={createSpecialtyModalVisible}
         close={() => setCreateSpecialtyModalVisible(false)}
       >
@@ -108,7 +108,7 @@ const SpecialtyScreen = () => {
       </Modal>
 
       <Modal
-        title="Редактирование категории"
+        title="Редактирование специальности"
         isOpen={editSpecialtyModalVisible}
         close={() => setEditSpecialtyModalVisible(false)}
       >

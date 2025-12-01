@@ -53,7 +53,7 @@ const ClientScreen = () => {
       <ClientList clients={clients} onRefresh={fetch} onEdit={openEditClientModal} />
 
       <Modal
-        title="Редактирование категории"
+        title="Редактирование клиента"
         isOpen={editClientModalVisible}
         close={() => setEditClientModalVisible(false)}
       >
