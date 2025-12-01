@@ -20,7 +20,7 @@ const ServiceCard: FC<ServiceItemProps> = ({ service, onEdit, onRemove }) => {
     <Card>
       <Card.Header
         styles={cardStyle.header}
-        title={<ServiceItemHeaderText title={service.name} category={service.category.value} />}
+        title={<ServiceHeader title={service.name} category={service.category.value} />}
         extra={
           <ActionButtons
             onEdit={onEdit?.bind(null, service)}
@@ -44,7 +44,7 @@ const ServiceCard: FC<ServiceItemProps> = ({ service, onEdit, onRemove }) => {
   );
 };
 
-const ServiceItemHeaderText: FC<{ title: string; category: string }> = ({ title, category }) => {
+const ServiceHeader: FC<{ title: string; category: string }> = ({ title, category }) => {
   return (
     <View>
       <Text style={{ fontSize: 17 }}>{title}</Text>
