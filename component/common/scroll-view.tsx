@@ -58,13 +58,12 @@ const ScrollView = <T extends {}>({
       )}
 
       <NativeScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
         style={{ flex: 1, paddingRight: 10, marginRight: -10 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
       >
         {items.length === 0 ? (
-          <View style={styles.emptyTextWrap}>
-            <Text style={styles.emptyText}>{emptyMessage}</Text>
-          </View>
+          <Text style={styles.emptyText}>{emptyMessage}</Text>
         ) : (
           <View style={{ gap: 10, flex: 1 }}>{filteredItems.map(item => renderItem(item))}</View>
         )}
@@ -85,10 +84,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: gray.primary,
   },
-  emptyTextWrap: {
-  },
   emptyText: {
     textAlign: 'center',
+    color: gray[3],
+    fontSize: 20,
+    fontWeight: 700,
   },
 });
 
