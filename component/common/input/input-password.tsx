@@ -1,10 +1,12 @@
 import { Form, Input } from '@ant-design/react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+
+import { grey } from '@constant/theme';
 
 const InputPassword = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const form = Form.useFormInstance();
   const passwordValue = Form.useWatch('password', form);
@@ -13,42 +15,25 @@ const InputPassword = () => {
     form.setFieldValue('password', text);
   };
 
-  function passwordVisibilityHandler() {
-    setPasswordVisible(!passwordVisible);
-  }
-
   return (
-    <View style={style.container}>
+    <View style={{ flexDirection: 'row' }}>
       <Input
-        type={passwordVisible ? 'text' : 'password'}
-        style={style.input}
+        type={visible ? 'text' : 'password'}
+        style={{ flex: 1 }}
         placeholder="Пароль"
         value={passwordValue}
         onChangeText={handleChange}
-      ></Input>
-      <AntDesign
-        style={style.icon}
-        name={passwordVisible ? 'eye-invisible' : 'eye'}
+      />
+
+      <MaterialCommunityIcons
+        style={{ alignSelf: 'center' }}
+        name={visible ? 'eye-off-outline' : 'eye-outline'}
         size={24}
-        color="#ccc"
-        onPress={passwordVisibilityHandler}
+        color={grey[4]}
+        onPress={() => setVisible(!visible)}
       />
     </View>
   );
 };
-
-const style = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-
-  input: {
-    flex: 1,
-  },
-
-  icon: {
-    alignSelf: 'center',
-  },
-});
 
 export default InputPassword;

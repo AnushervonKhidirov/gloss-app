@@ -8,12 +8,12 @@ import { Role } from '@type/user.type';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { blue, gray, green, orange } from '@ant-design/colors';
 import { Button, Card, WingBlank } from '@ant-design/react-native';
 import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { cardStyle } from '@constant/card-style';
+import { blue, green, grey, orange } from '@constant/theme';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
 import appointmentService from '@service/appointment.service';
 import parsePhoneNumber from 'libphonenumber-js';
@@ -28,10 +28,9 @@ function getPrice(appointment: Appointment) {
 
 function getStatusData(startAt: Dayjs, endAt: Dayjs) {
   const now = dayjs();
-  if (now.isAfter(endAt)) return { color: green.primary, text: 'Окончено' };
-  if (now.isAfter(startAt) && now.isBefore(endAt))
-    return { color: blue.primary, text: 'Обслуживается' };
-  return { color: orange.primary, text: 'В ожидании очереди' };
+  if (now.isAfter(endAt)) return { color: green[5], text: 'Окончено' };
+  if (now.isAfter(startAt) && now.isBefore(endAt)) return { color: blue[5], text: 'Обслуживается' };
+  return { color: orange[5], text: 'В ожидании очереди' };
 }
 
 const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
@@ -66,7 +65,7 @@ const AppointmentHeader: FC<{ clientName: string; serviceName: string }> = ({
   return (
     <View>
       <Text style={{ fontSize: 17 }}>{clientName}</Text>
-      <Text style={{ color: gray[2] }}>{serviceName}</Text>
+      <Text style={{ color: grey[6] }}>{serviceName}</Text>
     </View>
   );
 };
@@ -123,7 +122,7 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   const isPassed = dayjs().isAfter(appointment.endAt);
 
   function confirmRemoving() {
-    const text = isPassed ? 'удалить' : 'отменить'
+    const text = isPassed ? 'удалить' : 'отменить';
 
     Alert.alert(
       'Удаление',
@@ -177,7 +176,7 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
 
   return (
     (user?.role === Role.ADMIN || user?.id === appointment.userId) && (
-      <View style={{ alignSelf: 'flex-end', flexDirection: 'row', gap: 5 }}>
+      <View style={styles.actionButtonsWrapper}>
         <Button type="warning" size="small" loading={removeLoading} onPress={confirmRemoving}>
           {isPassed ? 'Удалить' : 'Отменить'}
         </Button>
@@ -196,6 +195,12 @@ const styles = StyleSheet.create({
   bodyListItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  actionButtonsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 5,
+    marginBlock: 5,
   },
 });
 

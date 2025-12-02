@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 
 import { Form, Input, List } from '@ant-design/react-native';
 import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import InputSearch from './input-search';
+
+import { grey } from '@constant/theme';
 
 type AutocompleteProps = {
   items: AutocompleteItem[];
@@ -79,12 +82,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
       >
         <View style={styles.wrapper}>
           <View style={styles.content}>
-            <Input
-              value={inputValue}
-              placeholder={placeholder}
-              styles={{ container: styles.input }}
-              onChangeText={inputHandler}
-            />
+            <InputSearch value={inputValue} placeholder={placeholder} onChangeText={inputHandler} />
 
             <ScrollView style={styles.scroller}>
               <List>
@@ -116,20 +114,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     gap: 20,
   },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#eee',
-    borderRadius: 5,
-    width: '100%',
-  },
   scroller: {
     overflow: 'hidden',
     minHeight: 45,
     maxHeight: 180,
-    borderWidth: 2,
-    borderColor: '#eee',
-    borderRadius: 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: grey[4],
+    borderRadius: 10,
   },
 });
 

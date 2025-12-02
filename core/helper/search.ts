@@ -18,6 +18,7 @@ export function search(item: unknown, searchValue: string) {
     const obj = item as { [key: string]: unknown };
 
     for (const key in obj) {
+      if (key.toLowerCase().includes('id')) continue;
       const found = search(obj[key], searchValue);
       if (found) return true;
     }

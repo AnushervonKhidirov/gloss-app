@@ -5,8 +5,8 @@ import { Card, Checkbox, Input, WingBlank } from '@ant-design/react-native';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { gray } from '@ant-design/colors';
 import { cardStyle } from '@constant/card-style';
+import { grey } from '@constant/theme';
 import { minutesToTime } from '@helper/time-converter.helper';
 
 type ServiceItemProps = {
@@ -79,7 +79,7 @@ const ServiceHeader: FC<{ title: string; category: string }> = ({ title, categor
   return (
     <View>
       <Text style={{ fontSize: 17 }}>{title}</Text>
-      <Text style={{ color: gray[2] }}>{category}</Text>
+      <Text style={{ color: grey[6] }}>{category}</Text>
     </View>
   );
 };
@@ -88,10 +88,9 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: StyleSheet.hairlineWidth,
     marginBlock: 10,
-    borderColor: gray[0],
-    borderRadius: 4,
+    borderColor: grey[4],
+    borderRadius: 5,
     fontSize: 13,
-    color: gray.primary,
   },
 });
 

@@ -1,7 +1,8 @@
 import type { Specialty, UpdateSpecialty } from '@type/specialty.type';
 import type { FC } from 'react';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Form, Input } from '@ant-design/react-native';
+import ButtonPrimary from '@commonComponent/button-primary';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
@@ -58,9 +59,9 @@ const EditSpecialtyForm: FC<EditSpecialtyFormProps> = ({ specialtyToEdit, onSucc
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" onPress={form.submit} loading={loading}>
+              <ButtonPrimary onPress={form.submit} loading={loading}>
                 Сохранить
-              </Button>
+              </ButtonPrimary>
             </Form.Item>
           </Form>
         </View>

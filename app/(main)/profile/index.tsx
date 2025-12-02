@@ -1,7 +1,7 @@
-import { Button } from '@ant-design/react-native';
 import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 
+import ButtonPrimary from '@commonComponent/button-primary';
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
 import { useState } from 'react';
@@ -22,9 +22,9 @@ const ProfileScreen = () => {
 
   return (
     <View>
-      <Button type="primary" loading={loading} onPress={signOut}>
+      <ButtonPrimary loading={loading} onPress={signOut}>
         Выйти
-      </Button>
+      </ButtonPrimary>
     </View>
   );
 };

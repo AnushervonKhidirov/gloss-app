@@ -11,10 +11,11 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import userService from '@service/user.service';
 
-import { gray, green, orange, red } from '@ant-design/colors';
 import { cardStyle } from '@constant/card-style';
 import { alertError } from '@helper/error-handler';
 import parsePhoneNumber from 'libphonenumber-js';
+
+import { green, grey, orange, red } from '@constant/theme';
 
 function getStatusIcon(worker: User) {
   const icons: {
@@ -23,9 +24,9 @@ function getStatusIcon(worker: User) {
       color: string;
     };
   } = {
-    verified: { name: 'account-check', color: green.primary! },
-    notVerified: { name: 'account-clock', color: orange[3] },
-    archived: { name: 'account-cancel', color: red.primary! },
+    verified: { name: 'account-check', color: green[5] },
+    notVerified: { name: 'account-clock', color: orange[5] },
+    archived: { name: 'account-cancel', color: red[5] },
   };
 
   let icon = icons.notVerified;
@@ -73,7 +74,7 @@ const WorkerItemBody: FC<{ worker: User }> = ({ worker }) => {
       {worker.specialty && (
         <View>
           <Text>Должность:</Text>
-          <Text style={{ color: gray[2], fontSize: 13 }}>{worker.specialty.name}</Text>
+          <Text style={{ color: grey[6], fontSize: 13 }}>{worker.specialty.name}</Text>
         </View>
       )}
 
@@ -174,7 +175,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
 
           <Button
             type="primary"
-            style={{ backgroundColor: green.primary, borderColor: green.primary }}
+            style={{ backgroundColor: green[5], borderColor: green[5] }}
             size="small"
             onPress={() => approve(worker.id)}
           >
@@ -192,7 +193,8 @@ const styles = StyleSheet.create({
   actionButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 10,
+    gap: 5,
+    marginBlock: 5,
   },
   bodyListItem: {
     flexDirection: 'row',
