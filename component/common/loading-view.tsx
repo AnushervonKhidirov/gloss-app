@@ -1,10 +1,11 @@
 import type { FC, PropsWithChildren } from 'react';
 
-import { blue } from '@ant-design/colors';
 import { WingBlank } from '@ant-design/react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing, Text, View } from 'react-native';
+
+import { blue } from '@constant/theme';
 
 type LoadingViewProps = PropsWithChildren<{
   loading: boolean;
@@ -51,7 +52,7 @@ const Loader: FC = () => {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Animated.View style={{ transform: [{ rotate }], width: size, height: size }}>
-        <AntDesign name="loading" size={size} color={blue.primary} />
+        <AntDesign name="loading" size={size} color={blue[5]} />
       </Animated.View>
     </View>
   );

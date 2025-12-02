@@ -6,7 +6,7 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useLayoutEffect, useState } from 'react';
 
-import { Button } from '@ant-design/react-native';
+import ButtonPrimary from '@commonComponent/button-primary';
 import LoadingView from '@commonComponent/loading-view';
 import Modal from '@commonComponent/modal';
 import CategoryList from '@component/category/category-list';
@@ -93,9 +93,9 @@ const CategoryScreen = () => {
         onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
       >
         {user?.role === Role.ADMIN && (
-          <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
+          <ButtonPrimary onPress={() => setCreateCategoryModalVisible(true)}>
             Создать категорию
-          </Button>
+          </ButtonPrimary>
         )}
       </CategoryList>
 

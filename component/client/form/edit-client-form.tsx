@@ -1,7 +1,8 @@
 import type { Client, UpdateClient } from '@type/client.type';
 import type { FC } from 'react';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Form, Input } from '@ant-design/react-native';
+import ButtonPrimary from '@commonComponent/button-primary';
 import clientService from '@service/client.service';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
@@ -77,9 +78,9 @@ const EditClientForm: FC<EditClientFormProps> = ({ clientToEdit, onSuccess }) =>
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" onPress={form.submit} loading={loading}>
+              <ButtonPrimary onPress={form.submit} loading={loading}>
                 Сохранить
-              </Button>
+              </ButtonPrimary>
             </Form.Item>
           </Form>
         </View>

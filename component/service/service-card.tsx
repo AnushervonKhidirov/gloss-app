@@ -5,8 +5,8 @@ import { Card, WingBlank } from '@ant-design/react-native';
 import { Text, View } from 'react-native';
 import ActionButtons from '../common/action-buttons';
 
-import { gray } from '@ant-design/colors';
 import { cardStyle } from '@constant/card-style';
+import { grey } from '@constant/theme';
 import { minutesToTime } from '@helper/time-converter.helper';
 
 type ServiceItemProps = {
@@ -48,7 +48,7 @@ const ServiceHeader: FC<{ title: string; category: string }> = ({ title, categor
   return (
     <View>
       <Text style={{ fontSize: 17 }}>{title}</Text>
-      <Text style={{ color: gray[2] }}>{category}</Text>
+      <Text style={{ color: grey[6] }}>{category}</Text>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { View } from 'react-native';
 
-import { blue, red } from '@ant-design/colors';
+import { blue, red } from '@constant/theme';
 
 type ActionButtonsProps = {
   onEdit?: () => void;
@@ -17,7 +17,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ onEdit, onRemove }) => {
         <MaterialCommunityIcons
           name="delete-outline"
           size={24}
-          color={red.primary}
+          color={red[5]}
           onPress={onRemove}
         />
       )}
@@ -25,7 +25,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ onEdit, onRemove }) => {
         <MaterialCommunityIcons
           name="square-edit-outline"
           size={24}
-          color={blue.primary}
+          color={blue[5]}
           onPress={onEdit}
         />
       )}

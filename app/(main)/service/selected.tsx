@@ -9,7 +9,7 @@ import ServiceList from '@component/service/service-list';
 import useUserStore from '@store/user.store';
 import { Alert } from 'react-native';
 
-import { Button } from '@ant-design/react-native';
+import ButtonPrimary from '@commonComponent/button-primary';
 import Modal from '@commonComponent/modal';
 import SelectableServiceList from '@component/service/selectable-service-list';
 import { alertError } from '@helper/error-handler';
@@ -85,11 +85,10 @@ const SelectedServiceScreen = () => {
         services={convertSelectedService(selectedServices)}
         onRefresh={fetchData}
         keyExtractor={service => `selected-list-${service.id}`}
-        emptyMessage="У вас пока нет выбранных услуг"
       >
-        <Button type="primary" onPress={openSelectServiceModal}>
+        <ButtonPrimary onPress={openSelectServiceModal}>
           {selectedServices.length === 0 ? 'Выбрать услуги' : 'Редактировать'}
-        </Button>
+        </ButtonPrimary>
       </ServiceList>
 
       <Modal

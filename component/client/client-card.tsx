@@ -8,10 +8,10 @@ import { useState } from 'react';
 
 import { Button, Card } from '@ant-design/react-native';
 import ConnectActionButtons from '@commonComponent/connect-action-buttons';
-import { Alert, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
-import { gray } from '@ant-design/colors';
 import { cardStyle } from '@constant/card-style';
+import { grey } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import clientService from '@service/client.service';
 import parsePhoneNumber from 'libphonenumber-js';
@@ -41,7 +41,7 @@ const ClientHeader: FC<{ client: Client }> = ({ client }) => {
   return (
     <View>
       <Text style={{ fontSize: 17 }}>{client.name}</Text>
-      <Text style={{ color: gray[2] }}>{phone?.formatNational()}</Text>
+      <Text style={{ color: grey[6] }}>{phone?.formatNational()}</Text>
     </View>
   );
 };
@@ -74,7 +74,7 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
 
   return (
     user?.role === Role.ADMIN && (
-      <View style={{ alignSelf: 'flex-end', flexDirection: 'row', gap: 5 }}>
+      <View style={styles.actionButtonsWrapper}>
         <Button type="warning" size="small" loading={removeLoading} onPress={confirmRemoving}>
           Удалить
         </Button>
@@ -86,5 +86,14 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
     )
   );
 };
+
+const styles = StyleSheet.create({
+  actionButtonsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 5,
+    marginBlock: 5,
+  },
+});
 
 export default ClientCard;

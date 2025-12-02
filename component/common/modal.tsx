@@ -1,8 +1,10 @@
 import type { FC, PropsWithChildren } from 'react';
 
-import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Modal as NativeModal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
+import { grey } from '@constant/theme';
 
 type ModalProps = PropsWithChildren<{
   title: string;
@@ -20,7 +22,7 @@ const Modal: FC<ModalProps> = ({ title, isOpen, close, children }) => {
               <Text style={styles.title}>{title}</Text>
 
               <Pressable style={styles.closeIcon} onPress={close}>
-                <AntDesign name="close" size={24} color="black" />
+                <MaterialCommunityIcons name="window-close" size={30} color={grey[9]} />
               </Pressable>
             </View>
 

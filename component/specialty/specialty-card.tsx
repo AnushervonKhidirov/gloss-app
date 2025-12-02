@@ -5,8 +5,8 @@ import { Card, WingBlank } from '@ant-design/react-native';
 import ActionButtons from '@commonComponent/action-buttons';
 import { Text, View } from 'react-native';
 
-import { gray } from '@ant-design/colors';
 import { cardStyle } from '@constant/card-style';
+import { grey } from '@constant/theme';
 
 type SpecialtyItemProps = {
   specialty: Specialty;
@@ -31,7 +31,7 @@ const SpecialtyCard: FC<SpecialtyItemProps> = ({ specialty, onEdit, onRemove }) 
       {specialty.desc ? (
         <Card.Body>
           <WingBlank>
-            <Text style={{ color: gray.primary }}>{specialty.desc}</Text>
+            <Text style={{ color: grey[6] }}>{specialty.desc}</Text>
           </WingBlank>
         </Card.Body>
       ) : (

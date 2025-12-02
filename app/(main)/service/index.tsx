@@ -11,7 +11,7 @@ import ServiceList from '@component/service/service-list';
 import useUserStore from '@store/user.store';
 import { Alert } from 'react-native';
 
-import { Button } from '@ant-design/react-native';
+import ButtonPrimary from '@commonComponent/button-primary';
 import Modal from '@commonComponent/modal';
 import CreateServiceForm from '@component/service/form/create-service-form';
 import EditServiceForm from '@component/service/form/edit-service-form';
@@ -124,9 +124,9 @@ const ServiceScreen = () => {
         onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
       >
         {user?.role === Role.ADMIN && (
-          <Button type="primary" onPress={openCreateForm}>
+          <ButtonPrimary onPress={openCreateForm}>
             Создать услугу
-          </Button>
+          </ButtonPrimary>
         )}
       </ServiceList>
 

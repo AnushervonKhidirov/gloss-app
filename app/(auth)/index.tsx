@@ -7,6 +7,7 @@ import { useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { blue } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    color: '#108ee9',
+    color: blue[5],
   },
 });
 

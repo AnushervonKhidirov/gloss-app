@@ -1,6 +1,9 @@
-import { Tabs } from 'expo-router';
 import type { FC } from 'react';
+
+import { Tabs } from 'expo-router';
 import { StyleSheet } from 'react-native';
+
+import { grey } from '@constant/theme';
 
 type TabBarProps = {
   tabs?: TabList[];
@@ -27,6 +30,8 @@ const TabBar: FC<TabBarProps> = ({ tabs }) => {
           alignItems: 'center',
         },
         tabBarLabelStyle: { fontSize: 14, fontWeight: 700 },
+        tabBarInactiveTintColor: grey[5],
+        tabBarActiveTintColor: grey[9],
       }}
     >
       {tabList.map(({ name, title }) => (

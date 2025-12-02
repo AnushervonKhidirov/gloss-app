@@ -1,7 +1,7 @@
 import type { CreateUpdateWorkerService, SelectedService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
-import { Button } from '@ant-design/react-native';
+import ButtonPrimary from '@commonComponent/button-primary';
 import ScrollView from '@commonComponent/scroll-view';
 import { useState } from 'react';
 import { Alert } from 'react-native';
@@ -83,9 +83,9 @@ const SelectableServiceList: FC<SelectableServiceListProps> = ({
         />
       )}
     >
-      <Button type="primary" loading={loading} onPress={submit}>
+      <ButtonPrimary loading={loading} onPress={submit}>
         Сохранить
-      </Button>
+      </ButtonPrimary>
     </ScrollView>
   );
 };

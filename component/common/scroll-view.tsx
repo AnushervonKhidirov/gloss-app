@@ -1,8 +1,4 @@
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
-import type { ViewStyle } from 'react-native';
-
-import { gray } from '@ant-design/colors';
-import { Input } from '@ant-design/react-native';
 
 import { useEffect, useState } from 'react';
 import {
@@ -12,7 +8,9 @@ import {
   Text,
   View,
 } from 'react-native';
+import InputSearch from './input/input-search';
 
+import { grey } from '@constant/theme';
 import { search } from '@helper/search';
 
 type ScrollViewProps<T> = PropsWithChildren<{
@@ -55,11 +53,7 @@ const ScrollView = <T extends {}>({
   return (
     <View style={{ flex: 1, gap: 16 }}>
       {searchable && items.length > 0 && (
-        <Input
-          styles={{ container: styles.inputContainer, input: styles.input as ViewStyle }}
-          onChangeText={filtering}
-          placeholder="Поиск"
-        />
+        <InputSearch onChangeText={filtering} />
       )}
 
       <NativeScrollView
@@ -85,18 +79,17 @@ const styles = StyleSheet.create({
     paddingBlock: 5,
     paddingInline: 20,
     backgroundColor: '#fff',
-    borderColor: gray[0],
+    borderColor: grey[4],
     borderRadius: 100,
     overflow: 'hidden',
   },
 
   input: {
     fontSize: 16,
-    color: gray.primary,
   },
   emptyText: {
     textAlign: 'center',
-    color: gray[3],
+    color: grey[6],
     fontSize: 20,
     fontWeight: 700,
   },
