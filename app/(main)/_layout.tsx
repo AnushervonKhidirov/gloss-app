@@ -2,7 +2,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Drawer } from 'expo-router/drawer';
 import { StyleSheet } from 'react-native';
 
-import { blue } from '@ant-design/colors';
+import { gray } from '@ant-design/colors';
 
 import dayjs from 'dayjs';
 import ru from 'dayjs/locale/ru';
@@ -17,13 +17,14 @@ const MainLayout = () => {
   return (
     <Drawer
       screenOptions={{
-        swipeEdgeWidth: 45,
+        swipeEdgeWidth: 55,
         drawerPosition: 'right',
+        drawerStyle: styles.drawer,
         drawerContentContainerStyle: styles.drawerMenu,
         drawerItemStyle: styles.drawerMenuItem,
-        drawerActiveBackgroundColor: blue.primary,
+        drawerActiveBackgroundColor: gray[7],
         drawerActiveTintColor: '#fff',
-        drawerInactiveBackgroundColor: blue[0],
+        drawerInactiveBackgroundColor: '#f0f0f0',
         drawerInactiveTintColor: '#000',
       }}
     >
@@ -127,11 +128,15 @@ const MainLayout = () => {
 };
 
 const styles = StyleSheet.create({
+  drawer: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+  },
   drawerMenu: {
     gap: 10,
   },
   drawerMenuItem: {
-    borderRadius: 10,
+    borderRadius: 5,
   },
 });
 
