@@ -13,7 +13,7 @@ import userService from '@service/user.service';
 
 import { cardStyle } from '@constant/card-style';
 import { alertError } from '@helper/error-handler';
-import parsePhoneNumber from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import { green, grey, orange, red } from '@constant/theme';
 
@@ -67,7 +67,7 @@ const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
 };
 
 const WorkerItemBody: FC<{ worker: User }> = ({ worker }) => {
-  const phone = parsePhoneNumber(worker.phone);
+  const phone = parsePhoneNumberFromString(worker.phone, 'TJ');
 
   return (
     <View style={{ gap: 5 }}>

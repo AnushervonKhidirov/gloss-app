@@ -16,7 +16,7 @@ import { cardStyle } from '@constant/card-style';
 import { blue, green, grey, orange } from '@constant/theme';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
 import appointmentService from '@service/appointment.service';
-import parsePhoneNumber from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 function getPrice(appointment: Appointment) {
   const workerService = appointment.user.workerService.find(
@@ -71,7 +71,7 @@ const AppointmentHeader: FC<{ clientName: string; serviceName: string }> = ({
 };
 
 const AppointmentItemBody: FC<{ appointment: Appointment }> = ({ appointment }) => {
-  const phone = parsePhoneNumber(appointment.client.phone);
+  const phone = parsePhoneNumberFromString(appointment.client.phone, 'TJ');
 
   const price = getPrice(appointment);
   const priceText = price === 0 ? 'Бесплатно' : price + ' с';

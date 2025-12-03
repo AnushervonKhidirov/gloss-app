@@ -15,7 +15,7 @@ import userService from '@service/user.service';
 
 import { grey } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
-import parsePhoneNumber from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 function getRole(role: Role) {
   if (role === Role.ADMIN) return 'Администратор';
@@ -65,7 +65,10 @@ const ProfileScreen = () => {
           <View style={styles.profileContent}>
             <ListItem field="Имя" value={user.firstName} />
             <ListItem field="Фамилия" value={user.lastName} />
-            <ListItem field="Телефон" value={parsePhoneNumber(user.phone)?.formatNational()} />
+            <ListItem
+              field="Телефон"
+              value={parsePhoneNumberFromString(user.phone, 'TJ')?.formatNational()}
+            />
             <ListItem field="Логин" value={user.username} />
             <ListItem field="Роль" value={getRole(user.role)} />
             <ListItem field="Специальность" value={user.specialty?.name} inRow />

@@ -14,7 +14,7 @@ import { cardStyle } from '@constant/card-style';
 import { grey } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import clientService from '@service/client.service';
-import parsePhoneNumber from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 type ClientCardProps = {
   client: Client;
@@ -36,7 +36,7 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
 };
 
 const ClientHeader: FC<{ client: Client }> = ({ client }) => {
-  const phone = parsePhoneNumber(client.phone);
+  const phone = parsePhoneNumberFromString(client.phone, 'TJ');
 
   return (
     <View>
