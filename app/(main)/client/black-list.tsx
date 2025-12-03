@@ -47,8 +47,8 @@ const ClientBlackListScreen = () => {
     }
   }
 
-  async function restore(id: number) {
-    const [blackList, err] = await blackListService.remove(id);
+  async function restore(phone: string) {
+    const [blackList, err] = await blackListService.remove({ phone });
 
     if (err) {
       alertError(err);

@@ -11,6 +11,15 @@ import EditClientForm from '@component/client/form/edit-client-form';
 import { alertError } from '@helper/error-handler';
 import clientService from '@service/client.service';
 
+function convertForSearchInBlackList<T extends { blocked: boolean }>(
+  arr: T[],
+): (T & { blockedText?: string })[] {
+  return arr.map(item => {
+    const blocked = item.blocked ? { blockedText: 'Black list | Черный список' } : {};
+    return { ...item, ...blocked };
+  });
+}
+
 const ClientScreen = () => {
   const { clients, setClients, updateClient } = useClientsStore(state => state);
   const [loading, setLoading] = useState(false);
@@ -50,7 +59,11 @@ const ClientScreen = () => {
 
   return (
     <LoadingView loading={loading}>
-      <ClientList clients={clients} onRefresh={fetch} onEdit={openEditClientModal} />
+      <ClientList
+        clients={convertForSearchInBlackList(clients)}
+        onRefresh={fetch}
+        onEdit={openEditClientModal}
+      />
 
       <Modal
         title="Редактирование клиента"

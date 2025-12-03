@@ -29,9 +29,9 @@ class BlackListService {
     }
   }
 
-  async remove(id: number): ReturnWithErrPromise<BlackList> {
+  async remove({ phone }: { phone: string }): ReturnWithErrPromise<BlackList> {
     try {
-      const response = await apiClient.delete(`${this.endpoint}/${id}`);
+      const response = await apiClient.delete(`${this.endpoint}/${phone}`);
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [response.data, null];

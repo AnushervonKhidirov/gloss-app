@@ -11,7 +11,7 @@ import { green } from '@constant/theme';
 
 type BlackListCardProps = {
   blackList: BlackList;
-  restore: (id: number) => void;
+  restore: (phone: string) => void;
 };
 
 const BlackListCard: FC<BlackListCardProps> = ({ blackList, restore }) => {
@@ -29,7 +29,7 @@ const BlackListCard: FC<BlackListCardProps> = ({ blackList, restore }) => {
             name="restore"
             size={24}
             color={green[5]}
-            onPress={() => restore(blackList.id)}
+            onPress={() => restore(blackList.phone)}
           />
         }
       />
