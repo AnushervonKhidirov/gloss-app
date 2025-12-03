@@ -1,3 +1,4 @@
+import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
 import type { Client } from '@type/client.type';
 import type { FC } from 'react';
 
@@ -8,7 +9,7 @@ import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
 
 import { Card } from '@ant-design/react-native';
-import ActionButtonsModal, { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import ActionButtonsModal from '@commonComponent/action-buttons-modal';
 import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Alert, StyleSheet, Text, View } from 'react-native';
@@ -72,9 +73,8 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
   const { updateClient, removeCLient } = useClientsStore(state => state);
   const { pushBlackList, deleteBlackList } = useBlackListStore(state => state);
 
-  const [actionVisible, setActionVisible] = useState(false);
-
   const [actions, setActions] = useState<ActionButtonData[]>([]);
+  const [actionVisible, setActionVisible] = useState(false);
 
   const isAdmin = user?.role === Role.ADMIN;
 

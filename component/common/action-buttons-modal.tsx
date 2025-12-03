@@ -23,26 +23,33 @@ const ActionButtonsModal: FC<ActionButtonsModalProps> = ({
   setVisible,
 }) => {
   return (
-    <>
-      <Pressable onPress={() => setVisible(true)}>
-        <MaterialCommunityIcons name="dots-vertical-circle" size={24} color={grey[9]} />
-      </Pressable>
-
-      <Modal
-        transparent
-        visible={visible}
-        animationType="slide"
-        onRequestClose={() => setVisible(false)}
-      >
-        <Pressable style={styles.wrapper} onPress={() => setVisible(false)}>
-          <Pressable style={styles.content}>
-            {actions.map(({ iconName, text, action }) => (
-              <ActionButton key={iconName + text} iconName={iconName} text={text} action={action} />
-            ))}
-          </Pressable>
+    actions.length > 0 && (
+      <>
+        <Pressable onPress={() => setVisible(true)}>
+          <MaterialCommunityIcons name="dots-vertical-circle" size={24} color={grey[9]} />
         </Pressable>
-      </Modal>
-    </>
+
+        <Modal
+          transparent
+          visible={visible}
+          animationType="slide"
+          onRequestClose={() => setVisible(false)}
+        >
+          <Pressable style={styles.wrapper} onPress={() => setVisible(false)}>
+            <Pressable style={styles.content}>
+              {actions.map(({ iconName, text, action }) => (
+                <ActionButton
+                  key={iconName + text}
+                  iconName={iconName}
+                  text={text}
+                  action={action}
+                />
+              ))}
+            </Pressable>
+          </Pressable>
+        </Modal>
+      </>
+    )
   );
 };
 

@@ -1,3 +1,4 @@
+import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
 import type { Appointment } from '@type/appointment.type';
 import type { Dayjs } from 'dayjs';
 import type { FC } from 'react';
@@ -6,9 +7,10 @@ import useAppointmentStore from '@store/appointment.store';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button, Card, WingBlank } from '@ant-design/react-native';
+import { Card, WingBlank } from '@ant-design/react-native';
+import ActionButtonsModal from '@commonComponent/action-buttons-modal';
 import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
@@ -116,9 +118,12 @@ const AppointmentItemBody: FC<{ appointment: Appointment }> = ({ appointment }) 
 const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   const user = useUserStore(state => state.user);
   const { deleteAppointment } = useAppointmentStore(state => state);
-  const [removeLoading, setRemoveLoading] = useState(false);
-  const [statisticLoading, setStatisticLoading] = useState(false);
 
+  const [actions, setActions] = useState<ActionButtonData[]>([]);
+  const [actionVisible, setActionVisible] = useState(false);
+
+  const isAdmin = user?.role === Role.ADMIN;
+  const isOwner = user?.id === appointment.userId;
   const isPassed = dayjs().isAfter(appointment.endAt);
 
   function confirmRemoving() {
@@ -140,8 +145,6 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   }
 
   async function remove(appointment: Appointment) {
-    setRemoveLoading(true);
-
     const [appointmentToRemove, err] = await appointmentService.delete(appointment.id);
 
     if (err) {
@@ -154,12 +157,10 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
       });
     }
 
-    setRemoveLoading(false);
+    setActionVisible(false);
   }
 
   async function addToStatistic(appointment: Appointment) {
-    setStatisticLoading(true);
-
     const statistic = {
       clientName: appointment.client.name,
       clientPhone: appointment.client.phone,
@@ -171,21 +172,46 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
 
     console.log(statistic);
 
-    setStatisticLoading(false);
+    setActionVisible(false);
   }
+
+  useEffect(() => {
+    const actionButtons: ActionButtonData[] = [];
+
+    if (isPassed && isAdmin) {
+      actionButtons.push(
+        {
+          iconName: 'calendar-remove-outline',
+          text: 'Удалить запись',
+          action: confirmRemoving,
+        },
+        {
+          iconName: 'calendar-check-outline',
+          text: 'Добавить в статистику',
+          action: confirmStatistic,
+        },
+      );
+    }
+
+    if (!isPassed && (isAdmin || isOwner)) {
+      actionButtons.push({
+        iconName: 'calendar-remove',
+        text: 'Отменить запись',
+        action: confirmRemoving,
+      });
+    }
+
+    setActions(actionButtons);
+  }, [appointment]);
 
   return (
     (user?.role === Role.ADMIN || user?.id === appointment.userId) && (
       <View style={styles.actionButtonsWrapper}>
-        <Button type="warning" size="small" loading={removeLoading} onPress={confirmRemoving}>
-          {isPassed ? 'Удалить' : 'Отменить'}
-        </Button>
-
-        {isPassed && user?.role === Role.ADMIN && (
-          <Button type="primary" size="small" loading={statisticLoading} onPress={confirmStatistic}>
-            Добавить в статистику
-          </Button>
-        )}
+        <ActionButtonsModal
+          actions={actions}
+          visible={actionVisible}
+          setVisible={setActionVisible}
+        />
       </View>
     )
   );
