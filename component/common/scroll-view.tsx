@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type { ComponentProps, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
 import { useEffect, useState } from 'react';
 import {
@@ -11,6 +11,7 @@ import {
 import InputSearch from './input/input-search';
 
 import { grey } from '@constant/theme';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { search } from '@helper/search';
 
 type ScrollViewProps<T> = PropsWithChildren<{
@@ -18,6 +19,7 @@ type ScrollViewProps<T> = PropsWithChildren<{
   renderItem: (item: T) => ReactNode;
   onRefresh: () => Promise<void>;
   searchable?: boolean;
+  searchIconName?: ComponentProps<typeof MaterialCommunityIcons>['name'];
   emptyMessage?: string;
 }>;
 
@@ -26,6 +28,7 @@ const ScrollView = <T extends {}>({
   renderItem,
   onRefresh,
   searchable,
+  searchIconName,
   emptyMessage = 'Пусто',
   children,
 }: ScrollViewProps<T>): ReactElement => {
@@ -53,7 +56,7 @@ const ScrollView = <T extends {}>({
   return (
     <View style={{ flex: 1, gap: 16 }}>
       {searchable && items.length > 0 && (
-        <InputSearch onChangeText={filtering} />
+        <InputSearch searchIconName={searchIconName} onChangeText={filtering} />
       )}
 
       <NativeScrollView

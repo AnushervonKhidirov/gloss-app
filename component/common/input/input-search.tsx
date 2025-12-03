@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 
 import { Input } from '@ant-design/react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -10,9 +10,15 @@ type InputSearchProps = {
   onChangeText: (value: string) => void;
   value?: string;
   placeholder?: string;
+  searchIconName?: ComponentProps<typeof MaterialCommunityIcons>['name'];
 };
 
-const InputSearch: FC<InputSearchProps> = ({ value, placeholder = 'Поиск', onChangeText }) => {
+const InputSearch: FC<InputSearchProps> = ({
+  value,
+  placeholder = 'Поиск',
+  searchIconName = 'text-search-variant',
+  onChangeText,
+}) => {
   return (
     <View style={styles.inputWrap}>
       <Input
@@ -24,7 +30,7 @@ const InputSearch: FC<InputSearchProps> = ({ value, placeholder = 'Поиск', 
 
       <MaterialCommunityIcons
         style={{ alignSelf: 'center' }}
-        name="text-search-variant"
+        name={searchIconName}
         size={24}
         color={grey[4]}
       />

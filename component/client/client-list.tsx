@@ -14,6 +14,7 @@ const ClientList: FC<ClientListProps> = ({ clients, onRefresh, onEdit }) => {
   return (
     <ScrollView
       searchable
+      searchIconName='account-search-outline'
       onRefresh={onRefresh}
       items={clients}
       renderItem={client => <ClientCard key={client.id} client={client} onEdit={onEdit} />}

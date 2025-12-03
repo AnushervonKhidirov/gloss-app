@@ -13,6 +13,7 @@ const AppointmentList: FC<AppointmentListProps> = ({ appointments, refresh }) =>
   return (
     <ScrollView
       searchable
+      searchIconName="calendar-search-outline"
       onRefresh={refresh}
       items={appointments}
       renderItem={appointment => <AppointmentCard key={appointment.id} appointment={appointment} />}
