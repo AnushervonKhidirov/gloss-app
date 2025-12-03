@@ -25,7 +25,7 @@ const ClientBlackListScreen = () => {
 
   function addBlackList(blackList: BlackList) {
     const client = clients.find(client => client.phone === blackList.phone);
-    if (client) updateClient(client);
+    if (client) updateClient({ ...client, blocked: true });
 
     pushBlackList([blackList]);
     setBlackListFormAddModalVisible(false);
@@ -54,7 +54,7 @@ const ClientBlackListScreen = () => {
       alertError(err);
     } else {
       const client = clients.find(client => client.phone === blackList.phone);
-      if (client) updateClient(client);
+      if (client) updateClient({ ...client, blocked: false });
 
       deleteBlackList(blackList);
     }
