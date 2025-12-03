@@ -34,5 +34,5 @@ export function errorHandler(err: unknown): [null, HttpException] {
 
 export function alertError(err: HttpException) {
   const message = Array.isArray(err.message) ? err.message.join(';\n\n') : err.message;
-  Alert.alert(err.error, message);
+  Alert.alert(`${err.error} (${err.statusCode})`, message);
 }
