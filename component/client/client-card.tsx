@@ -5,10 +5,10 @@ import useBlackListStore from '@store/black-list.store';
 import useClientsStore from '@store/clients.store';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button, Card } from '@ant-design/react-native';
-import ButtonPrimary from '@commonComponent/button-primary';
+import { Card } from '@ant-design/react-native';
+import ActionButtonsModal, { ActionButtonData } from '@commonComponent/action-buttons-modal';
 import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Alert, StyleSheet, Text, View } from 'react-native';
@@ -16,7 +16,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import clientService from '@service/client.service';
 
 import { cardStyle } from '@constant/card-style';
-import { green, grey, red } from '@constant/theme';
+import { grey, red } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import blackListService from '@service/black-list.service';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -51,7 +51,7 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
         extra={<ConnectActionButtons phone={client.phone} />}
       />
 
-      <Card.Footer content={<FooterActions client={client} onEdit={onEdit} />} />
+      <Card.Footer extra={<FooterActions client={client} onEdit={onEdit} />} />
     </Card>
   );
 };
@@ -72,8 +72,37 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
   const { updateClient, removeCLient } = useClientsStore(state => state);
   const { pushBlackList, deleteBlackList } = useBlackListStore(state => state);
 
-  const [removeLoading, setRemoveLoading] = useState(false);
-  const [blackListLoading, setBlackListLoading] = useState(false);
+  const [actionVisible, setActionVisible] = useState(false);
+
+  const [actions, setActions] = useState<ActionButtonData[]>([]);
+
+  const isAdmin = user?.role === Role.ADMIN;
+
+  const blackListActions: ActionButtonData[] = [
+    {
+      iconName: 'account-cancel-outline',
+      text: 'Добавить в Черный список',
+      action: confirmBlackList,
+    },
+    {
+      iconName: 'account-check-outline',
+      text: 'Убрать из Черного списка',
+      action: confirmRestore,
+    },
+  ];
+
+  const adminActions: ActionButtonData[] = [
+    {
+      iconName: 'account-remove-outline',
+      text: 'Удалить',
+      action: confirmRemoving,
+    },
+    {
+      iconName: 'account-edit-outline',
+      text: 'Редактировать',
+      action: () => onEdit(client),
+    },
+  ];
 
   function confirmRemoving() {
     Alert.alert('Удаление', `Вы уверены что хотите удалить клиента ${client.name}`, [
@@ -99,8 +128,6 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
   }
 
   async function removeClient(client: Client) {
-    setRemoveLoading(true);
-
     const [clientToRemove, err] = await clientService.delete(client.id);
 
     if (err) {
@@ -114,12 +141,10 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
       removeCLient(clientToRemove);
     }
 
-    setRemoveLoading(false);
+    setActionVisible(false);
   }
 
   async function addToBlackList(client: Client) {
-    setBlackListLoading(true);
-
     const [blackListItem, err] = await blackListService.add({ phone: client.phone });
 
     if (err) {
@@ -129,12 +154,10 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
       pushBlackList([blackListItem]);
     }
 
-    setBlackListLoading(false);
+    setActionVisible(false);
   }
 
   async function restoreFromBlackList(client: Client) {
-    setBlackListLoading(true);
-
     const [blackListItem, err] = await blackListService.remove({ phone: client.phone });
 
     if (err) {
@@ -144,35 +167,26 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
       deleteBlackList(blackListItem);
     }
 
-    setBlackListLoading(false);
+    setActionVisible(false);
   }
+
+  useEffect(() => {
+    const actionButtons: ActionButtonData[] = [];
+
+    actionButtons.push(blackListActions[Number(client.blocked)]);
+    if (isAdmin) actionButtons.push(...adminActions);
+
+    setActions(actionButtons);
+  }, [client.blocked]);
 
   return (
     user?.role === Role.ADMIN && (
       <View style={styles.actionButtonsWrapper}>
-        <Button type="warning" size="small" loading={removeLoading} onPress={confirmRemoving}>
-          Удалить
-        </Button>
-
-        {client.blocked ? (
-          <Button
-            type="primary"
-            size="small"
-            loading={blackListLoading}
-            onPress={confirmRestore}
-            style={{ backgroundColor: green[5], borderColor: green[5] }}
-          >
-            Убрать из Ч/С
-          </Button>
-        ) : (
-          <ButtonPrimary size="small" loading={blackListLoading} onPress={confirmBlackList}>
-            Добавить в Ч/С
-          </ButtonPrimary>
-        )}
-
-        <Button type="primary" size="small" onPress={() => onEdit(client)}>
-          Редактировать
-        </Button>
+        <ActionButtonsModal
+          actions={actions}
+          visible={actionVisible}
+          setVisible={setActionVisible}
+        />
       </View>
     )
   );
@@ -182,8 +196,7 @@ const styles = StyleSheet.create({
   actionButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 5,
-    marginBlock: 5,
+    marginBottom: 5,
   },
   thumbAvatar: {
     width: 24,
