@@ -64,7 +64,12 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
     const [clientToRemove, err] = await clientService.delete(client.id);
 
     if (err) {
-      alertError(err);
+      const message =
+        err.statusCode === 400
+          ? 'Клиент не может быть удален.\nВозможно у него запись на прием. (Удалите сперва запись)'
+          : err.message;
+
+      alertError({ ...err, message });
     } else {
       removeCLient(clientToRemove);
     }
