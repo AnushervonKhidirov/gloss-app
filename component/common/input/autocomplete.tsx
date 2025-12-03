@@ -78,7 +78,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
         visible={opened}
         transparent
         onRequestClose={() => setOpened(false)}
-        animationType="fade"
+        animationType="slide"
       >
         <View style={styles.wrapper}>
           <View style={styles.content}>
@@ -108,10 +108,9 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: '#fff',
-    paddingInline: 20,
-    paddingBlock: 30,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
     gap: 20,
   },
   scroller: {
