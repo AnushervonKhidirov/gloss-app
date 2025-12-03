@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
 import { Form, Input, List } from '@ant-design/react-native';
-import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet } from 'react-native';
 import InputSearch from './input-search';
 
 import { grey } from '@constant/theme';
@@ -80,8 +80,8 @@ const Autocomplete: FC<AutocompleteProps> = ({
         onRequestClose={() => setOpened(false)}
         animationType="slide"
       >
-        <View style={styles.wrapper}>
-          <View style={styles.content}>
+        <Pressable style={styles.wrapper} onPress={() => setOpened(false)}>
+          <Pressable style={styles.content}>
             <InputSearch value={inputValue} placeholder={placeholder} onChangeText={inputHandler} />
 
             <ScrollView style={styles.scroller}>
@@ -93,8 +93,8 @@ const Autocomplete: FC<AutocompleteProps> = ({
                 ))}
               </List>
             </ScrollView>
-          </View>
-        </View>
+          </Pressable>
+        </Pressable>
       </Modal>
     </>
   );
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   content: {
-    backgroundColor: '#fff',
+    backgroundColor: grey[1],
     padding: 20,
     borderRadius: 20,
     margin: 20,
