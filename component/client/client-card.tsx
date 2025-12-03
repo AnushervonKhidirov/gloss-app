@@ -180,7 +180,7 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
   }, [client.blocked]);
 
   return (
-    user?.role === Role.ADMIN && (
+    isAdmin && (
       <View style={styles.actionButtonsWrapper}>
         <ActionButtonsModal
           actions={actions}

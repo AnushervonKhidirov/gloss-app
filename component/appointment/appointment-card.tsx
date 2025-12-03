@@ -205,7 +205,7 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   }, [appointment]);
 
   return (
-    (user?.role === Role.ADMIN || user?.id === appointment.userId) && (
+    (isAdmin || isOwner) && (
       <View style={styles.actionButtonsWrapper}>
         <ActionButtonsModal
           actions={actions}
