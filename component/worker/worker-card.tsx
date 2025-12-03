@@ -1,7 +1,9 @@
+import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
 import type { User } from '@type/user.type';
 import type { ComponentProps, FC } from 'react';
 
-import { Button, Card, WingBlank } from '@ant-design/react-native';
+import { Card, WingBlank } from '@ant-design/react-native';
+import ActionButtonsModal from '@commonComponent/action-buttons-modal';
 import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useUserStore from '@store/user.store';
@@ -10,6 +12,7 @@ import { Role } from '@type/user.type';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import userService from '@service/user.service';
+import { useEffect, useState } from 'react';
 
 import { cardStyle } from '@constant/card-style';
 import { alertError } from '@helper/error-handler';
@@ -92,6 +95,12 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
   const user = useUserStore(state => state.user);
   const { updateUser, removeUser } = useUsersStore(state => state);
 
+  const [actions, setActions] = useState<ActionButtonData[]>([]);
+  const [actionVisible, setActionVisible] = useState(false);
+
+  const isAdmin = user?.role === Role.ADMIN;
+  const isWorkerAdmin = worker.role !== Role.ADMIN;
+
   function rejectConfirm(user: User) {
     Alert.alert('Отклонить', `Отклонить запрос от ${user.firstName}?`, [
       { text: 'Да', onPress: () => remove(user.id) },
@@ -115,6 +124,8 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     } else {
       updateUser(approvedUser);
     }
+
+    setActionVisible(false);
   }
 
   async function archive(userId: number) {
@@ -125,6 +136,8 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     } else {
       updateUser(archivedUser);
     }
+
+    setActionVisible(false);
   }
 
   async function unarchive(userId: number) {
@@ -135,6 +148,8 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     } else {
       updateUser(archivedUser);
     }
+
+    setActionVisible(false);
   }
 
   async function remove(userId: number) {
@@ -145,47 +160,65 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
     } else {
       removeUser(archivedUser);
     }
+
+    setActionVisible(false);
   }
 
-  return user?.role === Role.ADMIN && worker.role !== Role.ADMIN ? (
-    <View style={styles.actionButtonsWrapper}>
-      {worker.archived && (
-        <>
-          <Button type="warning" size="small" onPress={() => removeConfirm(worker)}>
-            Удалить
-          </Button>
+  useEffect(() => {
+    const actionButtons: ActionButtonData[] = [];
 
-          <Button type="primary" size="small" onPress={() => unarchive(worker.id)}>
-            Восстановить
-          </Button>
-        </>
-      )}
+    if (worker.archived) {
+      actionButtons.push(
+        {
+          iconName: 'account-remove-outline',
+          text: 'Удалить сотрудника',
+          action: () => removeConfirm(worker),
+        },
+        {
+          iconName: 'account-check-outline',
+          text: 'Восстановить сотрудника',
+          action: () => unarchive(worker.id),
+        },
+      );
+    }
 
-      {worker.verified && !worker.archived && (
-        <Button type="warning" size="small" onPress={() => archive(worker.id)}>
-          Уволить
-        </Button>
-      )}
+    if (worker.verified && !worker.archived) {
+      actionButtons.push({
+        iconName: 'account-cancel-outline',
+        text: 'Уволить сотрудника',
+        action: () => archive(worker.id),
+      });
+    }
 
-      {!worker.verified && (
-        <>
-          <Button type="warning" size="small" onPress={() => rejectConfirm(worker)}>
-            Отклонить
-          </Button>
+    if (!worker.verified) {
+      actionButtons.push(
+        {
+          iconName: 'account-minus-outline',
+          text: 'Отклонить',
+          action: () => rejectConfirm(worker),
+        },
+        {
+          iconName: 'account-check-outline',
+          text: 'Подтвертидь',
+          action: () => approve(worker.id),
+        },
+      );
+    }
 
-          <Button
-            type="primary"
-            style={{ backgroundColor: green[5], borderColor: green[5] }}
-            size="small"
-            onPress={() => approve(worker.id)}
-          >
-            Подтвертидь
-          </Button>
-        </>
-      )}
-    </View>
-  ) : (
-    <View />
+    setActions(actionButtons);
+  }, [worker]);
+
+  return (
+    isAdmin &&
+    isWorkerAdmin && (
+      <View style={styles.actionButtonsWrapper}>
+        <ActionButtonsModal
+          actions={actions}
+          visible={actionVisible}
+          setVisible={setActionVisible}
+        />
+      </View>
+    )
   );
 };
 
@@ -193,8 +226,7 @@ const styles = StyleSheet.create({
   actionButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 5,
-    marginBlock: 5,
+    marginBottom: 5,
   },
   bodyListItem: {
     flexDirection: 'row',

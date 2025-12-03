@@ -52,7 +52,7 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
         extra={<ConnectActionButtons phone={client.phone} />}
       />
 
-      <Card.Footer extra={<FooterActions client={client} onEdit={onEdit} />} />
+      <Card.Footer content={<FooterActions client={client} onEdit={onEdit} />} />
     </Card>
   );
 };

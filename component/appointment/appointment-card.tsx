@@ -55,7 +55,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
         </WingBlank>
       </Card.Body>
 
-      <Card.Footer extra={<FooterActions appointment={appointment} />} />
+      <Card.Footer content={<FooterActions appointment={appointment} />} />
     </Card>
   );
 };
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   actionButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginBlock: 5,
+    marginBottom: 5,
   },
 });
 
