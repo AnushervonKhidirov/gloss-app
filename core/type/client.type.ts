@@ -10,4 +10,5 @@ export type UpdateClient = CreateClient;
 export type QueryClient = {
   name?: string;
   phone?: string;
+  omitBlackList?: boolean;
 };
