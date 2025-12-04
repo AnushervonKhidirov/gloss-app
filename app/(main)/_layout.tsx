@@ -50,6 +50,17 @@ const MainLayout = () => {
         />
 
         <Drawer.Screen
+          name="create-appointment"
+          options={{
+            title: 'Добавить запись',
+            drawerLabel: 'Добавить запись',
+            drawerIcon: ({ color }) => (
+              <MaterialCommunityIcons name="calendar-plus" size={24} color={color} />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
           name="client"
           options={{
             title: 'Клиенты',
