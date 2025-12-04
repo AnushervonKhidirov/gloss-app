@@ -17,11 +17,7 @@ export type ActionButtonData = {
   action: () => void;
 };
 
-const ActionButtons: FC<ActionButtonsProps> = ({
-  actions,
-  visible = false,
-  setVisible,
-}) => {
+const ActionButtons: FC<ActionButtonsProps> = ({ actions, visible = false, setVisible }) => {
   return (
     actions.length > 0 && (
       <>
