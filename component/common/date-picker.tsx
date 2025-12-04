@@ -11,15 +11,17 @@ import dayjs from 'dayjs';
 
 type DatePickerProps = {
   initialDate?: Dayjs;
+  onSelect: (date: Dayjs) => void;
 };
 
-const DatePicker: FC<DatePickerProps> = ({ initialDate }) => {
+const DatePicker: FC<DatePickerProps> = ({ initialDate, onSelect }) => {
   const [date, setDate] = useState(initialDate ?? dayjs());
   const [visible, setVisible] = useState(false);
 
   function selectDate(date: Dayjs) {
     setDate(date);
     setVisible(false);
+    onSelect(date);
   }
 
   return (
