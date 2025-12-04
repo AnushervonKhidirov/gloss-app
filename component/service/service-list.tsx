@@ -6,16 +6,16 @@ import ServiceCard from './service-card';
 
 type ServiceListProps = PropsWithChildren<{
   services: Service[];
-  onEdit?: (service: Service) => void;
-  onRemove?: (service: Service) => void;
+  edit?: (service: Service) => void;
+  remove?: (service: Service) => void;
   onRefresh: () => Promise<void>;
   keyExtractor?: (service: Service) => Key;
 }>;
 
 const ServiceList: FC<ServiceListProps> = ({
   services,
-  onEdit,
-  onRemove,
+  edit,
+  remove,
   onRefresh,
   keyExtractor,
   children,
@@ -29,8 +29,8 @@ const ServiceList: FC<ServiceListProps> = ({
         <ServiceCard
           key={keyExtractor ? keyExtractor(service) : service.id}
           service={service}
-          onEdit={onEdit}
-          onRemove={onRemove}
+          edit={edit}
+          remove={remove}
         />
       )}
     >

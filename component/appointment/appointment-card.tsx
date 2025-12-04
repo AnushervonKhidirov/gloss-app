@@ -11,8 +11,7 @@ import { useEffect, useState } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
 import ActionButtonsModal from '@commonComponent/action-buttons-modal';
-import ConnectActionButtons from '@commonComponent/connect-action-buttons';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import { cardStyle } from '@constant/card-style';
 import { blue, green, grey, orange } from '@constant/theme';
@@ -46,7 +45,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
             serviceName={appointment.service.name}
           />
         }
-        extra={<ConnectActionButtons phone={appointment.client.phone} />}
+        extra={<ActionButtons appointment={appointment} />}
       />
 
       <Card.Body>
@@ -54,8 +53,6 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
           <AppointmentItemBody appointment={appointment} />
         </WingBlank>
       </Card.Body>
-
-      <Card.Footer content={<FooterActions appointment={appointment} />} />
     </Card>
   );
 };
@@ -115,7 +112,7 @@ const AppointmentItemBody: FC<{ appointment: Appointment }> = ({ appointment }) 
   );
 };
 
-const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
+const ActionButtons: FC<{ appointment: Appointment }> = ({ appointment }) => {
   const user = useUserStore(state => state.user);
   const { deleteAppointment } = useAppointmentStore(state => state);
 
@@ -178,6 +175,25 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   useEffect(() => {
     const actionButtons: ActionButtonData[] = [];
 
+    actionButtons.push(
+      {
+        iconName: 'phone-outline',
+        text: 'Позвонить',
+        action: () => {
+          setActionVisible(false);
+          Linking.openURL(`tel:${appointment.client.phone}`);
+        },
+      },
+      {
+        iconName: 'email-outline',
+        text: 'Написать SMS',
+        action: () => {
+          setActionVisible(false);
+          Linking.openURL(`sms:${appointment.client.phone}`);
+        },
+      },
+    );
+
     if (isPassed && isAdmin) {
       actionButtons.push(
         {
@@ -205,15 +221,7 @@ const FooterActions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   }, [appointment]);
 
   return (
-    (isAdmin || isOwner) && (
-      <View style={styles.actionButtonsWrapper}>
-        <ActionButtonsModal
-          actions={actions}
-          visible={actionVisible}
-          setVisible={setActionVisible}
-        />
-      </View>
-    )
+    <ActionButtonsModal actions={actions} visible={actionVisible} setVisible={setActionVisible} />
   );
 };
 
@@ -221,11 +229,6 @@ const styles = StyleSheet.create({
   bodyListItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  actionButtonsWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginBottom: 5,
   },
 });
 

@@ -12,12 +12,11 @@ import Modal from '@commonComponent/modal';
 import CreateSpecialtyForm from '@component/specialty/form/create-specialty-form';
 import EditSpecialtyForm from '@component/specialty/form/edit-specialty-form';
 import SpecialtyList from '@component/specialty/specialty-list';
-import { Alert } from 'react-native';
 
 import { alertError } from '@helper/error-handler';
 
 const SpecialtyScreen = () => {
-  const user = useUserStore(state => state.user);
+  const isAdmin = useUserStore(state => state.user?.role === Role.ADMIN);
   const { specialties, pushCategories, editSpecialty, deleteSpecialty, setCategories } =
     useSpecialtyStore(state => state);
 
@@ -40,18 +39,6 @@ const SpecialtyScreen = () => {
   function openEditServiceModal(specialty: Specialty) {
     setToEdit(specialty);
     setEditSpecialtyModalVisible(true);
-  }
-
-  function removeConfirm(specialty: Specialty) {
-    Alert.alert('Удаление', `Удалить ${specialty.name}?\n\nПосле удаления нельзя восстановить!`, [
-      {
-        text: 'Да',
-        onPress: () => remove(specialty),
-      },
-      {
-        text: 'Нет',
-      },
-    ]);
   }
 
   async function remove(specialty: Specialty) {
@@ -89,10 +76,10 @@ const SpecialtyScreen = () => {
       <SpecialtyList
         specialties={specialties}
         refresh={fetch}
-        onEdit={user?.role === Role.ADMIN ? openEditServiceModal : undefined}
-        onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
+        onEdit={openEditServiceModal}
+        onRemove={remove}
       >
-        {user?.role === Role.ADMIN && (
+        {isAdmin && (
           <ButtonPrimary onPress={() => setCreateSpecialtyModalVisible(true)}>
             Создать специальность
           </ButtonPrimary>

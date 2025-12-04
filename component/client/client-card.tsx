@@ -10,9 +10,8 @@ import { useEffect, useState } from 'react';
 
 import { Card } from '@ant-design/react-native';
 import ActionButtonsModal from '@commonComponent/action-buttons-modal';
-import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import clientService from '@service/client.service';
 
@@ -49,10 +48,8 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
         styles={cardStyle.header}
         thumb={cardThumb}
         title={<ClientHeader client={client} />}
-        extra={<ConnectActionButtons phone={client.phone} />}
+        extra={<ActionButtons client={client} onEdit={onEdit} />}
       />
-
-      <Card.Footer content={<FooterActions client={client} onEdit={onEdit} />} />
     </Card>
   );
 };
@@ -68,41 +65,13 @@ const ClientHeader: FC<{ client: Client }> = ({ client }) => {
   );
 };
 
-const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
-  const user = useUserStore(state => state.user);
+const ActionButtons: FC<ClientCardProps> = ({ client, onEdit }) => {
+  const isAdmin = useUserStore(state => state.user?.role === Role.ADMIN);
   const { updateClient, removeCLient } = useClientsStore(state => state);
   const { pushBlackList, deleteBlackList } = useBlackListStore(state => state);
 
   const [actions, setActions] = useState<ActionButtonData[]>([]);
   const [actionVisible, setActionVisible] = useState(false);
-
-  const isAdmin = user?.role === Role.ADMIN;
-
-  const blackListActions: ActionButtonData[] = [
-    {
-      iconName: 'account-cancel-outline',
-      text: 'Добавить в Черный список',
-      action: confirmBlackList,
-    },
-    {
-      iconName: 'account-check-outline',
-      text: 'Убрать из Черного списка',
-      action: confirmRestore,
-    },
-  ];
-
-  const adminActions: ActionButtonData[] = [
-    {
-      iconName: 'account-remove-outline',
-      text: 'Удалить',
-      action: confirmRemoving,
-    },
-    {
-      iconName: 'account-edit-outline',
-      text: 'Редактировать',
-      action: () => onEdit(client),
-    },
-  ];
 
   function confirmRemoving() {
     Alert.alert('Удаление', `Вы уверены что хотите удалить клиента ${client.name}`, [
@@ -173,31 +142,63 @@ const FooterActions: FC<ClientCardProps> = ({ client, onEdit }) => {
   useEffect(() => {
     const actionButtons: ActionButtonData[] = [];
 
-    actionButtons.push(blackListActions[Number(client.blocked)]);
-    if (isAdmin) actionButtons.push(...adminActions);
+    actionButtons.push(
+      {
+        iconName: 'phone-outline',
+        text: 'Позвонить',
+        action: () => {
+          setActionVisible(false);
+          Linking.openURL(`tel:${client.phone}`);
+        },
+      },
+      {
+        iconName: 'email-outline',
+        text: 'Написать SMS',
+        action: () => {
+          setActionVisible(false);
+          Linking.openURL(`sms:${client.phone}`);
+        },
+      },
+    );
+
+    if (isAdmin) {
+      actionButtons.push(
+        {
+          iconName: 'account-edit-outline',
+          text: 'Редактировать',
+          action: () => onEdit(client),
+        },
+        {
+          iconName: 'account-remove-outline',
+          text: 'Удалить',
+          action: confirmRemoving,
+        },
+      );
+    }
+
+    actionButtons.push(
+      client.blocked
+        ? {
+            iconName: 'account-check-outline',
+            text: 'Убрать из Черного списка',
+            action: confirmRestore,
+          }
+        : {
+            iconName: 'account-cancel-outline',
+            text: 'Добавить в Черный список',
+            action: confirmBlackList,
+          },
+    );
 
     setActions(actionButtons);
   }, [client.blocked]);
 
   return (
-    isAdmin && (
-      <View style={styles.actionButtonsWrapper}>
-        <ActionButtonsModal
-          actions={actions}
-          visible={actionVisible}
-          setVisible={setActionVisible}
-        />
-      </View>
-    )
+    <ActionButtonsModal actions={actions} visible={actionVisible} setVisible={setActionVisible} />
   );
 };
 
 const styles = StyleSheet.create({
-  actionButtonsWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginBottom: 5,
-  },
   thumbAvatar: {
     width: 24,
     height: 24,

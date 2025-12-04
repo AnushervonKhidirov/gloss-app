@@ -4,12 +4,11 @@ import type { ComponentProps, FC } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
 import ActionButtonsModal from '@commonComponent/action-buttons-modal';
-import ConnectActionButtons from '@commonComponent/connect-action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useUserStore from '@store/user.store';
 import useUsersStore from '@store/users.store';
 import { Role } from '@type/user.type';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import userService from '@service/user.service';
 import { useEffect, useState } from 'react';
@@ -55,7 +54,7 @@ const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
         styles={cardStyle.header}
         thumb={StatusIcon}
         title={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
-        extra={<ConnectActionButtons phone={worker.phone} />}
+        extra={<ActionButtons worker={worker} />}
       />
 
       <Card.Body>
@@ -63,8 +62,6 @@ const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
           <WorkerItemBody worker={worker} />
         </WingBlank>
       </Card.Body>
-
-      <Card.Footer content={<WorkerActionButtons worker={worker} />} />
     </Card>
   );
 };
@@ -91,7 +88,7 @@ const WorkerItemBody: FC<{ worker: User }> = ({ worker }) => {
   );
 };
 
-const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
+const ActionButtons: FC<{ worker: User }> = ({ worker }) => {
   const user = useUserStore(state => state.user);
   const { updateUser, removeUser } = useUsersStore(state => state);
 
@@ -99,7 +96,8 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
   const [actionVisible, setActionVisible] = useState(false);
 
   const isAdmin = user?.role === Role.ADMIN;
-  const isWorkerAdmin = worker.role !== Role.ADMIN;
+  const isMe = user?.id === worker.id;
+  const isWorkerAdmin = worker.role === Role.ADMIN;
 
   function rejectConfirm(user: User) {
     Alert.alert('Отклонить', `Отклонить запрос от ${user.firstName}?`, [
@@ -167,7 +165,28 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
   useEffect(() => {
     const actionButtons: ActionButtonData[] = [];
 
-    if (worker.archived) {
+    if (!isMe) {
+      actionButtons.push(
+        {
+          iconName: 'phone-outline',
+          text: 'Позвонить',
+          action: () => {
+            setActionVisible(false);
+            Linking.openURL(`tel:${worker.phone}`);
+          },
+        },
+        {
+          iconName: 'email-outline',
+          text: 'Написать SMS',
+          action: () => {
+            setActionVisible(false);
+            Linking.openURL(`sms:${worker.phone}`);
+          },
+        },
+      );
+    }
+
+    if (isAdmin && !isMe && !isWorkerAdmin && worker.archived) {
       actionButtons.push(
         {
           iconName: 'account-remove-outline',
@@ -182,7 +201,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
       );
     }
 
-    if (worker.verified && !worker.archived) {
+    if (isAdmin && !isMe && !isWorkerAdmin && worker.verified && !worker.archived) {
       actionButtons.push({
         iconName: 'account-cancel-outline',
         text: 'Уволить сотрудника',
@@ -190,7 +209,7 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
       });
     }
 
-    if (!worker.verified) {
+    if (isAdmin && !isMe && !worker.verified) {
       actionButtons.push(
         {
           iconName: 'account-minus-outline',
@@ -209,25 +228,11 @@ const WorkerActionButtons: FC<{ worker: User }> = ({ worker }) => {
   }, [worker]);
 
   return (
-    isAdmin &&
-    isWorkerAdmin && (
-      <View style={styles.actionButtonsWrapper}>
-        <ActionButtonsModal
-          actions={actions}
-          visible={actionVisible}
-          setVisible={setActionVisible}
-        />
-      </View>
-    )
+    <ActionButtonsModal actions={actions} visible={actionVisible} setVisible={setActionVisible} />
   );
 };
 
 const styles = StyleSheet.create({
-  actionButtonsWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginBottom: 5,
-  },
   bodyListItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',

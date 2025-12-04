@@ -19,7 +19,7 @@ import { alertError } from '@helper/error-handler';
 import { Role } from '@type/user.type';
 
 const ServiceScreen = () => {
-  const user = useUserStore(state => state.user);
+  const isAdmin = useUserStore(state => state.user?.role === Role.ADMIN);
   const { services, setServices, pushServices, editService, deleteService } = useServiceStore(
     state => state,
   );
@@ -52,22 +52,6 @@ const ServiceScreen = () => {
   function edit(service: Service) {
     editService({ service });
     setEditServiceModalVisible(false);
-  }
-
-  function removeConfirm(service: Service) {
-    Alert.alert(
-      'Удаление',
-      `После удаления нельзя восстановить! Вы хотите удалить ${service.name}?`,
-      [
-        {
-          text: 'Да',
-          onPress: () => remove(service),
-        },
-        {
-          text: 'Нет',
-        },
-      ],
-    );
   }
 
   async function remove(service: Service) {
@@ -120,14 +104,10 @@ const ServiceScreen = () => {
       <ServiceList
         services={services}
         onRefresh={fetchData}
-        onEdit={user?.role === Role.ADMIN ? openEditServiceModal : undefined}
-        onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
+        edit={openEditServiceModal}
+        remove={remove}
       >
-        {user?.role === Role.ADMIN && (
-          <ButtonPrimary onPress={openCreateForm}>
-            Создать услугу
-          </ButtonPrimary>
-        )}
+        {isAdmin && <ButtonPrimary onPress={openCreateForm}>Создать услугу</ButtonPrimary>}
       </ServiceList>
 
       <Modal

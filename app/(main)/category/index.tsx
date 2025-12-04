@@ -12,12 +12,11 @@ import Modal from '@commonComponent/modal';
 import CategoryList from '@component/category/category-list';
 import CreateCategoryForm from '@component/category/form/create-category-form';
 import EditCategoryForm from '@component/category/form/edit-category-form';
-import { Alert } from 'react-native';
 
 import { alertError } from '@helper/error-handler';
 
 const CategoryScreen = () => {
-  const user = useUserStore(state => state.user);
+  const isAdmin = useUserStore(state => state.user?.role === Role.ADMIN);
   const { categories, pushCategories, editCategory, deleteCategory, setCategories } =
     useCategoryStore(state => state);
 
@@ -40,18 +39,6 @@ const CategoryScreen = () => {
   function openEditServiceModal(category: Category) {
     setToEdit(category);
     setEditCategoryModalVisible(true);
-  }
-
-  function removeConfirm(category: Category) {
-    Alert.alert('Удаление', `Удалить ${category.value}?\n\nПосле удаления нельзя восстановить!`, [
-      {
-        text: 'Да',
-        onPress: () => remove(category),
-      },
-      {
-        text: 'Нет',
-      },
-    ]);
   }
 
   async function remove(category: Category) {
@@ -89,10 +76,10 @@ const CategoryScreen = () => {
       <CategoryList
         categories={categories}
         refresh={fetch}
-        onEdit={user?.role === Role.ADMIN ? openEditServiceModal : undefined}
-        onRemove={user?.role === Role.ADMIN ? removeConfirm : undefined}
+        edit={openEditServiceModal}
+        remove={remove}
       >
-        {user?.role === Role.ADMIN && (
+        {isAdmin && (
           <ButtonPrimary onPress={() => setCreateCategoryModalVisible(true)}>
             Создать категорию
           </ButtonPrimary>
