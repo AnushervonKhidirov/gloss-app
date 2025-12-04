@@ -6,13 +6,13 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useLayoutEffect, useState } from 'react';
 
-import ButtonPrimary from '@commonComponent/button-primary';
 import LoadingView from '@commonComponent/loading-view';
 import Modal from '@commonComponent/modal';
 import CategoryList from '@component/category/category-list';
 import CreateCategoryForm from '@component/category/form/create-category-form';
 import EditCategoryForm from '@component/category/form/edit-category-form';
 
+import { Button } from '@ant-design/react-native';
 import { alertError } from '@helper/error-handler';
 
 const CategoryScreen = () => {
@@ -80,9 +80,9 @@ const CategoryScreen = () => {
         remove={remove}
       >
         {isAdmin && (
-          <ButtonPrimary onPress={() => setCreateCategoryModalVisible(true)}>
+          <Button type="primary" onPress={() => setCreateCategoryModalVisible(true)}>
             Создать категорию
-          </ButtonPrimary>
+          </Button>
         )}
       </CategoryList>
 

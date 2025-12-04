@@ -1,36 +1,94 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text } from 'react-native';
 
-import { blue, red } from '@constant/theme';
+import { grey } from '@constant/theme';
 
 type ActionButtonsProps = {
-  onEdit?: () => void;
-  onRemove?: () => void;
+  actions: ActionButtonData[];
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
 };
 
-const ActionButtons: FC<ActionButtonsProps> = ({ onEdit, onRemove }) => {
+export type ActionButtonData = {
+  iconName: ComponentProps<typeof MaterialCommunityIcons>['name'];
+  text: string;
+  action: () => void;
+};
+
+const ActionButtons: FC<ActionButtonsProps> = ({
+  actions,
+  visible = false,
+  setVisible,
+}) => {
   return (
-    <View style={{ flexDirection: 'row', gap: 10 }}>
-      {typeof onRemove === 'function' && (
-        <MaterialCommunityIcons
-          name="delete-outline"
-          size={24}
-          color={red[5]}
-          onPress={onRemove}
-        />
-      )}
-      {typeof onEdit === 'function' && (
-        <MaterialCommunityIcons
-          name="square-edit-outline"
-          size={24}
-          color={blue[5]}
-          onPress={onEdit}
-        />
-      )}
-    </View>
+    actions.length > 0 && (
+      <>
+        <Pressable onPress={() => setVisible(true)}>
+          <MaterialCommunityIcons name="dots-vertical-circle" size={24} color={grey[9]} />
+        </Pressable>
+
+        <Modal
+          transparent
+          visible={visible}
+          animationType="slide"
+          onRequestClose={() => setVisible(false)}
+        >
+          <Pressable style={styles.wrapper} onPress={() => setVisible(false)}>
+            <Pressable style={styles.content}>
+              {actions.map(({ iconName, text, action }) => (
+                <ActionButton
+                  key={iconName + text}
+                  iconName={iconName}
+                  text={text}
+                  action={action}
+                />
+              ))}
+            </Pressable>
+          </Pressable>
+        </Modal>
+      </>
+    )
   );
 };
+
+const ActionButton: FC<ActionButtonData> = ({ iconName, text, action }) => {
+  return (
+    <Pressable style={styles.button} onPress={action}>
+      <MaterialCommunityIcons name={iconName} size={22} color={grey[9]} />
+      <Text style={styles.buttonText}>{text}</Text>
+    </Pressable>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+
+  content: {
+    backgroundColor: grey[1],
+    paddingInline: 20,
+    paddingBlock: 30,
+    borderRadius: 20,
+    margin: 20,
+    gap: 10,
+  },
+
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
+    paddingBlock: 5,
+  },
+
+  buttonText: {
+    color: grey[9],
+    fontSize: 18,
+  },
+});
 
 export default ActionButtons;

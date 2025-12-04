@@ -11,7 +11,7 @@ import ServiceList from '@component/service/service-list';
 import useUserStore from '@store/user.store';
 import { Alert } from 'react-native';
 
-import ButtonPrimary from '@commonComponent/button-primary';
+import { Button } from '@ant-design/react-native';
 import Modal from '@commonComponent/modal';
 import CreateServiceForm from '@component/service/form/create-service-form';
 import EditServiceForm from '@component/service/form/edit-service-form';
@@ -107,7 +107,11 @@ const ServiceScreen = () => {
         edit={openEditServiceModal}
         remove={remove}
       >
-        {isAdmin && <ButtonPrimary onPress={openCreateForm}>Создать услугу</ButtonPrimary>}
+        {isAdmin && (
+          <Button type="primary" onPress={openCreateForm}>
+            Создать услугу
+          </Button>
+        )}
       </ServiceList>
 
       <Modal

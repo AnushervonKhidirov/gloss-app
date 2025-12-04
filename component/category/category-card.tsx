@@ -1,9 +1,9 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { Category } from '@type/category.type';
 import type { FC } from 'react';
 
 import { Card } from '@ant-design/react-native';
-import ActionButtonsModal from '@commonComponent/action-buttons-modal';
+import ActionButtons from '@commonComponent/action-buttons';
 import { cardStyle } from '@constant/card-style';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
@@ -58,7 +58,7 @@ const CategoryCard: FC<CategoryItemProps> = ({ category, edit, remove }) => {
         title={<Text style={{ fontSize: 18 }}>{category.value}</Text>}
         extra={
           isAdmin && (
-            <ActionButtonsModal
+            <ActionButtons
               actions={actionButtons}
               visible={actionVisible}
               setVisible={setActionVisible}

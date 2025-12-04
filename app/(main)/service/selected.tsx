@@ -9,7 +9,7 @@ import ServiceList from '@component/service/service-list';
 import useUserStore from '@store/user.store';
 import { Alert } from 'react-native';
 
-import ButtonPrimary from '@commonComponent/button-primary';
+import { Button } from '@ant-design/react-native';
 import Modal from '@commonComponent/modal';
 import SelectableServiceList from '@component/service/selectable-service-list';
 import { alertError } from '@helper/error-handler';
@@ -86,9 +86,9 @@ const SelectedServiceScreen = () => {
         onRefresh={fetchData}
         keyExtractor={service => `selected-list-${service.id}`}
       >
-        <ButtonPrimary onPress={openSelectServiceModal}>
+        <Button type="primary" onPress={openSelectServiceModal}>
           {selectedServices.length === 0 ? 'Выбрать услуги' : 'Редактировать'}
-        </ButtonPrimary>
+        </Button>
       </ServiceList>
 
       <Modal

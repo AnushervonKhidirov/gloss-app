@@ -1,8 +1,7 @@
 import type { BlackList } from '@type/client.type';
 import type { FC } from 'react';
 
-import { Form, Input } from '@ant-design/react-native';
-import ButtonPrimary from '@commonComponent/button-primary';
+import { Button, Form, Input } from '@ant-design/react-native';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
@@ -86,9 +85,9 @@ const BlackListAddForm: FC<{ onSuccess: (blackList: BlackList) => void }> = ({ o
           </Form.Item>
 
           <Form.Item>
-            <ButtonPrimary onPress={form.submit} loading={loading}>
+            <Button type="primary" onPress={form.submit} loading={loading}>
               Добавить в черный список
-            </ButtonPrimary>
+            </Button>
           </Form.Item>
         </Form>
       </View>

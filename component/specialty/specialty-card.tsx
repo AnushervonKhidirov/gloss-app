@@ -1,9 +1,9 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { Specialty } from '@type/specialty.type';
 import type { FC } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtonsModal from '@commonComponent/action-buttons-modal';
+import ActionButtons from '@commonComponent/action-buttons';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useState } from 'react';
@@ -57,7 +57,7 @@ const SpecialtyCard: FC<SpecialtyItemProps> = ({ specialty, edit, remove }) => {
         title={<Text>{specialty.name}</Text>}
         extra={
           isAdmin && (
-            <ActionButtonsModal
+            <ActionButtons
               actions={actionButtons}
               visible={actionVisible}
               setVisible={setActionVisible}

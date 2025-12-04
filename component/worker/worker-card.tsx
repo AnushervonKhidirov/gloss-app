@@ -1,9 +1,9 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { User } from '@type/user.type';
 import type { ComponentProps, FC } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtonsModal from '@commonComponent/action-buttons-modal';
+import ActionButtons from '@commonComponent/action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useUserStore from '@store/user.store';
 import useUsersStore from '@store/users.store';
@@ -54,7 +54,7 @@ const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
         styles={cardStyle.header}
         thumb={StatusIcon}
         title={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
-        extra={<ActionButtons worker={worker} />}
+        extra={<Actions worker={worker} />}
       />
 
       <Card.Body>
@@ -88,7 +88,7 @@ const WorkerItemBody: FC<{ worker: User }> = ({ worker }) => {
   );
 };
 
-const ActionButtons: FC<{ worker: User }> = ({ worker }) => {
+const Actions: FC<{ worker: User }> = ({ worker }) => {
   const user = useUserStore(state => state.user);
   const { updateUser, removeUser } = useUsersStore(state => state);
 
@@ -228,7 +228,7 @@ const ActionButtons: FC<{ worker: User }> = ({ worker }) => {
   }, [worker]);
 
   return (
-    <ActionButtonsModal actions={actions} visible={actionVisible} setVisible={setActionVisible} />
+    <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />
   );
 };
 

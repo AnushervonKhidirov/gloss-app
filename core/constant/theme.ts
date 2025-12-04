@@ -9,8 +9,8 @@ export const orange = generate('#ff9800');
 export const red = generate('#d32f2f');
 
 export const antTheme: Partial<Theme> = {
-  primary_button_fill: blue[5],
-  primary_button_fill_tap: blue[3],
+  primary_button_fill: grey[9],
+  primary_button_fill_tap: grey[7],
 
   warning_button_fill: red[5],
   warning_button_fill_tap: red[3],

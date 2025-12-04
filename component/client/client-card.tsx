@@ -1,4 +1,4 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { Client } from '@type/client.type';
 import type { FC } from 'react';
 
@@ -9,7 +9,7 @@ import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
 
 import { Card } from '@ant-design/react-native';
-import ActionButtonsModal from '@commonComponent/action-buttons-modal';
+import ActionButtons from '@commonComponent/action-buttons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
@@ -48,7 +48,7 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
         styles={cardStyle.header}
         thumb={cardThumb}
         title={<ClientHeader client={client} />}
-        extra={<ActionButtons client={client} onEdit={onEdit} />}
+        extra={<Actions client={client} onEdit={onEdit} />}
       />
     </Card>
   );
@@ -65,7 +65,7 @@ const ClientHeader: FC<{ client: Client }> = ({ client }) => {
   );
 };
 
-const ActionButtons: FC<ClientCardProps> = ({ client, onEdit }) => {
+const Actions: FC<ClientCardProps> = ({ client, onEdit }) => {
   const isAdmin = useUserStore(state => state.user?.role === Role.ADMIN);
   const { updateClient, removeCLient } = useClientsStore(state => state);
   const { pushBlackList, deleteBlackList } = useBlackListStore(state => state);
@@ -194,7 +194,7 @@ const ActionButtons: FC<ClientCardProps> = ({ client, onEdit }) => {
   }, [client.blocked]);
 
   return (
-    <ActionButtonsModal actions={actions} visible={actionVisible} setVisible={setActionVisible} />
+    <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />
   );
 };
 

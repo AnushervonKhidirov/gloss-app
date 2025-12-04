@@ -1,8 +1,7 @@
 import type { Category, UpdateCategory } from '@type/category.type';
 import type { FC } from 'react';
 
-import { Form, Input } from '@ant-design/react-native';
-import ButtonPrimary from '@commonComponent/button-primary';
+import { Button, Form, Input } from '@ant-design/react-native';
 import { alertError } from '@helper/error-handler';
 import categoryService from '@service/category.service';
 import { useState } from 'react';
@@ -50,9 +49,9 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({ categoryToEdit, onSuccess
             </Form.Item>
 
             <Form.Item>
-              <ButtonPrimary onPress={form.submit} loading={loading}>
+              <Button type="primary" onPress={form.submit} loading={loading}>
                 Сохранить
-              </ButtonPrimary>
+              </Button>
             </Form.Item>
           </Form>
         </View>

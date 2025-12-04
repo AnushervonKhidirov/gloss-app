@@ -1,9 +1,9 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { Service } from '@type/service.type';
 import type { FC } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtonsModal from '@commonComponent/action-buttons-modal';
+import ActionButtons from '@commonComponent/action-buttons';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
@@ -78,7 +78,7 @@ const ServiceCard: FC<ServiceItemProps> = ({ service, edit, remove }) => {
         title={<ServiceHeader title={service.name} category={service.category.value} />}
         extra={
           isAdmin && (
-            <ActionButtonsModal
+            <ActionButtons
               actions={isAdmin ? actions : []}
               visible={actionVisible}
               setVisible={setActionVisible}

@@ -13,7 +13,7 @@ const WorkerList: FC<WorkerListProps> = ({ workers, refresh }) => {
   return (
     <ScrollView
       searchable
-      searchIconName='account-search-outline'
+      searchIconName="account-search-outline"
       onRefresh={refresh}
       items={workers}
       renderItem={worker => <WorkerCard key={worker.id} worker={worker} />}

@@ -2,8 +2,7 @@ import type { Category } from '@type/category.type';
 import type { CreateService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
-import { Form, Input } from '@ant-design/react-native';
-import ButtonPrimary from '@commonComponent/button-primary';
+import { Button, Form, Input } from '@ant-design/react-native';
 import Autocomplete from '@commonComponent/input/autocomplete';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
@@ -69,9 +68,9 @@ const CreateServiceForm: FC<CreateServiceFormProps> = ({ categories, onSuccess }
           </Form.Item>
 
           <Form.Item>
-            <ButtonPrimary onPress={form.submit} loading={loading}>
+            <Button type="primary" onPress={form.submit} loading={loading}>
               Создать
-            </ButtonPrimary>
+            </Button>
           </Form.Item>
         </Form>
       </View>

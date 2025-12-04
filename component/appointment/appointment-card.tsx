@@ -1,4 +1,4 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons-modal';
+import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { Appointment } from '@type/appointment.type';
 import type { Dayjs } from 'dayjs';
 import type { FC } from 'react';
@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtonsModal from '@commonComponent/action-buttons-modal';
+import ActionButtons from '@commonComponent/action-buttons';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import { cardStyle } from '@constant/card-style';
@@ -45,7 +45,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
             serviceName={appointment.service.name}
           />
         }
-        extra={<ActionButtons appointment={appointment} />}
+        extra={<Actions appointment={appointment} />}
       />
 
       <Card.Body>
@@ -112,7 +112,7 @@ const AppointmentItemBody: FC<{ appointment: Appointment }> = ({ appointment }) 
   );
 };
 
-const ActionButtons: FC<{ appointment: Appointment }> = ({ appointment }) => {
+const Actions: FC<{ appointment: Appointment }> = ({ appointment }) => {
   const user = useUserStore(state => state.user);
   const { deleteAppointment } = useAppointmentStore(state => state);
 
@@ -221,7 +221,7 @@ const ActionButtons: FC<{ appointment: Appointment }> = ({ appointment }) => {
   }, [appointment]);
 
   return (
-    <ActionButtonsModal actions={actions} visible={actionVisible} setVisible={setActionVisible} />
+    <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />
   );
 };
 
