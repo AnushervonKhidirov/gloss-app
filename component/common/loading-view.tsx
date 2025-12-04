@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from 'react';
+import type { StyleProp, ViewStyle } from 'react-native';
 
-import { WingBlank } from '@ant-design/react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing, Text, View } from 'react-native';
@@ -11,18 +11,25 @@ type LoadingViewProps = PropsWithChildren<{
   loading: boolean;
   isError?: boolean;
   errorMessage?: string;
+  style?: StyleProp<ViewStyle>;
 }>;
 
-const LoadingView: FC<LoadingViewProps> = ({ loading, isError, errorMessage, children }) => {
+const LoadingView: FC<LoadingViewProps> = ({
+  loading,
+  isError,
+  errorMessage,
+  style = {},
+  children,
+}) => {
   const content =
     errorMessage && isError ? (
-      <WingBlank style={{ justifyContent: 'center', flex: 1 }}>
+      <View style={{ justifyContent: 'center', flex: 1 }}>
         <Text style={{ textAlign: 'center' }}>{errorMessage}</Text>
-      </WingBlank>
+      </View>
     ) : (
       children
     );
-  return <View style={{ flex: 1 }}>{loading ? <Loader /> : content}</View>;
+  return <View style={{ flex: 1, ...(style as {}) }}>{loading ? <Loader /> : content}</View>;
 };
 
 const Loader: FC = () => {
