@@ -13,7 +13,7 @@ import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 import userService from '@service/user.service';
 import { useEffect, useState } from 'react';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { alertError } from '@helper/error-handler';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
@@ -51,7 +51,7 @@ const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         thumb={StatusIcon}
         title={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
         extra={<Actions worker={worker} />}

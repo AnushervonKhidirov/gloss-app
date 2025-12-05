@@ -14,7 +14,7 @@ import { Text, View } from 'react-native';
 import AppointmentTimeList from '../appointment-time-list';
 
 import { appointmentTimeList } from '@constant/appointment-time-list';
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { grey } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import workerService from '@service/worker.service';
@@ -137,7 +137,7 @@ const WorkerCard: FC<{ worker: Worker; date: Dayjs }> = ({ worker, date }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         title={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
         extra={<Text style={{ color: grey[6] }}>Цена: {price} с</Text>}
       />

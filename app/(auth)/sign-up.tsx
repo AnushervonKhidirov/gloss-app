@@ -1,14 +1,14 @@
 import type { CreateUser } from '@type/user.type';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Button, Form, Input, WingBlank } from '@ant-design/react-native';
 import InputPassword from '@commonComponent/input/input-password';
 import { Link, router } from 'expo-router';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { useLayoutEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { blue } from '@constant/theme';
+import { authScreenStyles, formStyles } from '@constant/styles';
 import { alertError } from '@helper/error-handler';
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
@@ -45,9 +45,9 @@ const SignUpScreen = () => {
 
   return (
     !checkingToken && (
-      <SafeAreaView style={styles.screen}>
-        <View style={styles.form_wrapper}>
-          <Form form={form} onFinish={onFinish}>
+      <SafeAreaView style={authScreenStyles.screen}>
+        <WingBlank style={authScreenStyles.form_wrapper}>
+          <Form form={form} onFinish={onFinish} styles={formStyles(true)}>
             <Form.Item name="firstName" rules={[{ required: true, message: 'Введите имя' }]}>
               <Input placeholder="Имя"></Input>
             </Form.Item>
@@ -96,37 +96,18 @@ const SignUpScreen = () => {
             </Form.Item>
           </Form>
 
-          <View style={styles.footer}>
+          <WingBlank>
             <Text>
               Уже есть аккаунт?{' '}
-              <Link replace href="/(auth)" style={styles.link}>
+              <Link replace href="/(auth)" style={authScreenStyles.link}>
                 Войти
               </Link>
             </Text>
-          </View>
-        </View>
+          </WingBlank>
+        </WingBlank>
       </SafeAreaView>
     )
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-
-  form_wrapper: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  footer: {
-    padding: 20,
-  },
-
-  link: {
-    color: blue[5],
-  },
-});
 
 export default SignUpScreen;

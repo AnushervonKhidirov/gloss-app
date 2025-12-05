@@ -5,7 +5,7 @@ import { Card, Checkbox, Input, WingBlank } from '@ant-design/react-native';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { grey } from '@constant/theme';
 import { minutesToTime } from '@helper/time-converter.helper';
 
@@ -38,7 +38,7 @@ const SelectedServiceCard: FC<ServiceItemProps> = ({ service, selectedService, o
     <Pressable onPress={() => setSelected(!selected)}>
       <Card>
         <Card.Header
-          styles={cardStyle.header}
+          styles={cardStyles.header}
           title={<ServiceHeader title={service.name} category={service.category.value} />}
           extra={
             <Checkbox

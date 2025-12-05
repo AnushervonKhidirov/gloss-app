@@ -4,9 +4,9 @@ import useCreateAppointmentStore from '@store/create-appointment.store';
 import { useState } from 'react';
 
 import { Button, Form, Input } from '@ant-design/react-native';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 
-import { antTheme } from '@constant/theme';
+import { formStyles } from '@constant/styles';
 import { alertError } from '@helper/error-handler';
 import { getDateString } from '@helper/time-converter.helper';
 import appointmentService from '@service/appointment.service';
@@ -53,7 +53,7 @@ const BookAppointmentForm = () => {
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <Form form={form} onFinish={onFinish} styles={styles}>
+      <Form form={form} onFinish={onFinish} styles={formStyles(true)}>
         <Form.Item name="name" rules={[{ required: true, message: 'Введите имя клиента' }]}>
           <Input placeholder="Имя клиента"></Input>
         </Form.Item>
@@ -92,26 +92,5 @@ const BookAppointmentForm = () => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  List: {
-    paddingBlock: 20,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: antTheme.border_color_base,
-    borderRadius: 5,
-  },
-  Body: {
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-  },
-  BodyBottomLine: {
-    opacity: 0,
-  },
-  Footer: {
-    borderBottomWidth: 0,
-    borderTopWidth: 0,
-  },
-});
 
 export default BookAppointmentForm;

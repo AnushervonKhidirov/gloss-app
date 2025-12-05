@@ -9,7 +9,7 @@ import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { antTheme, blue, grey } from '@constant/theme';
 import { minutesToTime } from '@helper/time-converter.helper';
 
@@ -81,7 +81,7 @@ const ServiceCard: FC<ServiceItemProps> = ({ service, edit, remove, selected, on
         }}
       >
         <Card.Header
-          styles={cardStyle.header}
+          styles={cardStyles.header}
           title={<ServiceHeader title={service.name} category={service.category.value} />}
           extra={
             isAdmin && (

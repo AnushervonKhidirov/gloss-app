@@ -1,13 +1,13 @@
 import type { SignIn } from '@type/auth.type';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Button, Form, Input, WingBlank } from '@ant-design/react-native';
 import InputPassword from '@commonComponent/input/input-password';
 import { Link, useRouter } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { blue } from '@constant/theme';
+import { authScreenStyles, formStyles } from '@constant/styles';
 import { alertError } from '@helper/error-handler';
 import authService from '@service/auth.service';
 import TokenService from '@service/token.service';
@@ -31,7 +31,7 @@ const SignInScreen = () => {
     const [token, err] = await authService.signIn(value);
 
     if (err) {
-      alertError(err)
+      alertError(err);
       setLoading(false);
       return;
     }
@@ -49,9 +49,9 @@ const SignInScreen = () => {
 
   return (
     !checkingToken && (
-      <SafeAreaView style={styles.screen}>
-        <View style={styles.form_wrapper}>
-          <Form form={form} onFinish={onFinish}>
+      <SafeAreaView style={authScreenStyles.screen}>
+        <WingBlank style={authScreenStyles.form_wrapper}>
+          <Form form={form} onFinish={onFinish} styles={formStyles(true)}>
             <Form.Item name="username" rules={[{ required: true, message: 'Введите логин' }]}>
               <Input placeholder="Логин"></Input>
             </Form.Item>
@@ -67,37 +67,18 @@ const SignInScreen = () => {
             </Form.Item>
           </Form>
 
-          <View style={styles.footer}>
+          <WingBlank>
             <Text>
               Нет аккаунта?{' '}
-              <Link replace href="/(auth)/sign-up" style={styles.link}>
+              <Link replace href="/(auth)/sign-up" style={authScreenStyles.link}>
                 Зарегистрироваться
               </Link>
             </Text>
-          </View>
-        </View>
+          </WingBlank>
+        </WingBlank>
       </SafeAreaView>
     )
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-
-  form_wrapper: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  footer: {
-    padding: 20,
-  },
-
-  link: {
-    color: blue[5],
-  },
-});
 
 export default SignInScreen;

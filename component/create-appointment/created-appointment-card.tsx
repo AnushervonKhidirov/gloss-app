@@ -6,7 +6,7 @@ import type { FC } from 'react';
 import { Card, WingBlank } from '@ant-design/react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { grey } from '@constant/theme';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
 
@@ -18,7 +18,7 @@ const CreatedAppointmentCard: FC<{ service: Service; worker: Worker; time: Dayjs
   return (
     <Card>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         title={
           <AppointmentHeader serviceName={service.name} categoryName={service.category.value} />
         }

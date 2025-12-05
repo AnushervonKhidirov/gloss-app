@@ -13,7 +13,7 @@ import { Card, WingBlank } from '@ant-design/react-native';
 import ActionButtons from '@commonComponent/action-buttons';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { blue, green, grey, orange } from '@constant/theme';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
 import appointmentService from '@service/appointment.service';
@@ -38,7 +38,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         title={
           <AppointmentHeader
             clientName={appointment.client.name}

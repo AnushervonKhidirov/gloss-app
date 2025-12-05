@@ -15,7 +15,7 @@ import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import clientService from '@service/client.service';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { grey, red } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import blackListService from '@service/black-list.service';
@@ -45,7 +45,7 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         thumb={cardThumb}
         title={<ClientHeader client={client} />}
         extra={<Actions client={client} onEdit={onEdit} />}

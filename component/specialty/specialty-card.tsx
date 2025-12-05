@@ -9,7 +9,7 @@ import { Role } from '@type/user.type';
 import { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import { grey } from '@constant/theme';
 
 type SpecialtyItemProps = {
@@ -53,7 +53,7 @@ const SpecialtyCard: FC<SpecialtyItemProps> = ({ specialty, edit, remove }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         title={<Text>{specialty.name}</Text>}
         extra={
           isAdmin && (

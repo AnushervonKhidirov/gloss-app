@@ -2,7 +2,7 @@ import type { BlackList } from '@type/client.type';
 import type { FC } from 'react';
 
 import { Card } from '@ant-design/react-native';
-import { cardStyle } from '@constant/card-style';
+import { cardStyles } from '@constant/styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { Text } from 'react-native';
@@ -18,7 +18,7 @@ const BlackListCard: FC<BlackListCardProps> = ({ blackList, restore }) => {
   return (
     <Card style={{ paddingTop: 5, paddingRight: 0, paddingBottom: 5, paddingLeft: 0 }}>
       <Card.Header
-        styles={cardStyle.header}
+        styles={cardStyles.header}
         title={
           <Text style={{ fontSize: 18 }}>
             {parsePhoneNumberFromString(blackList.phone, 'TJ')?.formatNational()}
