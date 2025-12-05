@@ -2,10 +2,6 @@ import { ListStyle } from '@ant-design/react-native/lib/list/style';
 import { StyleSheet } from 'react-native';
 import { antTheme, blue } from './theme';
 
-export const cardStyles = {
-  header: { headerExtraWrap: { flex: 0, marginLeft: 10 } },
-};
-
 export const authScreenStyles = StyleSheet.create({
   screen: {
     flex: 1,
