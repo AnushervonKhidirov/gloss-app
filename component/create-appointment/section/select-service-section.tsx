@@ -2,8 +2,7 @@ import useCreateAppointmentStore from '@store/create-appointment.store';
 import useServiceStore from '@store/service.store';
 import { useEffect, useState } from 'react';
 
-import LoadingView from '@commonComponent/loading-view';
-import ScrollView from '@commonComponent/scroll-view';
+import { LoadingView, ScrollView } from '@component/common';
 import ServiceCard from '@component/service/service-card';
 
 import { alertError } from '@helper/error-handler';

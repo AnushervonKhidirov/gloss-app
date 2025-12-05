@@ -2,8 +2,8 @@ import useAppointmentStore from '@store/appointment.store';
 import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
 
-import LoadingView from '@commonComponent/loading-view';
 import AppointmentList from '@component/appointment/appointment-list';
+import { LoadingView } from '@component/common';
 
 import { alertError } from '@helper/error-handler';
 import appointmentService from '@service/appointment.service';
@@ -22,7 +22,7 @@ const PassedAppointmentScreen = () => {
     const [appointments, err] = await appointmentService.findMany({ dateTo: dayjs() });
 
     if (err) {
-      alertError(err)
+      alertError(err);
     } else {
       setAppointments({ completedAppointments: appointments });
     }

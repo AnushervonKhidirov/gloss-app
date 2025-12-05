@@ -1,9 +1,8 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { User } from '@type/user.type';
 import type { ComponentProps, FC } from 'react';
 
-import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtons from '@commonComponent/action-buttons';
+import { ActionButtons, Card } from '@component/common';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useUserStore from '@store/user.store';
 import useUsersStore from '@store/users.store';
@@ -13,7 +12,6 @@ import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 import userService from '@service/user.service';
 import { useEffect, useState } from 'react';
 
-import { cardStyles } from '@constant/styles';
 import { alertError } from '@helper/error-handler';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
@@ -35,14 +33,7 @@ function getStatusIcon(worker: User) {
   if (worker.verified) icon = icons.verified;
   if (worker.archived) icon = icons.archived;
 
-  return (
-    <MaterialCommunityIcons
-      name={icon.name}
-      color={icon.color}
-      size={24}
-      style={{ marginRight: 10 }}
-    />
-  );
+  return <MaterialCommunityIcons name={icon.name} color={icon.color} size={24} />;
 }
 
 const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
@@ -51,16 +42,13 @@ const WorkerCard: FC<{ worker: User }> = ({ worker }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyles.header}
         thumb={StatusIcon}
-        title={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
+        content={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
         extra={<Actions worker={worker} />}
       />
 
       <Card.Body>
-        <WingBlank>
-          <WorkerItemBody worker={worker} />
-        </WingBlank>
+        <WorkerItemBody worker={worker} />
       </Card.Body>
     </Card>
   );
@@ -227,9 +215,7 @@ const Actions: FC<{ worker: User }> = ({ worker }) => {
     setActions(actionButtons);
   }, [worker]);
 
-  return (
-    <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />
-  );
+  return <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />;
 };
 
 const styles = StyleSheet.create({

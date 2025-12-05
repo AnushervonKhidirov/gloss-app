@@ -1,4 +1,4 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Appointment } from '@type/appointment.type';
 import type { Dayjs } from 'dayjs';
 import type { FC } from 'react';
@@ -9,11 +9,9 @@ import { Role } from '@type/user.type';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
-import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtons from '@commonComponent/action-buttons';
+import { ActionButtons, Card } from '@component/common';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
-import { cardStyles } from '@constant/styles';
 import { blue, green, grey, orange } from '@constant/theme';
 import { getDateString, minutesToTime } from '@helper/time-converter.helper';
 import appointmentService from '@service/appointment.service';
@@ -38,8 +36,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyles.header}
-        title={
+        content={
           <AppointmentHeader
             clientName={appointment.client.name}
             serviceName={appointment.service.name}
@@ -49,9 +46,7 @@ const AppointmentCard: FC<{ appointment: Appointment }> = ({ appointment }) => {
       />
 
       <Card.Body>
-        <WingBlank>
-          <AppointmentItemBody appointment={appointment} />
-        </WingBlank>
+        <AppointmentItemBody appointment={appointment} />
       </Card.Body>
     </Card>
   );
@@ -220,9 +215,7 @@ const Actions: FC<{ appointment: Appointment }> = ({ appointment }) => {
     setActions(actionButtons);
   }, [appointment]);
 
-  return (
-    <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />
-  );
+  return <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />;
 };
 
 const styles = StyleSheet.create({

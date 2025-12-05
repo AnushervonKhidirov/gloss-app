@@ -1,15 +1,14 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Specialty } from '@type/specialty.type';
 import type { FC } from 'react';
 
-import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtons from '@commonComponent/action-buttons';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useState } from 'react';
-import { Alert, Text, View } from 'react-native';
 
-import { cardStyles } from '@constant/styles';
+import { ActionButtons, Card } from '@component/common';
+import { Alert, Text } from 'react-native';
+
 import { grey } from '@constant/theme';
 
 type SpecialtyItemProps = {
@@ -53,8 +52,7 @@ const SpecialtyCard: FC<SpecialtyItemProps> = ({ specialty, edit, remove }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyles.header}
-        title={<Text>{specialty.name}</Text>}
+        content={<Text>{specialty.name}</Text>}
         extra={
           isAdmin && (
             <ActionButtons
@@ -66,14 +64,10 @@ const SpecialtyCard: FC<SpecialtyItemProps> = ({ specialty, edit, remove }) => {
         }
       />
 
-      {specialty.desc ? (
+      {specialty.desc && (
         <Card.Body>
-          <WingBlank>
-            <Text style={{ color: grey[6] }}>{specialty.desc}</Text>
-          </WingBlank>
+          <Text style={{ color: grey[6] }}>{specialty.desc}</Text>
         </Card.Body>
-      ) : (
-        <View />
       )}
     </Card>
   );

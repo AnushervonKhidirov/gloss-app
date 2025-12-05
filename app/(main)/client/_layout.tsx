@@ -1,4 +1,4 @@
-import TabBar from '@commonComponent/tab-bar';
+import { TabBar } from '@component/common';
 
 const tabs = [
   { name: 'index', title: 'Все' },

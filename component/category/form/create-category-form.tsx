@@ -1,7 +1,8 @@
 import type { Category, CreateCategory } from '@type/category.type';
 import type { FC } from 'react';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Form, Input } from '@ant-design/react-native';
+import { Button } from '@component/common';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
@@ -41,9 +42,7 @@ const CreateCategoryForm: FC<{ onSuccess: (category: Category) => void }> = ({ o
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" onPress={form.submit} loading={loading}>
-              Создать
-            </Button>
+            <Button title="Создать" onPress={form.submit} loading={loading} />
           </Form.Item>
         </Form>
       </View>

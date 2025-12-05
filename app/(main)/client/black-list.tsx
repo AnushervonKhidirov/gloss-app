@@ -4,13 +4,10 @@ import useBlackListStore from '@store/black-list.store';
 import useClientsStore from '@store/clients.store';
 import { useLayoutEffect, useState } from 'react';
 
-import LoadingView from '@commonComponent/loading-view';
-import Modal from '@commonComponent/modal';
-import ScrollView from '@commonComponent/scroll-view';
 import BlackListCard from '@component/black-list/black-list-card';
 import BlackListAddForm from '@component/black-list/form/black-list-add-form';
+import { Button, LoadingView, Modal, ScrollView } from '@component/common';
 
-import { Button } from '@ant-design/react-native';
 import { alertError } from '@helper/error-handler';
 import blackListService from '@service/black-list.service';
 
@@ -74,9 +71,7 @@ const ClientBlackListScreen = () => {
           <BlackListCard key={phone + id} blackList={{ id, phone }} restore={restore} />
         )}
       >
-        <Button type="primary" onPress={() => setBlackListFormAddModalVisible(true)}>
-          Добавить
-        </Button>
+        <Button title="Добавить" onPress={() => setBlackListFormAddModalVisible(true)} />
       </ScrollView>
 
       <Modal

@@ -4,17 +4,15 @@ import categoryService from '@service/category.service';
 import serviceService from '@service/service.service';
 import useCategoryStore from '@store/category.store';
 import useServiceStore from '@store/service.store';
+import useUserStore from '@store/user.store';
 import { useLayoutEffect, useState } from 'react';
 
-import LoadingView from '@commonComponent/loading-view';
-import ServiceList from '@component/service/service-list';
-import useUserStore from '@store/user.store';
-import { Alert } from 'react-native';
-
-import { Button } from '@ant-design/react-native';
-import Modal from '@commonComponent/modal';
+import { Button, LoadingView, Modal } from '@component/common';
 import CreateServiceForm from '@component/service/form/create-service-form';
 import EditServiceForm from '@component/service/form/edit-service-form';
+import ServiceList from '@component/service/service-list';
+import { Alert } from 'react-native';
+
 import { alertError } from '@helper/error-handler';
 import { Role } from '@type/user.type';
 
@@ -107,11 +105,7 @@ const ServiceScreen = () => {
         edit={openEditServiceModal}
         remove={remove}
       >
-        {isAdmin && (
-          <Button type="primary" onPress={openCreateForm}>
-            Создать услугу
-          </Button>
-        )}
+        {isAdmin && <Button title="Создать услугу" onPress={openCreateForm} />}
       </ServiceList>
 
       <Modal

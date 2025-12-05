@@ -2,16 +2,14 @@ import type { SelectedService, Service } from '@type/service.type';
 
 import serviceService from '@service/service.service';
 import useServiceStore from '@store/service.store';
+import useUserStore from '@store/user.store';
 import { useLayoutEffect, useState } from 'react';
 
-import LoadingView from '@commonComponent/loading-view';
+import { Button, LoadingView, Modal } from '@component/common';
+import SelectableServiceList from '@component/service/selectable-service-list';
 import ServiceList from '@component/service/service-list';
-import useUserStore from '@store/user.store';
 import { Alert } from 'react-native';
 
-import { Button } from '@ant-design/react-native';
-import Modal from '@commonComponent/modal';
-import SelectableServiceList from '@component/service/selectable-service-list';
 import { alertError } from '@helper/error-handler';
 
 function convertSelectedService(selectedServices: SelectedService[]): Service[] {
@@ -86,9 +84,10 @@ const SelectedServiceScreen = () => {
         onRefresh={fetchData}
         keyExtractor={service => `selected-list-${service.id}`}
       >
-        <Button type="primary" onPress={openSelectServiceModal}>
-          {selectedServices.length === 0 ? 'Выбрать услуги' : 'Редактировать'}
-        </Button>
+        <Button
+          title={selectedServices.length === 0 ? 'Выбрать услуги' : 'Редактировать'}
+          onPress={openSelectServiceModal}
+        />
       </ServiceList>
 
       <Modal

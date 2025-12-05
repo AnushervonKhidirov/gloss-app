@@ -1,7 +1,7 @@
 import type { Appointment } from '@type/appointment.type';
 import type { FC } from 'react';
 
-import ScrollView from '@commonComponent/scroll-view';
+import { ScrollView } from '@component/common';
 import AppointmentCard from './appointment-card';
 
 type AppointmentListProps = {

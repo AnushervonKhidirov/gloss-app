@@ -1,16 +1,14 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Service } from '@type/service.type';
 import type { FC } from 'react';
 
-import { Card, WingBlank } from '@ant-design/react-native';
-import ActionButtons from '@commonComponent/action-buttons';
+import { ActionButtons, Card } from '@component/common';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 
-import { cardStyles } from '@constant/styles';
-import { antTheme, blue, grey } from '@constant/theme';
+import { blue, grey } from '@constant/theme';
 import { minutesToTime } from '@helper/time-converter.helper';
 
 type ServiceItemProps = {
@@ -75,14 +73,9 @@ const ServiceCard: FC<ServiceItemProps> = ({ service, edit, remove, selected, on
 
   return (
     <Pressable onPress={onSelect ? () => onSelect(service) : undefined}>
-      <Card
-        styles={{
-          card: { borderColor: selected?.id === service.id ? blue[4] : antTheme.border_color_base },
-        }}
-      >
+      <Card style={selected?.id === service.id ? { borderColor: blue[4] } : {}}>
         <Card.Header
-          styles={cardStyles.header}
-          title={<ServiceHeader title={service.name} category={service.category.value} />}
+          content={<ServiceHeader title={service.name} category={service.category.value} />}
           extra={
             isAdmin && (
               <ActionButtons
@@ -94,14 +87,10 @@ const ServiceCard: FC<ServiceItemProps> = ({ service, edit, remove, selected, on
           }
         />
 
-        {service.desc ? (
+        {service.desc && (
           <Card.Body>
-            <WingBlank>
-              <Text>{service.desc}</Text>
-            </WingBlank>
+            <Text>{service.desc}</Text>
           </Card.Body>
-        ) : (
-          <View />
         )}
 
         <Card.Footer content={service.price + ' с'} extra={minutesToTime(service.duration)} />

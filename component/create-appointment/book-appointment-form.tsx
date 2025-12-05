@@ -3,7 +3,8 @@ import type { CreateClient } from '@type/client.type';
 import useCreateAppointmentStore from '@store/create-appointment.store';
 import { useState } from 'react';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Form, Input } from '@ant-design/react-native';
+import { Button } from '@component/common';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 
 import { formStyles } from '@constant/styles';
@@ -84,9 +85,7 @@ const BookAppointmentForm = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" onPress={form.submit} loading={loading}>
-            Сохранить
-          </Button>
+          <Button title="Сохранить" onPress={form.submit} loading={loading} />
         </Form.Item>
       </Form>
     </KeyboardAvoidingView>

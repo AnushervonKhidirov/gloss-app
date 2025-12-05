@@ -6,15 +6,11 @@ import type { FC } from 'react';
 import useCreateAppointmentStore from '@store/create-appointment.store';
 import { useEffect, useState } from 'react';
 
-import { Card, WingBlank } from '@ant-design/react-native';
-import DatePicker from '@commonComponent/date-picker';
-import LoadingView from '@commonComponent/loading-view';
-import ScrollView from '@commonComponent/scroll-view';
+import { Card, DatePicker, LoadingView, ScrollView } from '@component/common';
 import { Text, View } from 'react-native';
 import AppointmentTimeList from '../appointment-time-list';
 
 import { appointmentTimeList } from '@constant/appointment-time-list';
-import { cardStyles } from '@constant/styles';
 import { grey } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import workerService from '@service/worker.service';
@@ -137,20 +133,17 @@ const WorkerCard: FC<{ worker: Worker; date: Dayjs }> = ({ worker, date }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyles.header}
-        title={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
+        content={<Text style={{ fontSize: 17 }}>{worker.firstName}</Text>}
         extra={<Text style={{ color: grey[6] }}>Цена: {price} с</Text>}
       />
 
       <Card.Body>
-        <WingBlank>
-          <AppointmentTimeList
-            relatedToId={worker.id}
-            selectedTime={time}
-            times={times}
-            onSelect={selectTime}
-          />
-        </WingBlank>
+        <AppointmentTimeList
+          relatedToId={worker.id}
+          selectedTime={time}
+          times={times}
+          onSelect={selectTime}
+        />
       </Card.Body>
     </Card>
   );

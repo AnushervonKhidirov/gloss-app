@@ -1,11 +1,12 @@
 import type { SelectedService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
-import { Card, Checkbox, Input, WingBlank } from '@ant-design/react-native';
+import { Input } from '@ant-design/react-native';
+import { Card, WingBlank } from '@component/common';
+import { Checkbox } from 'expo-checkbox';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { cardStyles } from '@constant/styles';
 import { grey } from '@constant/theme';
 import { minutesToTime } from '@helper/time-converter.helper';
 
@@ -38,25 +39,21 @@ const SelectedServiceCard: FC<ServiceItemProps> = ({ service, selectedService, o
     <Pressable onPress={() => setSelected(!selected)}>
       <Card>
         <Card.Header
-          styles={cardStyles.header}
-          title={<ServiceHeader title={service.name} category={service.category.value} />}
+          content={<ServiceHeader title={service.name} category={service.category.value} />}
           extra={
             <Checkbox
-              styles={{ checkbox_wrapper: { width: 20 } }}
-              checked={selected}
-              onChange={e => setSelected(e.target.checked)}
+              color={grey[9]}
+              style={{ width: 17, height: 17 }}
+              value={selected}
+              onValueChange={setSelected}
             />
           }
         />
 
-        {service.desc ? (
+        {service.desc && (
           <Card.Body>
-            <WingBlank>
-              <Text>{service.desc}</Text>
-            </WingBlank>
+            <Text>{service.desc}</Text>
           </Card.Body>
-        ) : (
-          <View />
         )}
 
         <Card.Footer content={service.price + ' с'} extra={minutesToTime(service.duration)} />

@@ -1,4 +1,4 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Client } from '@type/client.type';
 import type { FC } from 'react';
 
@@ -8,14 +8,12 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
 
-import { Card } from '@ant-design/react-native';
-import ActionButtons from '@commonComponent/action-buttons';
+import { ActionButtons, Card } from '@component/common';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import clientService from '@service/client.service';
 
-import { cardStyles } from '@constant/styles';
 import { grey, red } from '@constant/theme';
 import { alertError } from '@helper/error-handler';
 import blackListService from '@service/black-list.service';
@@ -28,12 +26,7 @@ type ClientCardProps = {
 
 const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
   const cardThumb = client.blocked ? (
-    <MaterialCommunityIcons
-      name="block-helper"
-      size={24}
-      color={red[4]}
-      style={{ marginRight: 10 }}
-    />
+    <MaterialCommunityIcons name="block-helper" size={24} color={red[4]} />
   ) : (
     <View style={styles.thumbAvatar}>
       <Text style={{ color: grey[1], fontWeight: 700, fontSize: 13 }}>
@@ -45,9 +38,8 @@ const ClientCard: FC<ClientCardProps> = ({ client, onEdit }) => {
   return (
     <Card>
       <Card.Header
-        styles={cardStyles.header}
         thumb={cardThumb}
-        title={<ClientHeader client={client} />}
+        content={<ClientHeader client={client} />}
         extra={<Actions client={client} onEdit={onEdit} />}
       />
     </Card>
@@ -193,16 +185,13 @@ const Actions: FC<ClientCardProps> = ({ client, onEdit }) => {
     setActions(actionButtons);
   }, [client.blocked]);
 
-  return (
-    <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />
-  );
+  return <ActionButtons actions={actions} visible={actionVisible} setVisible={setActionVisible} />;
 };
 
 const styles = StyleSheet.create({
   thumbAvatar: {
     width: 24,
     height: 24,
-    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: grey[5],

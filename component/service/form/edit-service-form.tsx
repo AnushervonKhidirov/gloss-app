@@ -2,8 +2,8 @@ import type { Category } from '@type/category.type';
 import type { Service, UpdateService } from '@type/service.type';
 import type { FC } from 'react';
 
-import { Button, Form, Input } from '@ant-design/react-native';
-import Autocomplete from '@commonComponent/input/autocomplete';
+import { Form, Input } from '@ant-design/react-native';
+import { Autocomplete, Button } from '@component/common';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
@@ -91,9 +91,7 @@ const EditServiceForm: FC<EditServiceFormProps> = ({ serviceToEdit, categories, 
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" onPress={form.submit} loading={loading}>
-                Сохранить
-              </Button>
+              <Button title="Сохранить" onPress={form.submit} loading={loading} />
             </Form.Item>
           </Form>
         </View>

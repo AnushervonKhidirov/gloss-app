@@ -1,7 +1,7 @@
 import type { CreateUser } from '@type/user.type';
 
-import { Button, Form, Input, WingBlank } from '@ant-design/react-native';
-import InputPassword from '@commonComponent/input/input-password';
+import { Form, Input } from '@ant-design/react-native';
+import { Button, InputPassword, WingBlank } from '@component/common';
 import { Link, router } from 'expo-router';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { useLayoutEffect, useState } from 'react';
@@ -90,9 +90,7 @@ const SignUpScreen = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" onPress={form.submit} loading={loading}>
-                Зарегистрироваться
-              </Button>
+              <Button title="Зарегистрироваться" onPress={form.submit} loading={loading} />
             </Form.Item>
           </Form>
 

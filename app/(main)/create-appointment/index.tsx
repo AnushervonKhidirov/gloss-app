@@ -1,6 +1,6 @@
 import useCreateAppointmentStore from '@store/create-appointment.store';
 
-import { Button } from '@ant-design/react-native';
+import { Button } from '@component/common';
 import { useFocusEffect } from 'expo-router';
 import { View } from 'react-native';
 
@@ -48,21 +48,17 @@ const CreateAppointmentScreen = () => {
 
       <View style={{ flexDirection: 'row', gap: 10 }}>
         <Button
-          type="primary"
           style={{ flex: 1 }}
+          title="Назад"
           onPress={prev}
           disabled={!isPossibleToPrevStep()}
-        >
-          Назад
-        </Button>
+        />
         <Button
-          type="primary"
           style={{ flex: 1 }}
+          title="Вперед"
           onPress={next}
           disabled={!isPossibleToNextStep()}
-        >
-          Вперед
-        </Button>
+        />
       </View>
     </View>
   );
