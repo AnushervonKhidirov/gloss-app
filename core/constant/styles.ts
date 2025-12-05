@@ -1,6 +1,6 @@
 import { ListStyle } from '@ant-design/react-native/lib/list/style';
 import { StyleSheet } from 'react-native';
-import { antTheme, blue } from './theme';
+import { blue, grey } from './theme';
 
 export const authScreenStyles = StyleSheet.create({
   screen: {
@@ -38,7 +38,7 @@ export const formStyles = (asCard?: boolean) => {
       paddingBlock: 20,
       backgroundColor: '#fff',
       borderWidth: 1,
-      borderColor: antTheme.border_color_base,
+      borderColor: grey[2],
       borderRadius: 5,
     };
   }
