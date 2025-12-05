@@ -1,10 +1,10 @@
 import type { Dayjs } from 'dayjs';
 import type { FC } from 'react';
 
-import { Button } from '@ant-design/react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import Button from './button';
 
 import { grey } from '@constant/theme';
 import dayjs from 'dayjs';
@@ -69,21 +69,17 @@ const Calendar: FC<{ date: Dayjs; setDate: (date: Dayjs) => void }> = ({ date, s
 
       <View style={styles.buttonWrapper}>
         <Button
-          type="primary"
+          title="Сегодня"
           style={styles.button}
           onPress={() => setSelectedDate(dayjs().startOf('date'))}
-        >
-          Сегодня
-        </Button>
+        />
 
         <Button
-          type="primary"
+          title="Выбрать"
           disabled={selectedDate.isSame(date, 'date')}
           style={styles.button}
           onPress={() => setDate(selectedDate)}
-        >
-          Выбрать
-        </Button>
+        />
       </View>
     </Pressable>
   );

@@ -1,7 +1,8 @@
 import type { CreateSpecialty, Specialty } from '@type/specialty.type';
 import type { FC } from 'react';
 
-import { Button, Form, Input } from '@ant-design/react-native';
+import { Form, Input } from '@ant-design/react-native';
+import Button from '@commonComponent/button';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
@@ -50,9 +51,7 @@ const CreateSpecialtyForm: FC<{ onSuccess: (specialty: Specialty) => void }> = (
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" onPress={form.submit} loading={loading}>
-              Создать
-            </Button>
+            <Button title="Создать" onPress={form.submit} loading={loading} />
           </Form.Item>
         </Form>
       </View>

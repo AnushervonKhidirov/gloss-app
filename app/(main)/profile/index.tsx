@@ -5,7 +5,7 @@ import useUserStore from '@store/user.store';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 
-import { Button } from '@ant-design/react-native';
+import Button from '@commonComponent/button';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import authService from '@service/auth.service';
@@ -75,18 +75,11 @@ const ProfileScreen = () => {
         </ScrollView>
 
         <View style={styles.actionButtonWrap}>
-          <Button type="primary" loading={loading} style={styles.actionButton}>
-            Сменить пароль
-          </Button>
-
-          <Button type="primary" loading={loading} style={styles.actionButton}>
-            Редактировать
-          </Button>
+          <Button title="Сменить пароль" loading={loading} style={styles.actionButton} />
+          <Button title="Редактировать" loading={loading} style={styles.actionButton} />
         </View>
 
-        <Button type="warning" loading={loading} onPress={signOut}>
-          Выйти
-        </Button>
+        <Button title="Выйти" loading={loading} onPress={signOut} />
       </View>
     )
   );

@@ -1,6 +1,7 @@
 import type { SignIn } from '@type/auth.type';
 
-import { Button, Form, Input, WingBlank } from '@ant-design/react-native';
+import { Form, Input, WingBlank } from '@ant-design/react-native';
+import Button from '@commonComponent/button';
 import InputPassword from '@commonComponent/input/input-password';
 import { Link, useRouter } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
@@ -61,9 +62,7 @@ const SignInScreen = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" onPress={form.submit} loading={loading}>
-                Войти
-              </Button>
+              <Button title="Войти" onPress={form.submit} loading={loading} />
             </Form.Item>
           </Form>
 

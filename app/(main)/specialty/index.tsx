@@ -6,13 +6,13 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useLayoutEffect, useState } from 'react';
 
+import Button from '@commonComponent/button';
 import LoadingView from '@commonComponent/loading-view';
 import Modal from '@commonComponent/modal';
 import CreateSpecialtyForm from '@component/specialty/form/create-specialty-form';
 import EditSpecialtyForm from '@component/specialty/form/edit-specialty-form';
 import SpecialtyList from '@component/specialty/specialty-list';
 
-import { Button } from '@ant-design/react-native';
 import { alertError } from '@helper/error-handler';
 
 const SpecialtyScreen = () => {
@@ -80,9 +80,10 @@ const SpecialtyScreen = () => {
         onRemove={remove}
       >
         {isAdmin && (
-          <Button type="primary" onPress={() => setCreateSpecialtyModalVisible(true)}>
-            Создать специальность
-          </Button>
+          <Button
+            title="Создать специальность"
+            onPress={() => setCreateSpecialtyModalVisible(true)}
+          />
         )}
       </SpecialtyList>
 
