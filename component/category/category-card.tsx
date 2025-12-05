@@ -2,9 +2,8 @@ import type { ActionButtonData } from '@commonComponent/action-buttons';
 import type { Category } from '@type/category.type';
 import type { FC } from 'react';
 
-import { Card } from '@ant-design/react-native';
 import ActionButtons from '@commonComponent/action-buttons';
-import { cardStyles } from '@constant/styles';
+import Card from '@commonComponent/card';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useState } from 'react';
@@ -54,8 +53,7 @@ const CategoryCard: FC<CategoryItemProps> = ({ category, edit, remove }) => {
   return (
     <Card style={{ paddingTop: 5, paddingRight: 0, paddingBottom: 5, paddingLeft: 0 }}>
       <Card.Header
-        styles={cardStyles.header}
-        title={<Text style={{ fontSize: 18 }}>{category.value}</Text>}
+        content={<Text style={{ fontSize: 18 }}>{category.value}</Text>}
         extra={
           isAdmin && (
             <ActionButtons
