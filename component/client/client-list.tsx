@@ -1,7 +1,7 @@
 import type { Client } from '@type/client.type';
 import type { FC } from 'react';
 
-import ScrollView from '@commonComponent/scroll-view';
+import { ScrollView } from '@component/common';
 import ClientCard from './client-card';
 
 type ClientListProps = {

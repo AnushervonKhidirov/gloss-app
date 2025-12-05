@@ -1,9 +1,8 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Service } from '@type/service.type';
 import type { FC } from 'react';
 
-import ActionButtons from '@commonComponent/action-buttons';
-import Card from '@commonComponent/card';
+import { ActionButtons, Card } from '@component/common';
 import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';

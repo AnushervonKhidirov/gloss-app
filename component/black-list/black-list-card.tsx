@@ -1,7 +1,7 @@
 import type { BlackList } from '@type/client.type';
 import type { FC } from 'react';
 
-import Card from '@commonComponent/card';
+import { Card } from '@component/common';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { Text } from 'react-native';

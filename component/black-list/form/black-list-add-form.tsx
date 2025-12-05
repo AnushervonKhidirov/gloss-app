@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { useState } from 'react';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
+import { Button } from '@component/common';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
 import { alertError } from '@helper/error-handler';

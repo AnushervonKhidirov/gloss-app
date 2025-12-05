@@ -6,9 +6,7 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useLayoutEffect, useState } from 'react';
 
-import Button from '@commonComponent/button';
-import LoadingView from '@commonComponent/loading-view';
-import Modal from '@commonComponent/modal';
+import { Button, LoadingView, Modal } from '@component/common';
 import CreateSpecialtyForm from '@component/specialty/form/create-specialty-form';
 import EditSpecialtyForm from '@component/specialty/form/edit-specialty-form';
 import SpecialtyList from '@component/specialty/specialty-list';
@@ -76,8 +74,8 @@ const SpecialtyScreen = () => {
       <SpecialtyList
         specialties={specialties}
         refresh={fetch}
-        onEdit={openEditServiceModal}
-        onRemove={remove}
+        edit={openEditServiceModal}
+        remove={remove}
       >
         {isAdmin && (
           <Button

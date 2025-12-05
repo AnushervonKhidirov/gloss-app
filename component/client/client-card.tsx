@@ -1,4 +1,4 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Client } from '@type/client.type';
 import type { FC } from 'react';
 
@@ -8,8 +8,7 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useEffect, useState } from 'react';
 
-import ActionButtons from '@commonComponent/action-buttons';
-import Card from '@commonComponent/card';
+import { ActionButtons, Card } from '@component/common';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 

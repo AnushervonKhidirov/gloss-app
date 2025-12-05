@@ -2,7 +2,7 @@ import type { Category, UpdateCategory } from '@type/category.type';
 import type { FC } from 'react';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
+import { Button } from '@component/common';
 import { alertError } from '@helper/error-handler';
 import categoryService from '@service/category.service';
 import { useState } from 'react';

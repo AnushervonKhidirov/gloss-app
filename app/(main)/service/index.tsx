@@ -7,9 +7,7 @@ import useServiceStore from '@store/service.store';
 import useUserStore from '@store/user.store';
 import { useLayoutEffect, useState } from 'react';
 
-import Button from '@commonComponent/button';
-import LoadingView from '@commonComponent/loading-view';
-import Modal from '@commonComponent/modal';
+import { Button, LoadingView, Modal } from '@component/common';
 import CreateServiceForm from '@component/service/form/create-service-form';
 import EditServiceForm from '@component/service/form/edit-service-form';
 import ServiceList from '@component/service/service-list';

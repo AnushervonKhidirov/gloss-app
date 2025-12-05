@@ -1,4 +1,4 @@
-import LoadingView from '@commonComponent/loading-view';
+import { LoadingView } from '@component/common';
 import WorkerList from '@component/worker/worker-list';
 import useUsersStore from '@store/users.store';
 import { useEffect, useState } from 'react';

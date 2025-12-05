@@ -1,9 +1,7 @@
 import type { SignIn } from '@type/auth.type';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
-import InputPassword from '@commonComponent/input/input-password';
-import WingBlank from '@commonComponent/wing-blank';
+import { Button, InputPassword, WingBlank } from '@component/common';
 import { Link, useRouter } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';

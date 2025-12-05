@@ -1,7 +1,7 @@
 import type { Service } from '@type/service.type';
 import type { FC, Key, PropsWithChildren } from 'react';
 
-import ScrollView from '@commonComponent/scroll-view';
+import { ScrollView } from '@component/common';
 import ServiceCard from './service-card';
 
 type ServiceListProps = PropsWithChildren<{

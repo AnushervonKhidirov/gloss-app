@@ -6,10 +6,7 @@ import type { FC } from 'react';
 import useCreateAppointmentStore from '@store/create-appointment.store';
 import { useEffect, useState } from 'react';
 
-import Card from '@commonComponent/card';
-import DatePicker from '@commonComponent/date-picker';
-import LoadingView from '@commonComponent/loading-view';
-import ScrollView from '@commonComponent/scroll-view';
+import { Card, DatePicker, LoadingView, ScrollView } from '@component/common';
 import { Text, View } from 'react-native';
 import AppointmentTimeList from '../appointment-time-list';
 

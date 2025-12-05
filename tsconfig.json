@@ -3,7 +3,6 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@commonComponent/*": ["./component/common/*"],
       "@component/*": ["./component/*"],
       "@constant/*": ["./core/constant/*"],
       "@service/*": ["./core/service/*"],

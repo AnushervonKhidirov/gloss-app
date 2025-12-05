@@ -1,9 +1,7 @@
 import type { CreateUser } from '@type/user.type';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
-import InputPassword from '@commonComponent/input/input-password';
-import WingBlank from '@commonComponent/wing-blank';
+import { Button, InputPassword, WingBlank } from '@component/common';
 import { Link, router } from 'expo-router';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { useLayoutEffect, useState } from 'react';

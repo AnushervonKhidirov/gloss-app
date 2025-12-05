@@ -1,4 +1,5 @@
-import type { ComponentProps, FC } from 'react';
+import type { ActionButtonData } from '@type/action-button-data.type';
+import type { FC } from 'react';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Modal, Pressable, StyleSheet, Text } from 'react-native';
@@ -10,13 +11,6 @@ type ActionButtonsProps = {
   visible: boolean;
   setVisible: (visible: boolean) => void;
 };
-
-export type ActionButtonData = {
-  iconName: ComponentProps<typeof MaterialCommunityIcons>['name'];
-  text: string;
-  action: () => void;
-};
-
 const ActionButtons: FC<ActionButtonsProps> = ({ actions, visible = false, setVisible }) => {
   return (
     actions.length > 0 && (

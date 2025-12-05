@@ -5,7 +5,7 @@ import useUserStore from '@store/user.store';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 
-import Button from '@commonComponent/button';
+import { Button } from '@component/common';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import authService from '@service/auth.service';

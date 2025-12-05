@@ -4,7 +4,7 @@ import useCreateAppointmentStore from '@store/create-appointment.store';
 import { useState } from 'react';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
+import { Button } from '@component/common';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 
 import { formStyles } from '@constant/styles';

@@ -2,8 +2,7 @@ import type { SelectedService, Service } from '@type/service.type';
 import type { FC } from 'react';
 
 import { Input } from '@ant-design/react-native';
-import Card from '@commonComponent/card';
-import WingBlank from '@commonComponent/wing-blank';
+import { Card, WingBlank } from '@component/common';
 import { Checkbox } from 'expo-checkbox';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';

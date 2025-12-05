@@ -6,12 +6,10 @@ import useUserStore from '@store/user.store';
 import { Role } from '@type/user.type';
 import { useLayoutEffect, useState } from 'react';
 
-import Button from '@commonComponent/button';
-import LoadingView from '@commonComponent/loading-view';
-import Modal from '@commonComponent/modal';
 import CategoryList from '@component/category/category-list';
 import CreateCategoryForm from '@component/category/form/create-category-form';
 import EditCategoryForm from '@component/category/form/edit-category-form';
+import { Button, LoadingView, Modal } from '@component/common';
 
 import { alertError } from '@helper/error-handler';
 

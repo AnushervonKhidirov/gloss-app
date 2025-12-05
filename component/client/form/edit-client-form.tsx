@@ -2,7 +2,7 @@ import type { Client, UpdateClient } from '@type/client.type';
 import type { FC } from 'react';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
+import { Button } from '@component/common';
 import clientService from '@service/client.service';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';

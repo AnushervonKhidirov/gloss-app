@@ -1,7 +1,7 @@
 import type { Category } from '@type/category.type';
 import type { FC, PropsWithChildren } from 'react';
 
-import ScrollView from '@commonComponent/scroll-view';
+import { ScrollView } from '@component/common';
 import CategoryCard from './category-card';
 
 type CategoryListProps = PropsWithChildren<{

@@ -1,7 +1,7 @@
 import type { User } from '@type/user.type';
 import { type FC, type PropsWithChildren } from 'react';
 
-import ScrollView from '@commonComponent/scroll-view';
+import { ScrollView } from '@component/common';
 import WorkerCard from './worker-card';
 
 type WorkerListProps = PropsWithChildren<{

@@ -3,11 +3,9 @@ import type { Client } from '@type/client.type';
 import useClientsStore from '@store/clients.store';
 import { useLayoutEffect, useState } from 'react';
 
-import LoadingView from '@commonComponent/loading-view';
 import ClientList from '@component/client/client-list';
-
-import Modal from '@commonComponent/modal';
 import EditClientForm from '@component/client/form/edit-client-form';
+import { LoadingView, Modal } from '@component/common';
 import { alertError } from '@helper/error-handler';
 import clientService from '@service/client.service';
 

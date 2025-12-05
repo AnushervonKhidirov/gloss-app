@@ -4,12 +4,9 @@ import useBlackListStore from '@store/black-list.store';
 import useClientsStore from '@store/clients.store';
 import { useLayoutEffect, useState } from 'react';
 
-import Button from '@commonComponent/button';
-import LoadingView from '@commonComponent/loading-view';
-import Modal from '@commonComponent/modal';
-import ScrollView from '@commonComponent/scroll-view';
 import BlackListCard from '@component/black-list/black-list-card';
 import BlackListAddForm from '@component/black-list/form/black-list-add-form';
+import { Button, LoadingView, Modal, ScrollView } from '@component/common';
 
 import { alertError } from '@helper/error-handler';
 import blackListService from '@service/black-list.service';

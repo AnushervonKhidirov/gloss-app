@@ -1,6 +1,6 @@
 import useCreateAppointmentStore from '@store/create-appointment.store';
 
-import Button from '@commonComponent/button';
+import { Button } from '@component/common';
 import { useFocusEffect } from 'expo-router';
 import { View } from 'react-native';
 

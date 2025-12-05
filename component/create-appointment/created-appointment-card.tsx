@@ -3,7 +3,7 @@ import type { Worker } from '@type/worker.type';
 import type { Dayjs } from 'dayjs';
 import type { FC } from 'react';
 
-import Card from '@commonComponent/card';
+import { Card } from '@component/common';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { grey } from '@constant/theme';

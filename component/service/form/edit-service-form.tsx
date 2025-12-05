@@ -3,8 +3,7 @@ import type { Service, UpdateService } from '@type/service.type';
 import type { FC } from 'react';
 
 import { Form, Input } from '@ant-design/react-native';
-import Button from '@commonComponent/button';
-import Autocomplete from '@commonComponent/input/autocomplete';
+import { Autocomplete, Button } from '@component/common';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 

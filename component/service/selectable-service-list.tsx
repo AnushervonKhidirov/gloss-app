@@ -4,8 +4,7 @@ import type { FC } from 'react';
 import serviceService from '@service/service.service';
 import { useState } from 'react';
 
-import Button from '@commonComponent/button';
-import ScrollView from '@commonComponent/scroll-view';
+import { Button, ScrollView } from '@component/common';
 import { Alert } from 'react-native';
 import SelectedServiceCard from './selected-service-card';
 

@@ -1,4 +1,4 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { Appointment } from '@type/appointment.type';
 import type { Dayjs } from 'dayjs';
 import type { FC } from 'react';
@@ -9,8 +9,7 @@ import { Role } from '@type/user.type';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
-import ActionButtons from '@commonComponent/action-buttons';
-import Card from '@commonComponent/card';
+import { ActionButtons, Card } from '@component/common';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 
 import { blue, green, grey, orange } from '@constant/theme';

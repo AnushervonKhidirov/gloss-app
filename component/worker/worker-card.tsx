@@ -1,9 +1,8 @@
-import type { ActionButtonData } from '@commonComponent/action-buttons';
+import type { ActionButtonData } from '@type/action-button-data.type';
 import type { User } from '@type/user.type';
 import type { ComponentProps, FC } from 'react';
 
-import ActionButtons from '@commonComponent/action-buttons';
-import Card from '@commonComponent/card';
+import { ActionButtons, Card } from '@component/common';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useUserStore from '@store/user.store';
 import useUsersStore from '@store/users.store';
