@@ -1,10 +1,15 @@
-import type { Appointment, CreateAppointment, QueryAppointment } from '@type/appointment.type';
+import type {
+  Appointment,
+  CreateAppointment,
+  CreatedAppointment,
+  QueryAppointment,
+} from '@type/appointment.type';
 import type { ReturnWithErrPromise } from '@type/common.type';
 
 import apiClient from '@api/apiClient';
 import { errorHandler, HttpException, isHttpException } from '@helper/error-handler';
 import { urlQueryBuilder } from '@helper/url-query-builder';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 class AppointmentService {
   private readonly endpoint = '/appointment';
@@ -33,9 +38,12 @@ class AppointmentService {
     }
   }
 
-  async create(appointment: CreateAppointment): ReturnWithErrPromise<Appointment> {
+  async create(appointment: CreateAppointment): ReturnWithErrPromise<CreatedAppointment> {
     try {
-      const response = await apiClient.post<Appointment>(this.endpoint, appointment);
+      const response = await apiClient.post<CreatedAppointment>(
+        this.endpoint + '/with_client',
+        appointment,
+      );
 
       if (isHttpException(response.data)) throw new HttpException(response.data);
       return [this.convertData(response.data), null];
@@ -55,7 +63,7 @@ class AppointmentService {
     }
   }
 
-  private convertData(appointment: Appointment) {
+  private convertData<T extends { startAt: Dayjs; endAt: Dayjs }>(appointment: T) {
     appointment.startAt = dayjs(appointment.startAt);
     appointment.endAt = dayjs(appointment.endAt);
     return appointment;
