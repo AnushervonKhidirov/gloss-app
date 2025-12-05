@@ -2,8 +2,9 @@ import type { FC } from 'react';
 
 import { useEffect, useState } from 'react';
 
-import { Form, Input, List } from '@ant-design/react-native';
-import { Modal, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Form, Input } from '@ant-design/react-native';
+import List from '@commonComponent/list';
+import { Modal, Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import InputSearch from './input-search';
 
 import { grey } from '@constant/theme';
@@ -85,13 +86,15 @@ const Autocomplete: FC<AutocompleteProps> = ({
             <InputSearch value={inputValue} placeholder={placeholder} onChangeText={inputHandler} />
 
             <ScrollView style={styles.scroller}>
-              <List>
-                {filteredList.map(item => (
-                  <Pressable key={item.id + item.value} onPress={() => select(item)}>
-                    <List.Item>{item.value}</List.Item>
+              <List
+                items={filteredList}
+                keyExtractor={item => item.value + item.id}
+                renderItem={item => (
+                  <Pressable onPress={() => select(item)}>
+                    <Text>{item.value}</Text>
                   </Pressable>
-                ))}
-              </List>
+                )}
+              />
             </ScrollView>
           </Pressable>
         </Pressable>
@@ -115,11 +118,12 @@ const styles = StyleSheet.create({
   },
   scroller: {
     overflow: 'hidden',
-    minHeight: 45,
-    maxHeight: 180,
+    minHeight: 43,
+    maxHeight: 169,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: grey[4],
     borderRadius: 10,
+    backgroundColor: '#fff',
   },
 });
 
