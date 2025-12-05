@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: grey[4],
     borderRadius: 10,
+    backgroundColor: '#fff',
   },
 });
 
