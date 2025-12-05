@@ -15,9 +15,14 @@ export type Appointment = {
   service: Service;
 };
 
-export type CreateAppointment = Pick<Appointment, 'userId' | 'serviceId' | 'clientId'> & {
-  clientId: number;
-  startAt: string;
+export type CreatedAppointment = Pick<
+  Appointment,
+  'id' | 'serviceId' | 'userId' | 'clientId' | 'startAt' | 'endAt'
+>;
+
+export type CreateAppointment = Pick<Appointment, 'userId' | 'serviceId' | 'startAt'> & {
+  name: string;
+  phone: string;
 };
 
 export type QueryAppointment = {
