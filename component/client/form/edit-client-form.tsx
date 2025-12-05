@@ -90,8 +90,7 @@ const EditClientForm: FC<EditClientFormProps> = ({ clientToEdit, onSuccess }) =>
 
 const styles = StyleSheet.create({
   form_wrapper: {
-    display: 'flex',
-    height: '100%',
+    flex: 1,
     justifyContent: 'center',
   },
 });
