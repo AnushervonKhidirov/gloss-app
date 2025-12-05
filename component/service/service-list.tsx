@@ -1,5 +1,5 @@
 import type { Service } from '@type/service.type';
-import { type FC, type Key, type PropsWithChildren } from 'react';
+import type { FC, Key, PropsWithChildren } from 'react';
 
 import ScrollView from '@commonComponent/scroll-view';
 import ServiceCard from './service-card';
